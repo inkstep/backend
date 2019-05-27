@@ -1,5 +1,7 @@
 FROM gradle:5.4.1-jdk8-alpine
 
+EXPOSE 8080
+
 # Install gradle 5.4.1
 RUN gradle -v
 
@@ -13,7 +15,7 @@ COPY settings.gradle settings.gradle
 USER root
 RUN chown -R gradle .
 
-RUN gradle build 
+RUN gradle build
 
 # Start Application
 CMD sh run
