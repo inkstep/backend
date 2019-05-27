@@ -1,7 +1,7 @@
-FROM openjdk:11
+FROM gradle:5.4.1-jdk8-alpine
 
 # Install gradle 5.4.1
-RUN apt-get -y gradle 5.4.1
+RUN gradle -v
 
 # Copy files needed
 COPY src/ src/
@@ -10,8 +10,10 @@ COPY build.gradle build.gradle
 COPY run run
 COPY settings.gradle settings.gradle
 
-# Run build
-RUN gradle build
+USER root
+RUN chown -R gradle .
+
+RUN gradle build 
 
 # Start Application
 CMD sh run
