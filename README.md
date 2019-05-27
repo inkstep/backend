@@ -1,4 +1,5 @@
 # Backend
 Backend server for inkstep
 
-Install Gradle
+Install Gradle 5.4.1
+Install Java 11 jdk
