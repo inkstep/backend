@@ -1,8 +1,8 @@
 # Backend
 Backend server for inkstep
 
-Install Gradle 5.4.1
+Run ./install to install necessary programs
 
-Install Java 11 jdk
+Run ./clean to clean the directory
 
-Install Docker
+Run ./run to run the server
