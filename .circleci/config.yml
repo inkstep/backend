@@ -58,13 +58,13 @@ jobs:
 workflows:
   version: 2
   build-test-deploy:
-   jobs:
-     - build:
-     - deploy:
-   filters:
-     branches:
-       only:
-         - master
+    jobs:
+      - build:
+      - deploy:
+    filters:
+      branches:
+        only:
+          - master
   build:
     jobs:
       - build:
