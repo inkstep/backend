@@ -61,7 +61,7 @@ workflows:
     jobs:
       - build
       - deploy
-    	  filters:
+          filters:
             branches:
               only:
                 - master
