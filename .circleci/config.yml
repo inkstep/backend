@@ -36,19 +36,3 @@ jobs:
 
       # run tests!
       - run: gradle test
-  deploy:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/circleci~docs
-
-workflows:
-  version: 2
-  build-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
