@@ -1,15 +1,18 @@
 package backend.resources;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class TestResource {
-  private static AtomicLong id;
+
+  private final long id;
+
+  public TestResource(long id) {
+    this.id = id;
+  }
 
   public long getId() {
-    return id.getAndIncrement();
+    return id;
   }
 
   public String getContent() {
-    return "Go away, not setup yet!";
+    return "Go away! not setup yet!";
   }
 }
