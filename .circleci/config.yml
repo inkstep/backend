@@ -39,7 +39,7 @@ jobs:
 
   deploy:
     docker:
-      -image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       
@@ -59,8 +59,8 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - build:
-      - deploy:
+      - build
+      - deploy
     filters:
       branches:
         only:
