@@ -1,2 +1,2 @@
 gradle build
-java -jar build/libs/inkstep-server-0.1.0.jar
+java -jar build/libs/inkstep-server-0.2.jar
