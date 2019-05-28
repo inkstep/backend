@@ -60,11 +60,8 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - deploy
+      - deploy:
           filters:
             branches:
               only:
                 - master
-  build:
-    jobs:
-      - build:
