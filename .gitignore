@@ -4,3 +4,8 @@ main.java.backend.iml
 inkstep-gradle/
 *.gradle
 out/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
