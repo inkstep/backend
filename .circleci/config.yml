@@ -36,3 +36,30 @@ jobs:
 
       # run tests!
       - run: gradle test
+
+  deploy:
+    docker:
+      -image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      
+      - run:
+          name: Installing deployment dependencies
+          working_directory: /
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python-pip python-dev build-essential
+            sudo pip install --upgrade setuptools
+            sudo pip install awsebcli --upgrade
+      - run:
+          name: Deploying
+          command: eb deploy Inkstep-env-2
+workflows:
+  version: 2
+  build:
+   jobs:
+     - deploy:
+         filters:
+           branches:
+             only:
+               - master
