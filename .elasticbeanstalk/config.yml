@@ -1,0 +1,21 @@
+branch-defaults:
+  circle-ci:
+    environment: Inkstep-env-2
+environment-defaults:
+  Inkstep-env:
+    branch: null
+    repository: null
+  Inkstep-env-2:
+    branch: null
+    repository: null
+global:
+  application_name: inkstep
+  default_ec2_keyname: null
+  default_platform: docker
+  default_region: eu-west-2
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  sc: git
+  workspace_type: Application
