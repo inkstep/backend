@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Deploying
           command: eb deploy Inkstep-env
-      - run: echo postgre_password > password.txt
+      - run: echo $postgre_password > password.txt
 
 workflows:
   version: 2
