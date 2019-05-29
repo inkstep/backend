@@ -49,7 +49,7 @@ public class Users {
     StringBuilder passphraseBuilder = new StringBuilder();
 
     for (int i = 0; i < PASSPHRASE_WORD_LENGTH; i++) {
-      int index = random.nextInt(]NUMBER_OF_WORDS);
+      int index = random.nextInt(NUMBER_OF_WORDS);
 
       Stream<String> lines = Files.lines(Paths.get(WORDS_PATH));
       String passcodePart = lines.skip(index).findFirst().get();
