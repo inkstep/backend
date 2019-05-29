@@ -1,24 +1,17 @@
-FROM gradle:5.4.1-jdk8-alpine
+FROM maven:3.6.1-jdk-11
 
 EXPOSE 8080
 
-# Install gradle 5.4.1
-RUN gradle -v
-
 # Copy files needed
 COPY src/ src/
-COPY .gradle/ .gradle/
-COPY build.gradle build.gradle
 COPY run run
-COPY settings.gradle settings.gradle
 COPY checkstyle.xml checkstyle.xml
+COPY pom.xml pom.xml
 
-USER root
-RUN chown -R gradle .
+RUN mvn compile assembly:single
 
-RUN gradle build
 
-# Start Application
-CMD sh run
+# Start Main
+CMD java -jar target/inkstep-1.0.jar
 
 

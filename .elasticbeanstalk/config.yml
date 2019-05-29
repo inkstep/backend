@@ -18,4 +18,4 @@ global:
   platform_name: null
   platform_version: null
   sc: git
-  workspace_type: Application
+  workspace_type: Main
