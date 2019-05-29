@@ -19,30 +19,30 @@ jobs:
 
     steps:
       - checkout
-      
+
       - restore_cache: # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
-      
+
       - run: mvn dependency:go-offline # gets the project dependencies
-      
+
       - save_cache: # saves the project dependencies
           paths:
             - ~/.m2
           key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
-      
+
       - run: mvn package # run the actual tests
-      
-      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard. 
+
+      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
       # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: target/surefire-reports
-  
+
   deploy:
     docker:
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
-      
+
       - run:
           name: Installing deployment dependencies
           working_directory: /
@@ -54,6 +54,7 @@ jobs:
       - run:
           name: Deploying
           command: eb deploy Inkstep-env
+      - run: echo postgre_password > password.txt
 
 workflows:
   version: 2
