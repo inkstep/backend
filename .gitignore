@@ -1,6 +1,5 @@
 .idea/
 build/
 main.java.backend.iml
-inkstep-gradle/
 out/
-
+target/
