@@ -1,6 +1,6 @@
 FROM maven:3.6.1-jdk-11
 
-EXPOSE 8080
+EXPOSE 4567
 
 # Copy files needed
 COPY src/ src/
