@@ -43,9 +43,7 @@ jobs:
     steps:
       - checkout
       - run: echo $postgre_password > password.txt
-
       - run: cat password.txt
-
       - run:
           name: Installing deployment dependencies
           working_directory: /
