@@ -1,12 +1,11 @@
 package backend;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import static spark.Spark.get;
 
-@SpringBootApplication
 public class Application {
 
   public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
+    get("/test", (request, response) -> "User: username=test, email=test@test.net");
   }
+
 }
