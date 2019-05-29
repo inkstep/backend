@@ -15,6 +15,10 @@ Using AWS for server hosting
 
 url for HTTP requests inkstep-env.5zmmfs3yms.eu-west-2.elasticbeanstalk.com
 
+PostGre for database
+
+CATION: To access the database with this application create a password.txt file in the root directory with the valid PostGre credentials.
+
 # Scripts
 Run ./install to install necessary programs
 
