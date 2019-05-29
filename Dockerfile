@@ -1,17 +1,17 @@
+FROM maven:3.6.1-jdk-11
+
 EXPOSE 8080
 
 # Copy files needed
 COPY src/ src/
 COPY run run
 COPY checkstyle.xml checkstyle.xml
-COPY pom.xml
+COPY pom.xml pom.xml
 
-USER root
-RUN chown -R gradle .
+RUN mvn compile assembly:single
 
-RUN gradle build
 
 # Start Main
-CMD sh run
+CMD java -jar target/inkstep-1.0.jar
 
 
