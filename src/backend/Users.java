@@ -1,23 +1,30 @@
+import Database.DatabaseConnection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class Users {
-  public static final String WORDS_PATH = "src/backend/Words.txt";
-  public static final int PASSPHRASE_WORD_LENGTH = 4;
-  public static final int NUMBER_OF_WORDS = 1948;
+class Users {
+  private static final String WORDS_PATH = "src/backend/Words.txt";
+  static final int PASSPHRASE_WORD_COUNT = 4;
+  private static final int NUMBER_OF_WORDS = 1948;
 
-  public static Object putUser(String userName) throws SQLException {
-    String passPhrase = null;
+  private static DatabaseConnection databaseConnection;
+
+  static void setDatabaseConnection(
+      DatabaseConnection databaseConnection) {
+    Users.databaseConnection = databaseConnection;
+  }
+
+  static Object putUser(String userName) throws SQLException {
+    String passphrase = null;
 
     /* Attempt to generate a passphrase */
     try {
-      passPhrase = generatePassphrase();
+      passphrase = generatePassphrase();
     } catch (IOException e) {
       e.printStackTrace();
 
@@ -25,28 +32,27 @@ public class Users {
     }
 
     /* Create a connection to the database and make an sql insert */
-    Connection c = Database.getConnection();
-    PreparedStatement pstmt = c.prepareStatement(
+    PreparedStatement pstmt = databaseConnection.prepareStatement(
         "insert into users (user_name, user_passphrase) values (?, ?)"
     );
 
     pstmt.setString(1, userName);
-    pstmt.setString(2, passPhrase);
+    pstmt.setString(2, passphrase);
 
     pstmt.executeUpdate();
 
-    c.close();
+    databaseConnection.close();
 
-    return "User: " + userName + ", Passphrase: " + passPhrase;
+    return "User: " + userName + ", Passphrase: " + passphrase;
   }
 
   /* Generate a passphrase out of 4 random words from a list */
-  public static String generatePassphrase() throws IOException {
+  static String generatePassphrase() throws IOException {
     Random random = new Random();
 
     StringBuilder passphraseBuilder = new StringBuilder();
 
-    for (int i = 0; i < PASSPHRASE_WORD_LENGTH; i++) {
+    for (int i = 0; i < PASSPHRASE_WORD_COUNT; i++) {
       int index = random.nextInt(NUMBER_OF_WORDS);
 
       Stream<String> lines = Files.lines(Paths.get(WORDS_PATH));
