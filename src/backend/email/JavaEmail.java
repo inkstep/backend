@@ -1,17 +1,21 @@
 package email;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
-import java.util.stream.Stream;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class JavaEmail {
 
@@ -29,7 +33,8 @@ public class JavaEmail {
     emailProperties.put("mail.smtp.starttls.enable", "true");
   }
 
-  private void createEmailMessage(String to, String message, String subject)
+  private void createEmailMessage(String to, String message, String subject,
+      List<String> filenames)
       throws MessagingException {
     String[] toEmails = { to };
     String emailBody = "This is an email sent by JavaMail api.";
@@ -41,15 +46,30 @@ public class JavaEmail {
       emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmails[i]));
     }
 
+
     emailMessage.setSubject(subject);
-    emailMessage.setContent(emailBody, "text/html");
     emailMessage.setText(message);
+
+
+    Multipart multipart = new MimeMultipart();
+
+    for (String filename : filenames) {
+      BodyPart messageBodyPart = new MimeBodyPart();
+
+      DataSource source = new FileDataSource(filename);
+      messageBodyPart.setDataHandler(new DataHandler(source));
+      messageBodyPart.setFileName(filename);
+      multipart.addBodyPart(messageBodyPart);
+    }
+
+    emailMessage.setContent(multipart);
+
   }
 
-  public void sendEmail(String to, String message, String subject)
-      throws MessagingException {
+  public void sendEmail(String to, String message, String subject,
+      List<String> filenames) throws MessagingException {
     setMailServerProperties();
-    createEmailMessage(to, message, subject);
+    createEmailMessage(to, message, subject, filenames);
 
     String emailHost = "smtp.gmail.com";
     String fromUser = "Inksteptattoo";

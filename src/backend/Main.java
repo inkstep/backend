@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.MultipartConfigElement;
 import spark.Request;
 import spark.Response;
@@ -94,6 +96,10 @@ public class Main {
           outStream.write(buffer);
         }
 
+        List<String> filenames = new ArrayList<>();
+
+        filenames.add("src/resources/image1.jpg");
+
         return Journey.newJourney(
             userName,
             artistName,
@@ -101,7 +107,8 @@ public class Main {
             tattoo,
             size,
             position,
-            description
+            description,
+            filenames
         );
       }
     });
