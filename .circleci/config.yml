@@ -37,6 +37,8 @@ jobs:
       # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: target/surefire-reports
   test:
+    docker:
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
 
