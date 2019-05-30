@@ -1,6 +1,7 @@
 import static spark.Spark.get;
 import static spark.Spark.put;
 
+import Database.PostgreDatabaseConnection;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,8 @@ import spark.Route;
 public class Main {
 
   public static void main(String[] args) {
+    Users.setDatabaseConnection(new PostgreDatabaseConnection());
+
     get("/test", new Route() {
       public Object handle(Request request, Response response) throws Exception {
         return "User: username=test, email=test@test.net";
