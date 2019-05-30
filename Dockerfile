@@ -7,7 +7,6 @@ COPY src/ src/
 COPY run run
 COPY checkstyle.xml checkstyle.xml
 COPY pom.xml pom.xml
-COPY password.txt password.txt
 
 RUN mvn compile assembly:single
 

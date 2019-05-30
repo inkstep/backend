@@ -8,8 +8,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 public class Users {
-
-
   public static final String WORDS_PATH = "src/backend/Words.txt";
   public static final int PASSPHRASE_WORD_LENGTH = 4;
   public static final int NUMBER_OF_WORDS = 1948;
