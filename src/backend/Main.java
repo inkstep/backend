@@ -1,6 +1,3 @@
-import static spark.Spark.get;
-import static spark.Spark.put;
-
 import database.PostgreDatabaseConnection;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,9 +8,12 @@ import java.util.List;
 import javax.servlet.MultipartConfigElement;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+
+import static spark.Spark.*;
 
 public class Main {
 
@@ -56,7 +56,7 @@ public class Main {
         journeyObject.put("size" , "10cm");
         journeyObject.put("pos" , "neck");
         journeyObject.put("desc" , "I like tattoo's");
-        
+
         return journeyObject.toJSONString();
       }
     });
@@ -85,48 +85,22 @@ public class Main {
         }
         */
 
-        String userName = request.queryParams("user_name");
-        if (userName == null) {
-          return "userName query not supplied";
-        }
 
-        String passphrase = request.queryParams("passphrase");
-        if (passphrase == null) {
-          return "passphrase query not supplied";
-        }
+        String body = request.body();
+        JSONParser parser = new JSONParser();
+        JSONObject requestJSON = (JSONObject) parser.parse(body);
 
-        String artistName = request.queryParams("artist_name");
-        if (artistName == null) {
-          return "artistName query not supplied";
-        }
+        System.out.println(requestJSON.toJSONString());
 
-        String artistEmail = request.queryParams("artist_email");
-        if (artistEmail == null) {
-          return "artistEmail query not supplied";
-        }
-
-        String tattoo = request.queryParams("tattoo");
-        if (tattoo == null) {
-          return "tattoo query not supplied";
-        }
-
-        String size = request.queryParams("size");
-        if (size == null) {
-          return "size query not supplied";
-        }
-
-        String position = request.queryParams("pos");
-        if (position == null) {
-          return "pos query not supplied";
-        }
-
-        String description = request.queryParams("desc");
-        if (description == null) {
-          return "desc query not supplied";
-        }
+        String userName = (String) requestJSON.get("user_name");
+        String artistName = (String) requestJSON.get("artist_name");
+        String artistEmail = (String) requestJSON.get("artist_email");
+        String tattoo = (String) requestJSON.get("tattoo");
+        String size = (String) requestJSON.get("size");
+        String position = (String) requestJSON.get("pos");
+        String description = (String) requestJSON.get("desc");
 
         List<String> filenames = new ArrayList<>();
-
         filenames.add("src/resources/image1.jpg");
 
         return Journey.newJourney(

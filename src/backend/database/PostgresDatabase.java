@@ -6,9 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.stream.Stream;
 
-public class Database {
-
-  public static final String PASSWORD_FILE_PATH = "password.txt";
+public class PostgresDatabase {
 
   /* Return a connection to the database with the following info */
   public synchronized static Connection getConnection() {
@@ -18,8 +16,7 @@ public class Database {
       String host = "db.doc.ic.ac.uk:5432";
       String database = "g1827107_u";
       String username = "g1827107_u";
-      Stream<String> lines = Files.lines(Paths.get(PASSWORD_FILE_PATH));
-      String password = lines.findFirst().get();
+      String password = System.getenv("database_password");
       String url = "jdbc:postgresql://" + host + "/" + database;
       String driverJDBC = "org.postgresql.Driver";
       Class.forName(driverJDBC);
