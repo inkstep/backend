@@ -44,14 +44,14 @@ jobs:
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
           key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
 
-            - run: mvn dependency:go-offline # gets the project dependencies
+      - run: mvn dependency:go-offline # gets the project dependencies
 
-            - save_cache: # saves the project dependencies
-                paths:
-                  - ~/.m2
-                key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.m2
+          key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
 
-            - run: mvn test # run the actual tests
+      - run: mvn test # run the actual tests
   deploy:
     docker:
       - image: circleci/openjdk:8-jdk
