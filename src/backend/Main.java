@@ -37,8 +37,25 @@ public class Main {
 
     put("/journey", new Route() {
       public Object handle(Request request, Response response) throws Exception {
-        MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
-        request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+        try (InputStream is = request.raw().getPart("image1").getInputStream()) {
+          byte[] buffer = new byte[is.available()];
+          is.read(buffer);
+
+          File targetFile = new File("src/resources/image1.jpg");
+          OutputStream outStream = new FileOutputStream(targetFile);
+          outStream.write(buffer);
+        }
+
+        try (InputStream is =
+               request.raw().getPart("image2").getInputStream()) {
+          byte[] buffer = new byte[is.available()];
+          System.out.println(buffer.length);
+          is.read(buffer);
+
+          File targetFile = new File("src/resources/image2.jpg");
+          OutputStream outStream = new FileOutputStream(targetFile);
+          outStream.write(buffer);
+        }
 
         String userName = request.queryParams("userName");
         if (userName == null) {
@@ -73,27 +90,6 @@ public class Main {
         String description = request.queryParams("desc");
         if (description == null) {
           return "desc query not supplied";
-        }
-
-        try (InputStream is =
-            request.raw().getPart("image1").getInputStream()) {
-          byte[] buffer = new byte[is.available()];
-          is.read(buffer);
-
-          File targetFile = new File("src/resources/image1.jpg");
-          OutputStream outStream = new FileOutputStream(targetFile);
-          outStream.write(buffer);
-        }
-
-        try (InputStream is =
-            request.raw().getPart("image2").getInputStream()) {
-          byte[] buffer = new byte[is.available()];
-          System.out.println(buffer.length);
-          is.read(buffer);
-
-          File targetFile = new File("src/resources/image2.jpg");
-          OutputStream outStream = new FileOutputStream(targetFile);
-          outStream.write(buffer);
         }
 
         List<String> filenames = new ArrayList<>();
