@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.MultipartConfigElement;
+
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -31,12 +33,37 @@ public class Main {
           return "name query not supplied";
         }
 
-        return Users.putUser(userName);
+        String passphrase = "JimmyHarryDannyMatty";
+
+        JSONObject userResponse = new JSONObject();
+
+        userResponse.put("name", userName);
+        userResponse.put("passphrase", passphrase);
+
+        return userResponse.toJSONString();
+      }
+    });
+
+    get("/journey", new Route() {
+      @Override
+      public Object handle(Request request, Response response) throws Exception {
+        JSONObject journeyObject = new JSONObject();
+
+        journeyObject.put("user_name" , "Jimmy");
+        journeyObject.put("artist_name" , "Rickay");
+        journeyObject.put("artist_email" , "Rickay@theemail.com");
+        journeyObject.put("tattoo" , "star");
+        journeyObject.put("size" , "10cm");
+        journeyObject.put("pos" , "neck");
+        journeyObject.put("desc" , "I like tattoo's");
+        
+        return journeyObject.toJSONString();
       }
     });
 
     put("/journey", new Route() {
       public Object handle(Request request, Response response) throws Exception {
+        /*
         try (InputStream is = request.raw().getPart("image1").getInputStream()) {
           byte[] buffer = new byte[is.available()];
           is.read(buffer);
@@ -56,18 +83,24 @@ public class Main {
           OutputStream outStream = new FileOutputStream(targetFile);
           outStream.write(buffer);
         }
+        */
 
-        String userName = request.queryParams("userName");
+        String userName = request.queryParams("user_name");
         if (userName == null) {
           return "userName query not supplied";
         }
 
-        String artistName = request.queryParams("artistName");
+        String passphrase = request.queryParams("passphrase");
+        if (passphrase == null) {
+          return "passphrase query not supplied";
+        }
+
+        String artistName = request.queryParams("artist_name");
         if (artistName == null) {
           return "artistName query not supplied";
         }
 
-        String artistEmail = request.queryParams("artistEmail");
+        String artistEmail = request.queryParams("artist_email");
         if (artistEmail == null) {
           return "artistEmail query not supplied";
         }
