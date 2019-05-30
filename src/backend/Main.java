@@ -109,7 +109,7 @@ public class Main {
         requestJSON.get("images");
 
         List<String> filenames = new ArrayList<>();
-        filenames.add("src/resources/image1.jpg");
+        //filenames.add("src/resources/image1.jpg");
 
         return Journey.newJourney(
             userName,
