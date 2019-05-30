@@ -54,14 +54,7 @@ public class JavaEmail {
     String emailHost = "smtp.gmail.com";
     String fromUser = "Inksteptattoo";
 
-    String fromUserEmailPassword = null;
-    try {
-      Stream<String> lines = Files.lines(Paths.get("src/backend/email"
-          + "/emailpassword.txt"));
-      fromUserEmailPassword = lines.findFirst().get();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    String fromUserEmailPassword = System.getenv("email_password");
 
     Transport transport = mailSession.getTransport("smtp");
 

@@ -61,7 +61,6 @@ jobs:
       - checkout
       - run: echo $postgre_password > password.txt
       - run: cat password.txt
-      - run: echo $email_password > src/backend/email/emailpassword.txt
       - run:
           name: Installing deployment dependencies
           working_directory: /
