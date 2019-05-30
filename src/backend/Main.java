@@ -18,6 +18,8 @@ import static spark.Spark.*;
 public class Main {
 
   public static void main(final String[] args) {
+    System.out.println("Server is not online yay");
+
     Users.setDatabaseConnection(new PostgreDatabaseConnection());
 
     get("/test", new Route() {
@@ -28,6 +30,7 @@ public class Main {
 
     put("/user", new Route() {
       public Object handle(Request request, Response response) throws Exception {
+        System.out.println("Request received PUT user");
         String userName = request.queryParams("name");
         if (userName == null) {
           return "name query not supplied";
@@ -47,6 +50,8 @@ public class Main {
     get("/journey", new Route() {
       @Override
       public Object handle(Request request, Response response) throws Exception {
+        System.out.println("Request received GET journey");
+
         JSONObject journeyObject = new JSONObject();
 
         journeyObject.put("user_name" , "Jimmy");
@@ -63,6 +68,8 @@ public class Main {
 
     put("/journey", new Route() {
       public Object handle(Request request, Response response) throws Exception {
+        System.out.println("Request received PUT journey");
+
         /*
         try (InputStream is = request.raw().getPart("image1").getInputStream()) {
           byte[] buffer = new byte[is.available()];
@@ -85,7 +92,6 @@ public class Main {
         }
         */
 
-
         String body = request.body();
         JSONParser parser = new JSONParser();
         JSONObject requestJSON = (JSONObject) parser.parse(body);
@@ -99,6 +105,8 @@ public class Main {
         String size = (String) requestJSON.get("size");
         String position = (String) requestJSON.get("pos");
         String description = (String) requestJSON.get("desc");
+
+        requestJSON.get("images");
 
         List<String> filenames = new ArrayList<>();
         filenames.add("src/resources/image1.jpg");
