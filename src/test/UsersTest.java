@@ -4,7 +4,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import Database.DatabaseConnection;
+import database.DatabaseConnection;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

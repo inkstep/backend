@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ public class PostgreDatabaseConnection implements DatabaseConnection {
   private Connection connection;
 
   public PostgreDatabaseConnection() {
-    //connection = Database.getConnection();
+    //connection = database.getConnection();
   }
 
   @Override

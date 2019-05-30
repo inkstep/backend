@@ -1,11 +1,7 @@
 import static spark.Spark.get;
 import static spark.Spark.put;
 
-import Database.PostgreDatabaseConnection;
-import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.Random;
+import database.PostgreDatabaseConnection;
 import spark.Request;
 import spark.Response;
 import spark.Route;
