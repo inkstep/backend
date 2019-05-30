@@ -7,12 +7,6 @@
   <groupId>inkstep</groupId>
   <artifactId>inkstep</artifactId>
   <version>1.0</version>
-
-  <properties>
-    <maven.compiler.source>10</maven.compiler.source>
-    <maven.compiler.target>10</maven.compiler.target>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.sparkjava</groupId>
@@ -70,6 +64,5 @@
       </plugin>
     </plugins>
   </build>
-
 </project>
 
