@@ -48,22 +48,8 @@ public class JavaEmail {
 
 
     emailMessage.setSubject(subject);
+    emailMessage.setContent(emailBody, "text/html");
     emailMessage.setText(message);
-
-
-    Multipart multipart = new MimeMultipart();
-
-    for (String filename : filenames) {
-      BodyPart messageBodyPart = new MimeBodyPart();
-
-      DataSource source = new FileDataSource(filename);
-      messageBodyPart.setDataHandler(new DataHandler(source));
-      messageBodyPart.setFileName(filename);
-      multipart.addBodyPart(messageBodyPart);
-    }
-
-    emailMessage.setContent(multipart);
-
   }
 
   public void sendEmail(String to, String message, String subject,
