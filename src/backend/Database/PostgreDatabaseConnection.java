@@ -9,7 +9,7 @@ public class PostgreDatabaseConnection implements DatabaseConnection {
   private Connection connection;
 
   public PostgreDatabaseConnection() {
-    connection = Database.getConnection();
+    //connection = Database.getConnection();
   }
 
   @Override
