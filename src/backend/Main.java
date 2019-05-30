@@ -93,6 +93,9 @@ public class Main {
         */
 
         String body = request.body();
+
+        System.out.println(body);
+
         JSONParser parser = new JSONParser();
         JSONObject requestJSON = (JSONObject) parser.parse(body);
 
