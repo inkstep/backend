@@ -1,3 +1,5 @@
+package v1;
+
 import database.DatabaseConnection;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,15 +8,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
+import org.json.simple.JSONObject;
+import spark.Route;
 
-class Users {
+public class Users {
   private static final String WORDS_PATH = "src/backend/Words.txt";
   static final int PASSPHRASE_WORD_COUNT = 4;
   private static final int NUMBER_OF_WORDS = 1948;
 
   private static DatabaseConnection databaseConnection;
 
-  static void setDatabaseConnection(
+  public static void setDatabaseConnection(
       DatabaseConnection databaseConnection) {
     Users.databaseConnection = databaseConnection;
   }
@@ -64,5 +68,25 @@ class Users {
     }
 
     return passphraseBuilder.toString();
+  }
+
+
+  public static Route putUserRoute() {
+    return (request, response) -> {
+      System.out.println("Request received PUT user");
+      String userName = request.queryParams("name");
+      if (userName == null) {
+        return "name query not supplied";
+      }
+
+      String passphrase = "JimmyHarryDannyMatty";
+
+      JSONObject userResponse = new JSONObject();
+
+      userResponse.put("name", userName);
+      userResponse.put("passphrase", passphrase);
+
+      return userResponse.toJSONString();
+    };
   }
 }
