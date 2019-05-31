@@ -1,7 +1,9 @@
 # Backend
 Backend server for inkstep
 
-url for HTTP requests inkstep-env.5zmmfs3yms.eu-west-2.elasticbeanstalk.com
+url for HTTP requests 
+
+http://inkstep-backend.eu-west-2.elasticbeanstalk.com/
 
 # TOOLS
 
