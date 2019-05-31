@@ -37,18 +37,16 @@ public class JavaEmail {
       List<String> filenames)
       throws MessagingException {
     String[] toEmails = { to };
-    String emailBody = "This is an email sent by JavaMail api.";
 
     mailSession = Session.getDefaultInstance(emailProperties, null);
     emailMessage = new MimeMessage(mailSession);
 
     for (int i = 0; i < toEmails.length; i++) {
-      emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmails[i]));
+      emailMessage.addRecipient(Message.RecipientType.TO,
+          new InternetAddress(toEmails[i]));
     }
 
-
     emailMessage.setSubject(subject);
-    emailMessage.setContent(emailBody, "text/html");
     emailMessage.setText(message);
   }
 

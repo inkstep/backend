@@ -58,7 +58,8 @@ class Users {
       Stream<String> lines = Files.lines(Paths.get(WORDS_PATH));
       String passcodePart = lines.skip(index).findFirst().get();
 
-      passcodePart = passcodePart.substring(0, 1).toUpperCase() + passcodePart.substring(1);
+      passcodePart = passcodePart.substring(0, 1).toUpperCase() +
+          passcodePart.substring(1);
       passphraseBuilder.append(passcodePart);
     }
 
