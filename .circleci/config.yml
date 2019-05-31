@@ -78,8 +78,14 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
+      - style:
+          requires:
+            - build
       - deploy:
           requires:
             - build
             - test
+            - style
