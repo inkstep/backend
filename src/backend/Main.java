@@ -1,12 +1,12 @@
 import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.put;
-import static v1.Journey.getJourneyRoute;
-import static v1.Journey.putJourneyRoute;
-import static v1.Users.putUserRoute;
+import static version.v1.Journey.getJourneyRoute;
+import static version.v1.Journey.putJourneyRoute;
+import static version.v1.Users.putUserRoute;
 
 import database.PostgreDatabaseConnection;
-import v1.Users;
+import version.v1.Users;
 
 
 public class Main {
@@ -16,7 +16,7 @@ public class Main {
 
     Users.setDatabaseConnection(new PostgreDatabaseConnection());
 
-    path("/v1", () -> {
+    path("/version/v1", () -> {
       put("/user", putUserRoute());
 
       get("/journey", getJourneyRoute());
