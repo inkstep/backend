@@ -54,7 +54,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <sourceDirectories>src/wacc/main/</sourceDirectories>
+          <sourceDirectories>src/backend/</sourceDirectories>
           <configLocation>checkstyle.xml</configLocation>
         </configuration>
       </plugin>

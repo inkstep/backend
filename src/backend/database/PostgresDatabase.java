@@ -1,15 +1,12 @@
 package database;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.stream.Stream;
 
 public class PostgresDatabase {
 
   /* Return a connection to the database with the following info */
-  public synchronized static Connection getConnection() {
+  public static synchronized Connection getConnection() {
     Connection c = null;
     try {
       Class.forName("org.postgresql.Driver");
@@ -18,14 +15,14 @@ public class PostgresDatabase {
       String username = "g1827107_u";
       String password = System.getenv("database_password");
       String url = "jdbc:postgresql://" + host + "/" + database;
-      String driverJDBC = "org.postgresql.Driver";
-      Class.forName(driverJDBC);
+      String driver = "org.postgresql.Driver";
+      Class.forName(driver);
 
       c = DriverManager.getConnection(url, username,
           password);
     } catch (Exception e) {
       e.printStackTrace();
-      System.err.println(e.getClass().getName()+": "+e.getMessage());
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
       System.exit(0);
     }
 

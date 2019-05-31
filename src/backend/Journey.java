@@ -1,7 +1,7 @@
 import email.JavaEmail;
 
 import java.util.List;
-import javax.mail.*;
+import javax.mail.MessagingException;
 
 public class Journey {
 

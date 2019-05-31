@@ -79,4 +79,7 @@ workflows:
     jobs:
       - build
       - test
-      - deploy
+      - deploy:
+          requires:
+            - build
+            - test
