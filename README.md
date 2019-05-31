@@ -28,6 +28,8 @@ Run ./clean to clean the directory
 
 Run ./run to run the server
 
+# API (Currently supports v1)
+
 # API Endpoints V1 (all preceded by `/v1`)
 
 ## User handling
