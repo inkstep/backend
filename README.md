@@ -1,12 +1,12 @@
+# Inkstep Server Backend
+Backend server for inkstep
+
 
 [![CircleCI](https://circleci.com/gh/inkstep/backend.svg?style=svg)](https://circleci.com/gh/inkstep/backend)
 ![](https://img.shields.io/badge/database-postgres-purple.svg)
 ![](https://img.shields.io/badge/dependancies-gradle-green.svg)
 ![](https://img.shields.io/badge/container-docker-blue.svg)
 ![](https://img.shields.io/badge/server-aws-yellow.svg)
-
-# Inkstep Server Backend
-Backend server for inkstep
 
 url for HTTP requests 
 
