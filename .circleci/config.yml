@@ -54,6 +54,12 @@ jobs:
           key: circleci-demo-java-spring-{{ checksum "pom.xml" }}
 
       - run: mvn test # run the actual tests
+  style:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - run: mvn checkstyle:check
   deploy:
     docker:
       - image: circleci/openjdk:8-jdk
