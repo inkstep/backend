@@ -7,6 +7,7 @@ Backend server for inkstep
 ![](https://img.shields.io/badge/dependancies-gradle-green.svg)
 ![](https://img.shields.io/badge/container-docker-blue.svg)
 ![](https://img.shields.io/badge/server-aws-yellow.svg)
+![](https://img.shields.io/badge/project-inkstep-black.svg)
 
 url for HTTP requests 
 
