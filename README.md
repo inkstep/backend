@@ -62,8 +62,8 @@ Creates a new journey object. Returns an empty json {}
 | `user_name` | The username |
 | `artist_name` | The name of the artist |
 | `artst_email` | The email of the artist |
-| `tattoo` | Brief description of the tattoo |
+| `tattoo` | What the tattoo will be of |
 | `size` | Size of the tattoo |
 | `pos` | Position on the body of the tattoo |
-| `desc` | Description of your journey request |
+| `desc` | Longer description of the desired tattoo |
 
