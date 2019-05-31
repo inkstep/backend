@@ -13,7 +13,7 @@ import spark.Route;
 
 public class Users {
   private static final String WORDS_PATH = "src/backend/Words.txt";
-  static final int PASSPHRASE_WORD_COUNT = 4;
+  public static final int PASSPHRASE_WORD_COUNT = 4;
   private static final int NUMBER_OF_WORDS = 1948;
 
   private static DatabaseConnection databaseConnection;
@@ -23,7 +23,7 @@ public class Users {
     Users.databaseConnection = databaseConnection;
   }
 
-  static Object putUser(String userName) throws SQLException {
+  public static Object putUser(String userName) throws SQLException {
     String passphrase = null;
 
     /* Attempt to generate a passphrase */
@@ -51,7 +51,7 @@ public class Users {
   }
 
   /* Generate a passphrase out of 4 random words from a list */
-  static String generatePassphrase() throws IOException {
+  public static String generatePassphrase() throws IOException {
     Random random = new Random();
 
     StringBuilder passphraseBuilder = new StringBuilder();
