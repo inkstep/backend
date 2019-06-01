@@ -16,7 +16,7 @@ public class Main {
 
     Users.setDatabaseConnection(new PostgreDatabaseConnection());
 
-    path("/version/v1", () -> {
+    path("/v1", () -> {
       put("/user", putUserRoute());
 
       get("/journey", getJourneyRoute());
