@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -34,7 +35,7 @@ public class JavaEmail {
   }
 
   private void createEmailMessage(String to, String message, String subject,
-      List<String> filenames)
+      String toReply, List<String> filenames)
       throws MessagingException {
     String[] toEmails = { to };
 
@@ -46,14 +47,17 @@ public class JavaEmail {
           new InternetAddress(toEmails[i]));
     }
 
+    Address[] replyAddresses = { new InternetAddress(toReply)};
+    emailMessage.setReplyTo(replyAddresses);
+
     emailMessage.setSubject(subject);
     emailMessage.setText(message);
   }
 
   public void sendEmail(String to, String message, String subject,
-      List<String> filenames) throws MessagingException {
+      String toReply, List<String> filenames) throws MessagingException {
     setMailServerProperties();
-    createEmailMessage(to, message, subject, filenames);
+    createEmailMessage(to, message, subject, toReply, filenames);
 
     String emailHost = "smtp.gmail.com";
     String fromUser = "Inksteptattoo";
