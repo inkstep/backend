@@ -1,12 +1,12 @@
 package endpoints;
 
+import javax.mail.MessagingException;
+import java.util.ArrayList;
+
 import email.JavaEmail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import spark.Route;
-
-import javax.mail.MessagingException;
-import java.util.ArrayList;
 
 public class Journey {
 

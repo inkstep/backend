@@ -1,3 +1,4 @@
+import static endpoints.Artists.getArtistsRoute;
 import static endpoints.Journey.getJourneyRoute;
 import static endpoints.Journey.putJourneyRoute;
 import static endpoints.Users.putUserRoute;
@@ -17,5 +18,6 @@ public class Main {
     put("/user", putUserRoute());
     get("/journey", getJourneyRoute());
     put("/journey", putJourneyRoute());
+    get("/artists", getArtistsRoute());
   }
 }

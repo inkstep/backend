@@ -1,6 +1,5 @@
 package endpoints;
 
-import database.DatabaseConnection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
+
+import database.DatabaseConnection;
 import org.json.simple.JSONObject;
 import spark.Route;
 
@@ -18,8 +19,7 @@ public class Users {
 
   private static DatabaseConnection databaseConnection;
 
-  public static void setDatabaseConnection(
-      DatabaseConnection databaseConnection) {
+  public static void setDatabaseConnection(DatabaseConnection databaseConnection) {
     Users.databaseConnection = databaseConnection;
   }
 
@@ -36,9 +36,8 @@ public class Users {
     }
 
     /* Create a connection to the database and make an sql insert */
-    PreparedStatement pstmt = databaseConnection.prepareStatement(
-        "insert into users (user_name, user_passphrase) values (?, ?)"
-    );
+    PreparedStatement pstmt = databaseConnection
+      .prepareStatement("insert into users (user_name, user_passphrase) values (?, ?)");
 
     pstmt.setString(1, userName);
     pstmt.setString(2, passphrase);
@@ -62,8 +61,7 @@ public class Users {
       Stream<String> lines = Files.lines(Paths.get(WORDS_PATH));
       String passcodePart = lines.skip(index).findFirst().get();
 
-      passcodePart = passcodePart.substring(0, 1).toUpperCase() +
-          passcodePart.substring(1);
+      passcodePart = passcodePart.substring(0, 1).toUpperCase() + passcodePart.substring(1);
       passphraseBuilder.append(passcodePart);
     }
 
