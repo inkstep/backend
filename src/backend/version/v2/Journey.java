@@ -12,7 +12,8 @@ public class Journey {
 
   public static Object newJourney(String userName, String userEmail,
       String artistName, String artistEmail, String studioName,
-      String tattooDesc, String size, String position, String availability, String deposit) {
+      String tattooDesc, String size, String position, String availability,
+      String deposit) {
     String emailTemplate =
         "Client request for %s from %s\n"
             + "Hi, %s!\n"
