@@ -17,7 +17,7 @@ public class Journey {
       "Client request for " + artistName + " from " + studioName  + "\n"
         + "Hi, " + artistName + "!\n"
         + "You have received a new client request from " + userName + "!\n\n"
-        +  userName + " would love to get a " + tattooDesc +" on their "
+        + userName + " would love to get a " + tattooDesc +" on their "
           + position + " about " + size + " large.\n"
         + userName + " is available on " + availability + " and "
           + (deposit.equals("1") ? "is" : "is not")
