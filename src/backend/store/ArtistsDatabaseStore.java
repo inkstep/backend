@@ -1,5 +1,6 @@
 package store;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import database.DatabaseConnection;
@@ -21,12 +22,12 @@ public class ArtistsDatabaseStore implements ArtistsStore {
     connection.close();
   }
 
-  @Override public List<Artist> getArtist() {
+  @Override public List<Artist> getArtists() {
     connection.open();
 
     // TODO: Get artists from db here
 
     connection.close();
-    return null;
+    return new ArrayList<>();
   }
 }

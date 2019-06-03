@@ -8,5 +8,5 @@ public interface ArtistsStore {
 
   void addArtist(Artist artist);
 
-  List<Artist> getArtist();
+  List<Artist> getArtists();
 }

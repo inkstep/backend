@@ -1,5 +1,9 @@
 package endpoints;
 
+import java.util.List;
+
+import model.Artist;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import spark.Route;
 import store.ArtistsStore;
@@ -18,9 +22,10 @@ public class ArtistsEndpoint {
 
       JSONObject journeyObject = new JSONObject();
 
-      // TODO(mm5917): Get artists from database
+      List<Artist> artists = artistsStore.getArtists();
+      String jsonArtistList = JSONArray.toJSONString(artists);
 
-      journeyObject.put("artists", "artists here");
+      journeyObject.put("artists", jsonArtistList);
 
       return journeyObject.toJSONString();
     };
