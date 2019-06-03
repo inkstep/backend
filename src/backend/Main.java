@@ -4,6 +4,7 @@ import static spark.Spark.put;
 import static version.v1.Journey.getJourneyRoute;
 import static version.v1.Journey.putJourneyRoute;
 import static version.v1.Users.putUserRoute;
+import static version.v2.Journey.putJourneyRouteV2;
 
 import database.PostgreDatabaseConnection;
 import version.v1.Users;
@@ -21,6 +22,10 @@ public class Main {
 
       get("/journey", getJourneyRoute());
       put("/journey", putJourneyRoute());
+    });
+
+    path("/v2", () -> {
+      put("/journey", putJourneyRouteV2());
     });
   }
 

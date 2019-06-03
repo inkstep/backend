@@ -25,7 +25,8 @@ public class Journey {
     JavaEmail javaEmail = new JavaEmail();
 
     try {
-      javaEmail.sendEmail(artistEmail,toSend, "Client Request", filenames);
+      javaEmail.sendEmail(artistEmail,toSend, "Client Request",
+          "", filenames);
     } catch (MessagingException e) {
       e.printStackTrace();
     }

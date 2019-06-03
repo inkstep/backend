@@ -20,7 +20,30 @@ Run ./clean to clean the directory
 
 Run ./run to run the server
 
-# API (Currently supports v1)
+# API (Currently supports v1, v2)
+
+# API Endpoints V2 (all preceded by `/v2`)
+
+## Journey
+
+#### `PUT /journey`
+
+Creates a new journey object. Returns an empty json {}
+
+
+## JSON params
+
+| Param | Description |
+| ---- | ------ |
+| `user_name` | The username |
+| `user_email` | The email of the user
+| `artist_name` | The name of the artist |
+| `artst_email` | The email of the artist |
+| `tattoo_description` | What the tattoo will be of |
+| `size` | Size of the tattoo |
+| `position` | Position on the body of the tattoo |
+| `availability` | The availability of the user |
+| `deposit` | Whether the user is willing to put down a deposit |
 
 # API Endpoints V1 (all preceded by `/v1`)
 
