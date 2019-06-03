@@ -14,19 +14,18 @@ public class Journey {
     String artistEmail, String studioName, String tattooDesc, String size, String position,
     String availability, String deposit) {
     String emailTemplate =
-      "Client request for " + artistName + " from " + studioName  + "\n"
-        + "Hi, " + artistName + "!\n"
-        + "You have received a new client request from " + userName + "!\n\n"
-        + userName + " would love to get a " + tattooDesc +" on their "
-          + position + " about " + size + " large.\n"
-        + userName + " is available on " + availability + " and "
-          + (deposit.equals("1") ? "is" : "is not")
-          + " willing to leave a deposit\n\n"
-        + "If you would like to get in touch with " + userName
-          + " their email is " + userEmail
-          + ", or simply reply to this email!\n\n"
-        + "Happy tattoo'ing!\n\n"
-        + "Sent from Inkstep on behalf of " + userName;
+      "Client request for " + artistName + " from " + studioName  + "\n" +
+          "Hi, " + artistName + "!\n" +
+          "You have received a new client request from " + userName + "!\n\n" +
+          userName + " would love to get a " + tattooDesc + " on their " +
+          position + " about " + size + " large.\n" +
+          userName + " is available on " + availability + " and " +
+          (deposit.equals("1") ? "is" : "is not") +
+          " willing to leave a deposit\n\n" +
+          "If you would like to get in touch with " + userName +
+          " their email is " + userEmail +
+          ", or simply reply to this email!\n\n" +
+          "Happy tattoo'ing!\n\n" + "Sent from Inkstep on behalf of " + userName;
 
     String toSend = String.format(emailTemplate, artistName, studioName,
       artistName, userName, userName, tattooDesc, position, size, userName, availability,
