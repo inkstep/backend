@@ -11,7 +11,7 @@ Backend server for inkstep
 
 url for HTTP requests 
 
-http://inkstep-backend.eu-west-2.elasticbeanstalk.com/
+<http://inkstep-backend.eu-west-2.elasticbeanstalk.com/>
 
 # Scripts
 Run ./install to install necessary programs
@@ -20,18 +20,16 @@ Run ./clean to clean the directory
 
 Run ./run to run the server
 
-# API (Currently supports v1, v2)
+# API Endpoints 
 
-# API Endpoints V2 (all preceded by `/v2`)
+-
+## /journey
 
-## Journey
+#### `GET /journey`
 
-#### `PUT /journey`
+Returns details of a current journey. _Note_: v1 just returns prefilled data
 
-Creates a new journey object. Returns an empty json {}
-
-
-## JSON params
+#### JSON params
 
 | Param | Description |
 | ---- | ------ |
@@ -46,41 +44,11 @@ Creates a new journey object. Returns an empty json {}
 | `availability` | The availability of the user |
 | `deposit` | Whether the user is willing to put down a deposit |
 
-# API Endpoints V1 (all preceded by `/v1`)
-
-## User handling
-
-#### `PUT /user`
-
-Creates a new user in the database. Returns a json {"user_name":"XXX", "passphrase":"XXX"}
-
-## JSON params
-
-| Param | Description |
-| ---- | ------ |
-| `name` | The username |
-
-## Journey
-
-#### `GET /journey`
-
-Returns details of a current journey 
-
-
-## Query params
-
-| Param | Description |
-| ---- | ------ |
-| null | null |
-
-_Note_: v1 just returns prefilled data
-
 #### `PUT /journey`
 
 Creates a new journey object. Returns an empty json {}
 
-
-## JSON params
+#### JSON params
 
 | Param | Description |
 | ---- | ------ |
@@ -92,3 +60,14 @@ Creates a new journey object. Returns an empty json {}
 | `pos` | Position on the body of the tattoo |
 | `desc` | Longer description of the desired tattoo |
 
+
+## /user
+#### `PUT /user`
+
+Creates a new user in the database. Returns a json {"user_name":"XXX", "passphrase":"XXX"}
+
+#### JSON params
+
+| Param | Description |
+| ---- | ------ |
+| `name` | The username |

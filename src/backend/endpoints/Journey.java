@@ -1,8 +1,7 @@
-package version.v2;
+package endpoints;
 
 import email.JavaEmail;
 import java.util.ArrayList;
-import java.util.List;
 import javax.mail.MessagingException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,10 +9,9 @@ import spark.Route;
 
 public class Journey {
 
-  public static Object newJourney(String userName, String userEmail,
-      String artistName, String artistEmail, String studioName,
-      String tattooDesc, String size, String position, String availability,
-      String deposit) {
+  private static void newJourney(String userName, String userEmail, String artistName,
+    String artistEmail, String studioName, String tattooDesc, String size, String position,
+    String availability, String deposit) {
     String emailTemplate =
         "Client request for %s from %s\n"
             + "Hi, %s!\n"
@@ -40,10 +38,27 @@ public class Journey {
       e.printStackTrace();
     }
 
-    return "email sent: " + toSend;
   }
 
-  public static Route putJourneyRouteV2() {
+  public static Route getJourneyRoute() {
+    return (request, response) -> {
+      System.out.println("Request received GET journey");
+
+      JSONObject journeyObject = new JSONObject();
+
+      journeyObject.put("user_name", "Jimmy");
+      journeyObject.put("artist_name", "Rickay");
+      journeyObject.put("artist_email", "Rickay@theemail.com");
+      journeyObject.put("tattoo", "star");
+      journeyObject.put("size", "10cm");
+      journeyObject.put("pos", "neck");
+      journeyObject.put("desc", "I like tattoo's");
+
+      return journeyObject.toJSONString();
+    };
+  }
+
+  public static Route putJourneyRoute() {
     return (request, response) -> {
       System.out.println("Request received PUT journey");
 
@@ -68,7 +83,7 @@ public class Journey {
       String deposit = (String) requestjson.get("deposit");
 
       Journey.newJourney(userName, userEmail, artistName, artistEmail,
-          studioName, tattooDesc, size, position, availability, deposit);
+        studioName, tattooDesc, size, position, availability, deposit);
 
       return "{}";
     };

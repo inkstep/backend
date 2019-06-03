@@ -1,4 +1,4 @@
-package version.v1;
+package endpoints;
 
 import database.DatabaseConnection;
 import java.io.IOException;
