@@ -22,7 +22,7 @@ Run ./run to run the server
 
 # API (Currently supports v1, v2)
 
-# API Endpoints V1 (all preceded by `/v2`)
+# API Endpoints V2 (all preceded by `/v2`)
 
 ## Journey
 
