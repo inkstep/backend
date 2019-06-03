@@ -10,28 +10,31 @@ import spark.Route;
 
 public class Journey {
 
-  private static void newJourney(String userName, String userEmail, String artistName,
+  public static void newJourney(String userName, String userEmail, String artistName,
     String artistEmail, String studioName, String tattooDesc, String size, String position,
     String availability, String deposit) {
-    String emailTemplate = "Client request for %s from %s\n" + "Hi, %s!\n"
-      + "You have received a new client request from %s!\n\n"
-      + "%s would love to get a %s on their %s about %s large.\n"
-      + "%s is available on %s and %s willing to leave a deposit\n\n"
-      + "If you would like to get in touch with %s their email is %s, "
-      + "or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
-      + "Sent from Inkstep on behalf of %s";
+    String emailTemplate =
+      "Client request for %s from %s\n"
+        + "Hi, %s!\n"
+        + "You have received a new client request from %s!\n\n"
+        + "%s would love to get a %s on their %s about %s large.\n"
+        + "%s is available on %s and %s willing to leave a deposit\n\n"
+        + "If you would like to get in touch with %s their email is %s, "
+        + "or simply reply to this email!\n\n"
+        + "Happy tattoo'ing!\n\n"
+        + "Sent from Inkstep on behalf of %s";
 
-    String toSend = String
-      .format(emailTemplate, artistName, studioName, userName, userName, tattooDesc, position, size,
-        userName, availability, deposit.equals("Yes") ? "is" : "is not", userName, userEmail,
-        userName);
+    String toSend = String.format(emailTemplate, artistName, studioName,
+      artistName, userName, userName, tattooDesc, position, size, userName, availability,
+      deposit.equals("Yes") ? "is" : "is not", userName, userEmail, userName);
 
     System.out.println(toSend);
 
     JavaEmail javaEmail = new JavaEmail();
 
     try {
-      javaEmail.sendEmail(artistEmail, toSend, "Client Request", userEmail, new ArrayList<>());
+      javaEmail.sendEmail(artistEmail, toSend, "Client Request",
+        userEmail, new ArrayList<>());
     } catch (MessagingException e) {
       e.printStackTrace();
     }
