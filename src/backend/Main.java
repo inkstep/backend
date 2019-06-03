@@ -6,13 +6,14 @@ import database.MySQLDatabaseConnection;
 import endpoints.ArtistsEndpoint;
 import endpoints.JourneyEndpoint;
 import endpoints.UsersEndpoint;
+import store.ArtistsDatabaseStore;
 
 public class Main {
 
   public static void main(final String[] args) {
     DatabaseConnection connection = new MySQLDatabaseConnection();
 
-    ArtistsEndpoint artists = new ArtistsEndpoint(connection);
+    ArtistsEndpoint artists = new ArtistsEndpoint(new ArtistsDatabaseStore(connection));
     get("/artists", artists.getArtistsRoute());
 
     JourneyEndpoint journeys = new JourneyEndpoint(connection);

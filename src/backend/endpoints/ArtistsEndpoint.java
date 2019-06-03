@@ -1,15 +1,15 @@
 package endpoints;
 
-import database.DatabaseConnection;
 import org.json.simple.JSONObject;
 import spark.Route;
+import store.ArtistsStore;
 
 public class ArtistsEndpoint {
 
-  private final DatabaseConnection connection;
+  private final ArtistsStore artistsStore;
 
-  public ArtistsEndpoint(DatabaseConnection connection) {
-    this.connection = connection;
+  public ArtistsEndpoint(ArtistsStore artistsStore) {
+    this.artistsStore = artistsStore;
   }
 
   public Route getArtistsRoute() {
