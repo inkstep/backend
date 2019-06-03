@@ -4,8 +4,7 @@ import java.util.List;
 
 import model.Artist;
 
-public interface ArtistsStore {
-
+public interface InkstepStore {
   void addArtist(Artist artist);
 
   List<Artist> getArtists();

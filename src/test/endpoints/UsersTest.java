@@ -1,10 +1,8 @@
 package endpoints;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import database.DatabaseConnection;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 
@@ -14,18 +12,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+;
+
 public class UsersTest {
-  @Mock
-  DatabaseConnection databaseConnectionMock;
 
-  @Mock
-  PreparedStatement preparedStatementMock;
+  @Mock PreparedStatement preparedStatementMock;
 
-  @Rule
-  public MockitoRule mockitoRule = MockitoJUnit.rule();
+  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-  @Test
-  public void canGeneratePassphrase() {
+  @Test public void canGeneratePassphrase() {
     String passphrase = null;
     try {
       passphrase = UsersEndpoint.generatePassphrase();
@@ -36,8 +31,7 @@ public class UsersTest {
     assertNotNull(passphrase);
   }
 
-  @Test
-  public void canGenerateValidPassphrase() throws IOException {
+  @Test public void canGenerateValidPassphrase() throws IOException {
     String passphrase = null;
 
     passphrase = UsersEndpoint.generatePassphrase();

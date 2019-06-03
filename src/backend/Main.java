@@ -1,26 +1,25 @@
 import static spark.Spark.get;
 import static spark.Spark.put;
 
-import database.DatabaseConnection;
-import database.MySQLDatabaseConnection;
+import store.InkstepDatabaseStore;
 import endpoints.ArtistsEndpoint;
 import endpoints.JourneyEndpoint;
 import endpoints.UsersEndpoint;
-import store.ArtistsDatabaseStore;
+import store.InkstepStore;
 
 public class Main {
 
   public static void main(final String[] args) {
-    DatabaseConnection connection = new MySQLDatabaseConnection();
+    InkstepStore store = new InkstepDatabaseStore();
 
-    ArtistsEndpoint artists = new ArtistsEndpoint(new ArtistsDatabaseStore(connection));
+    ArtistsEndpoint artists = new ArtistsEndpoint(store);
     get("/artists", artists.getArtistsRoute());
 
-    JourneyEndpoint journeys = new JourneyEndpoint(connection);
+    JourneyEndpoint journeys = new JourneyEndpoint(store);
     get("/journey", journeys.getJourneyRoute());
     put("/journey", journeys.putJourneyRoute());
 
-    UsersEndpoint user = new UsersEndpoint(connection);
+    UsersEndpoint user = new UsersEndpoint(store);
     put("/user", user.putUserRoute());
   }
 }

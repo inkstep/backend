@@ -6,14 +6,14 @@ import model.Artist;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import spark.Route;
-import store.ArtistsStore;
+import store.InkstepStore;
 
 public class ArtistsEndpoint {
 
-  private final ArtistsStore artistsStore;
+  private final InkstepStore store;
 
-  public ArtistsEndpoint(ArtistsStore artistsStore) {
-    this.artistsStore = artistsStore;
+  public ArtistsEndpoint(InkstepStore store) {
+    this.store = store;
   }
 
   public Route getArtistsRoute() {
@@ -22,7 +22,7 @@ public class ArtistsEndpoint {
 
       JSONObject journeyObject = new JSONObject();
 
-      List<Artist> artists = artistsStore.getArtists();
+      List<Artist> artists = store.getArtists();
       String jsonArtistList = JSONArray.toJSONString(artists);
 
       journeyObject.put("artists", jsonArtistList);

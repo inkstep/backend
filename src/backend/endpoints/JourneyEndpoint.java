@@ -3,48 +3,44 @@ package endpoints;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 
-import database.DatabaseConnection;
 import email.JavaEmail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import spark.Route;
+import store.InkstepStore;
 
 public class JourneyEndpoint {
 
-  private final DatabaseConnection connection;
+  private final InkstepStore store;
 
-  public JourneyEndpoint(DatabaseConnection connection) {
-    this.connection = connection;
+  public JourneyEndpoint(InkstepStore store) {
+    this.store = store;
   }
 
   public static void newJourney(String userName, String userEmail, String artistName,
     String artistEmail, String studioName, String tattooDesc, String size, String position,
     String availability, String deposit) {
     String emailTemplate =
-      "Client request for " + artistName + " from " + studioName  + "\n" +
-          "Hi, " + artistName + "!\n" +
-          "You have received a new client request from " + userName + "!\n\n" +
-          userName + " would love to get a " + tattooDesc + " on their " +
-          position + " about " + size + " large.\n" +
-          userName + " is available on " + availability + " and " +
-          (deposit.equals("1") ? "is" : "is not") +
-          " willing to leave a deposit\n\n" +
-          "If you would like to get in touch with " + userName +
-          " their email is " + userEmail +
-          ", or simply reply to this email!\n\n" +
-          "Happy tattoo'ing!\n\n" + "Sent from Inkstep on behalf of " + userName;
+      "Client request for " + artistName + " from " + studioName + "\n" + "Hi, " + artistName
+        + "!\n" + "You have received a new client request from " + userName + "!\n\n" + userName
+        + " would love to get a " + tattooDesc + " on their " + position + " about " + size
+        + " large.\n" + userName + " is available on " + availability + " and " + (deposit
+        .equals("1") ? "is" : "is not") + " willing to leave a deposit\n\n"
+        + "If you would like to get in touch with " + userName + " their email is " + userEmail
+        + ", or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
+        + "Sent from Inkstep on behalf of " + userName;
 
-    String toSend = String.format(emailTemplate, artistName, studioName,
-      artistName, userName, userName, tattooDesc, position, size, userName, availability,
-      deposit.equals("Yes") ? "is" : "is not", userName, userEmail, userName);
+    String toSend = String
+      .format(emailTemplate, artistName, studioName, artistName, userName, userName, tattooDesc,
+        position, size, userName, availability, deposit.equals("Yes") ? "is" : "is not", userName,
+        userEmail, userName);
 
     System.out.println(toSend);
 
     JavaEmail javaEmail = new JavaEmail();
 
     try {
-      javaEmail.sendEmail(artistEmail, toSend, "Client Request",
-        userEmail, new ArrayList<>());
+      javaEmail.sendEmail(artistEmail, toSend, "Client Request", userEmail, new ArrayList<>());
     } catch (MessagingException e) {
       e.printStackTrace();
     }
@@ -94,7 +90,7 @@ public class JourneyEndpoint {
 
       JourneyEndpoint
         .newJourney(userName, userEmail, artistName, artistEmail, studioName, tattooDesc, size,
-        position, availability, deposit);
+          position, availability, deposit);
 
       return "{}";
     };

@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import database.DatabaseConnection;
 import org.json.simple.JSONObject;
 import spark.Route;
+import store.InkstepStore;
 
 public class UsersEndpoint {
 
@@ -18,10 +18,10 @@ public class UsersEndpoint {
   private static final String WORDS_PATH = "src/backend/Words.txt";
   private static final int NUMBER_OF_WORDS = 1948;
 
-  private final DatabaseConnection connection;
+  private final InkstepStore store;
 
-  public UsersEndpoint(DatabaseConnection connection) {
-    this.connection = connection;
+  public UsersEndpoint(InkstepStore store) {
+    this.store = store;
   }
 
   public Object putUser(String userName) throws SQLException {

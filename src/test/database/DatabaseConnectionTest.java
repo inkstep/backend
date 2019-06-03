@@ -1,32 +1,17 @@
 package database;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import store.InkstepDatabaseStore;
+import store.InkstepStore;
 
 public class DatabaseConnectionTest {
 
-  private final DatabaseConnection dbConnection = new MySQLDatabaseConnection();
+  private final InkstepStore store = new InkstepDatabaseStore();
 
-  @Before
-  public void openConnection() {
-    dbConnection.open();
+  @Test public void canConnectToDatabase() {
   }
 
-  @After
-  public void closeConnection() {
-    dbConnection.close();
-  }
-
-  @Test
-  public void canConnectToDatabase() {
-  }
-
-  @Test
-  public void canPrepareQuery() {
+  @Test public void canPrepareQuery() {
     //    Users.setDatabaseConnection(databaseConnectionMock);
     //
     //    when(databaseConnectionMock.prepareStatement(

@@ -1,16 +1,21 @@
-package database;
+package store;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MySQLDatabaseConnection implements DatabaseConnection {
+import model.Artist;
+
+public class InkstepDatabaseStore implements InkstepStore {
 
   private static final String DB_URL =
     "jdbc:mysql://inkstepdb.cqjzj0pfmjrn.eu-west-2.rds.amazonaws.com:3306/inkstep";
   private static final String DB_USERNAME = "docg1827107group";
+  private static final String DB_PASSWORD = System.getenv("INKSTEP_AWS_DB_PW");
 
   private Connection connection;
 
@@ -42,20 +47,20 @@ public class MySQLDatabaseConnection implements DatabaseConnection {
     return c;
   }*/
 
-  @Override public void open() {
+  private void open() {
     if (connected) {
       return;
     }
     try {
       Class.forName("com.mysql.jdbc.Driver");
-      connection = DriverManager.getConnection(DB_URL, DB_USERNAME, "root");
+      connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
       connected = true;
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  @Override public void close() {
+  private void close() {
     if (!connected) {
       return;
     }
@@ -67,19 +72,27 @@ public class MySQLDatabaseConnection implements DatabaseConnection {
     }
   }
 
-  private void dos() {
-    //connection.prepareStatement(sql)
+  private void query(String query) {
     if (!connected) {
       return;
     }
     try {
+      //connection.prepareStatement(sql)
       Statement stmt = connection.createStatement();
-      ResultSet rs = stmt.executeQuery("select * from emp");
+      ResultSet rs = stmt.executeQuery(query);
       while (rs.next()) {
-        System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
+        System.out.println(rs.getString(1) + "  " + rs.getString(2));
       }
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @Override public void addArtist(Artist artist) {
+
+  }
+
+  @Override public List<Artist> getArtists() {
+    return new ArrayList<>();
   }
 }
