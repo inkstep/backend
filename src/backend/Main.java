@@ -1,10 +1,11 @@
-import database.PostgreDatabaseConnection;
-import endpoints.Users;
-
+import static endpoints.Journey.getJourneyRoute;
 import static endpoints.Journey.putJourneyRoute;
 import static endpoints.Users.putUserRoute;
+import static spark.Spark.get;
 import static spark.Spark.put;
 
+import database.PostgreDatabaseConnection;
+import endpoints.Users;
 
 public class Main {
 
@@ -14,6 +15,7 @@ public class Main {
     Users.setDatabaseConnection(new PostgreDatabaseConnection());
 
     put("/user", putUserRoute());
+    get("/journey", getJourneyRoute());
     put("/journey", putJourneyRoute());
   }
 }
