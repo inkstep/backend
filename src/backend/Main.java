@@ -1,23 +1,25 @@
-import static endpoints.Artists.getArtistsRoute;
-import static endpoints.Journey.getJourneyRoute;
-import static endpoints.Journey.putJourneyRoute;
-import static endpoints.Users.putUserRoute;
 import static spark.Spark.get;
 import static spark.Spark.put;
 
-import database.PostgreDatabaseConnection;
-import endpoints.Users;
+import database.DatabaseConnection;
+import database.MySQLDatabaseConnection;
+import endpoints.ArtistsEndpoint;
+import endpoints.JourneyEndpoint;
+import endpoints.UsersEndpoint;
 
 public class Main {
 
   public static void main(final String[] args) {
-    System.out.println("Server is not online yay");
+    DatabaseConnection connection = new MySQLDatabaseConnection();
 
-    Users.setDatabaseConnection(new PostgreDatabaseConnection());
+    ArtistsEndpoint artists = new ArtistsEndpoint(connection);
+    get("/artists", artists.getArtistsRoute());
 
-    put("/user", putUserRoute());
-    get("/journey", getJourneyRoute());
-    put("/journey", putJourneyRoute());
-    get("/artists", getArtistsRoute());
+    JourneyEndpoint journeys = new JourneyEndpoint(connection);
+    get("/journey", journeys.getJourneyRoute());
+    put("/journey", journeys.putJourneyRoute());
+
+    UsersEndpoint user = new UsersEndpoint(connection);
+    put("/user", user.putUserRoute());
   }
 }

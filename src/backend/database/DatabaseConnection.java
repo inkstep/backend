@@ -1,10 +1,12 @@
 package database;
 
-import java.sql.PreparedStatement;
-
 public interface DatabaseConnection {
 
-  PreparedStatement prepareStatement(String s);
+  // Open a connection with the database
+  void open();
 
+  // Close the connection with the database
   void close();
+
+  // What else?
 }

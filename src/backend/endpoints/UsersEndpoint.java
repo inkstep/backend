@@ -3,7 +3,6 @@ package endpoints;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -12,18 +11,20 @@ import database.DatabaseConnection;
 import org.json.simple.JSONObject;
 import spark.Route;
 
-public class Users {
-  private static final String WORDS_PATH = "src/backend/Words.txt";
+public class UsersEndpoint {
+
   public static final int PASSPHRASE_WORD_COUNT = 4;
+
+  private static final String WORDS_PATH = "src/backend/Words.txt";
   private static final int NUMBER_OF_WORDS = 1948;
 
-  private static DatabaseConnection databaseConnection;
+  private final DatabaseConnection connection;
 
-  public static void setDatabaseConnection(DatabaseConnection databaseConnection) {
-    Users.databaseConnection = databaseConnection;
+  public UsersEndpoint(DatabaseConnection connection) {
+    this.connection = connection;
   }
 
-  public static Object putUser(String userName) throws SQLException {
+  public Object putUser(String userName) throws SQLException {
     String passphrase = null;
 
     /* Attempt to generate a passphrase */
@@ -36,15 +37,15 @@ public class Users {
     }
 
     /* Create a connection to the database and make an sql insert */
-    PreparedStatement pstmt = databaseConnection
-      .prepareStatement("insert into users (user_name, user_passphrase) values (?, ?)");
+    //    PreparedStatement pstmt = databaseConnection
+    //      .prepareStatement("insert into users (user_name, user_passphrase) values (?, ?)");
 
-    pstmt.setString(1, userName);
-    pstmt.setString(2, passphrase);
+    //    pstmt.setString(1, userName);
+    //    pstmt.setString(2, passphrase);
 
-    pstmt.executeUpdate();
+    //    pstmt.executeUpdate();
 
-    databaseConnection.close();
+    //    databaseConnection.close();
 
     return "User: " + userName + ", Passphrase: " + passphrase;
   }
@@ -68,8 +69,7 @@ public class Users {
     return passphraseBuilder.toString();
   }
 
-
-  public static Route putUserRoute() {
+  public Route putUserRoute() {
     return (request, response) -> {
       System.out.println("Request received PUT user");
       String userName = request.queryParams("name");

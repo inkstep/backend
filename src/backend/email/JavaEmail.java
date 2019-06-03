@@ -25,7 +25,6 @@ public class JavaEmail {
   private MimeMessage emailMessage;
 
   private void setMailServerProperties() {
-
     String emailPort = "587";
 
     emailProperties = System.getProperties();
@@ -35,16 +34,14 @@ public class JavaEmail {
   }
 
   private void createEmailMessage(String to, String message, String subject,
-      String toReply, List<String> filenames)
-      throws MessagingException {
+      String toReply, List<String> filenames) throws MessagingException {
     String[] toEmails = { to };
 
     mailSession = Session.getDefaultInstance(emailProperties, null);
     emailMessage = new MimeMessage(mailSession);
 
-    for (int i = 0; i < toEmails.length; i++) {
-      emailMessage.addRecipient(Message.RecipientType.TO,
-          new InternetAddress(toEmails[i]));
+    for (String toEmail : toEmails) {
+      emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
     }
 
     Address[] replyAddresses = { new InternetAddress(toReply)};
@@ -71,5 +68,4 @@ public class JavaEmail {
     transport.close();
     System.out.println("email sent successfully.");
   }
-
 }

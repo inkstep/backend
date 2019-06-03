@@ -3,12 +3,19 @@ package endpoints;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 
+import database.DatabaseConnection;
 import email.JavaEmail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import spark.Route;
 
-public class Journey {
+public class JourneyEndpoint {
+
+  private final DatabaseConnection connection;
+
+  public JourneyEndpoint(DatabaseConnection connection) {
+    this.connection = connection;
+  }
 
   public static void newJourney(String userName, String userEmail, String artistName,
     String artistEmail, String studioName, String tattooDesc, String size, String position,
@@ -38,10 +45,9 @@ public class Journey {
     } catch (MessagingException e) {
       e.printStackTrace();
     }
-
   }
 
-  public static Route getJourneyRoute() {
+  public Route getJourneyRoute() {
     return (request, response) -> {
       System.out.println("Request received GET journey");
 
@@ -59,7 +65,7 @@ public class Journey {
     };
   }
 
-  public static Route putJourneyRoute() {
+  public Route putJourneyRoute() {
     return (request, response) -> {
       System.out.println("Request received PUT journey");
 
@@ -83,7 +89,8 @@ public class Journey {
       String availability = (String) requestjson.get("availability");
       String deposit = (String) requestjson.get("deposit");
 
-      Journey.newJourney(userName, userEmail, artistName, artistEmail, studioName, tattooDesc, size,
+      JourneyEndpoint
+        .newJourney(userName, userEmail, artistName, artistEmail, studioName, tattooDesc, size,
         position, availability, deposit);
 
       return "{}";
