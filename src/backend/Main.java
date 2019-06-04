@@ -5,6 +5,7 @@ import static spark.Spark.put;
 import endpoints.ArtistsEndpoint;
 import endpoints.JourneyEndpoint;
 import endpoints.UsersEndpoint;
+import handlers.JourneyCreateHandler;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
@@ -20,7 +21,7 @@ public class Main {
 
     path("/journey", () -> {
       get("", journeys.getJourneyRoute());
-      put("", journeys.putJourneyRoute());
+      put("", new JourneyCreateHandler(store));
       put("/image", journeys.putJourneyRouteImage());
     });
 
