@@ -52,7 +52,22 @@ public class Journey implements Validable {
   }
 
   // TODO(DJRHails): Add proper validation for Journey Payload
-  @Override public boolean isValid() {
-    return true;
+  @Override
+  public boolean isValid() {
+    return userID >= 0 && artistID >= 0 && availability.length() == 7;
+  }
+
+  @Override
+  public String toString() {
+    return "Journey {" +
+      " userID='" + userID + "'" +
+      ", artistID='" + artistID + "'" +
+      ", noRefImages='" + noRefImages + "'" +
+      ", tattooDesc='" + tattooDesc + "'" +
+      ", size='" + size + "'" +
+      ", position='" + position + "'" +
+      ", availability='" + availability + "'" +
+      ", deposit='" + deposit + "'" +
+      "}";
   }
 }
