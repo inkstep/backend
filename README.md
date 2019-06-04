@@ -39,7 +39,7 @@ Creates a new journey object. Returns an empty json {}
 | ---- | ------ |
 | `user_id` | The user id |
 | `artist_id` | The id of the artist |
-| `tattoo_description` | What the tattoo will be of |
+| `tattoo_desc` | What the tattoo will be of |
 | `size` | Size of the tattoo |
 | `position` | Position on the body of the tattoo |
 | `availability` | The availability of the user |
