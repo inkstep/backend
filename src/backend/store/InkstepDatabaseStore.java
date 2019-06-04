@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import model.Artist;
 import model.Journey;
+import model.Studio;
+import model.User;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -63,6 +65,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
       connected = true;
     } catch (Exception e) {
+      System.out.println("Failed to open connection");
       e.printStackTrace();
     }
   }
@@ -79,20 +82,44 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  private void query(String query) {
+  private List<List<String>> query(String table, List<String> columns,
+    String whereClause) {
     if (!connected) {
-      return;
+      System.out.println("Not connected!");
+      return new ArrayList<>();
     }
     try {
-      //connection.prepareStatement(sql)
-      Statement stmt = connection.createStatement();
-      ResultSet rs = stmt.executeQuery(query);
-      while (rs.next()) {
-        System.out.println(rs.getString(1) + "  " + rs.getString(2));
+      List<List<String>> returnValues = new ArrayList<>();
+
+      StringBuilder fields = new StringBuilder();
+
+      for (String field : columns) {
+        fields.append(field).append(",");
       }
+
+      fields = new StringBuilder(fields.substring(0, fields.length() - 1));
+
+      PreparedStatement pstmt =
+        connection.prepareStatement("SELECT " + fields +
+          " FROM " + table + " WHERE " + whereClause);
+
+      ResultSet rs = pstmt.executeQuery();
+
+      while (rs.next()) {
+        List<String> dataFields = new ArrayList<>();
+
+        for (String field : columns) {
+          dataFields.add(rs.getString(field));
+        }
+        returnValues.add(dataFields);
+      }
+
+      return returnValues;
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return new ArrayList<>();
   }
 
   private int insert(String table, Map<String, String> data) {
@@ -104,8 +131,8 @@ public class InkstepDatabaseStore implements InkstepStore {
       StringBuilder values = new StringBuilder(" (");
 
       for (String field : data.keySet()) {
-        fields.append(field).append(",");
-        values.append(data.get(field)).append(",");
+        fields.append("`").append(field).append("`").append(",");
+        values.append("'").append(data.get(field)).append("'").append(",");
       }
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
@@ -114,7 +141,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       fields.append(") ");
       values.append(") ");
 
-      String cmd = "INSERT INTO " + table + fields + "VALUE" + values;
+      String cmd = "INSERT INTO " + table + fields + "VALUES" + values;
 
       System.out.println(cmd);
 
@@ -145,15 +172,37 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
+  public int putUser(User user) {
+    open();
+
+    Map<String, String> data = new HashMap<>();
+    data.put("Name", user.name);
+    data.put("Email", user.email);
+    data.put("Passphrase", user.passphrase);
+
+    int returnId = insert("users", data);
+
+    close();
+    return returnId;
+  }
+
+  @Override
   public int createJourney(Journey journey) {
     open();
+
     Map<String, String> data = new HashMap<>();
     data.put("NoRefImgs", journey.noRefImages);
+    data.put("UserID", String.valueOf(journey.user.id));
+    data.put("ArtistID", String.valueOf(journey.artist.id));
+    data.put("Description", journey.tattooDesc);
+    data.put("Size", journey.size);
+    data.put("Position", journey.position);
+    data.put("Availability", journey.availability);
+    data.put("Deposit", journey.deposit);
 
     int returnId = insert("journeys", data);
 
     close();
-
     return returnId;
   }
 
@@ -164,6 +213,69 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override
   public void getJourneysForUsername(String username) {
-    
+
+  }
+
+  @Override
+  public Artist getArtistFromId(int artistId) {
+    open();
+
+    List<String> columns = new ArrayList<>();
+    columns.add("StudioID");
+    columns.add("Name");
+    columns.add("Email");
+    List<List<String>> results =
+      query("artists", columns, "ID = " + artistId);
+
+    System.out.println(results);
+
+    List<String> row1 = results.get(0);
+
+    int studioId = Integer.parseInt(row1.get(0));
+    String name = row1.get(1);
+    String email = row1.get(2);
+
+    close();
+
+    Studio studio = getStudioFromId(studioId);
+
+    return new Artist(name, email, studio, artistId);
+  }
+
+  @Override
+  public User getUserFromId(int userId) {
+    open();
+
+    List<String> columns = new ArrayList<>();
+    columns.add("Name");
+    columns.add("Email");
+    columns.add("Passphrase");
+    List<List<String>> results =
+      query("users", columns, "ID = " + userId);
+
+    List<String> row1 = results.get(0);
+
+    String name = row1.get(0);
+    String email = row1.get(1);
+    String passphrase = row1.get(2);
+
+    close();
+    return new User(name, email, passphrase, userId);
+  }
+
+  @Override
+  public Studio getStudioFromId(int studioId) {
+    open();
+    List<String> columns = new ArrayList<>();
+    columns.add("Name");
+    List<List<String>> results =
+      query("studios", columns, "ID = " + studioId);
+    close();
+
+    List<String> row1 = results.get(0);
+
+    String name = row1.get(0);
+
+    return new Studio(name);
   }
 }
