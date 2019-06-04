@@ -1,8 +1,6 @@
 package handlers;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +21,7 @@ public class ArtistsRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
 
     final String jsonString;
     try {
-        jsonString = new ObjectMapper().writeValueAsString(artists);
+      jsonString = new ObjectMapper().writeValueAsString(artists);
     } catch (IOException e) {
       e.printStackTrace();
       return Answer.empty(BAD_REQUEST);

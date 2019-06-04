@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Validable;
 import store.InkstepStore;
 
-public class JourneyImagesCreateHandler extends AbstractRequestHandler<JourneyImagesCreateHandler.Payload> {
+public class JourneyImagesCreateHandler 
+  extends AbstractRequestHandler<JourneyImagesCreateHandler.Payload> {
 
   public JourneyImagesCreateHandler(InkstepStore store) {
     super(Payload.class, store);

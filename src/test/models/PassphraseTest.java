@@ -1,7 +1,8 @@
-package endpoints;
+package models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -17,7 +18,14 @@ import model.Passphrase;
 public class PassphraseTest {
   @Test
   public void canGeneratePassphrase() {
-    String passphrase = Passphrase.generate().toString();
+    String passphrase;
+    try {
+      passphrase = Passphrase.generate().toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail("IO Exception occured");
+      return;
+    }
 
     assertNotNull(passphrase);
   }

@@ -12,9 +12,6 @@ import model.Validable;
 import model.Passphrase;
 import store.InkstepStore;
 
-/**
- * UserCreateHandler
- */
 public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.Payload> {
 
   private InkstepStore store;
@@ -41,7 +38,8 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
 
     String jsonOut;
     try {
-      Map<String, String> responseMap = Map.of("user_id", String.valueOf(userId), "user_passphrase", passphrase.toString());
+      Map<String, String> responseMap = Map.of("user_id", String.valueOf(userId), 
+                                               "user_passphrase", passphrase.toString());
       jsonOut = new ObjectMapper().writeValueAsString(responseMap);
     } catch (IOException e) {
       e.printStackTrace();
@@ -57,7 +55,10 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
     public String username;
 
     @JsonCreator
-    Payload(@JsonProperty("user_name") String username, @JsonProperty("user_email") String userEmail) {
+    Payload(
+      @JsonProperty("user_name") String username,
+      @JsonProperty("user_email") String userEmail
+    ) {
       this.username = username;
       this.useremail = userEmail;
     }
