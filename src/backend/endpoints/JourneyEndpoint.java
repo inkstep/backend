@@ -1,14 +1,12 @@
 package endpoints;
 
-import javax.mail.MessagingException;
-import java.util.ArrayList;
-
-import email.JavaEmail;
 import model.Artist;
 import model.Journey;
 import model.Studio;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import spark.Request;
+import spark.Response;
 import spark.Route;
 import store.InkstepStore;
 
@@ -61,15 +59,27 @@ public class JourneyEndpoint {
       String position = (String) requestjson.get("position");
       String availability = (String) requestjson.get("availability");
       String deposit = (String) requestjson.get("deposit");
+      String noRefImages = (String) requestjson.get("ref_images");
 
       Studio studio = new Studio(studioName);
       Artist artist = new Artist(artistName, artistEmail, studio);
-      Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
-        position, availability, deposit);
+      Journey journey = new Journey(userName, userEmail, artist, studio,
+          tattooDesc, size, position, availability, deposit);
 
-      journey.sendRequestEmail();
+      int journey_id = store.putJourney(noRefImages);
 
-      return "{}";
+      System.out.println(journey_id);
+
+      JSONObject responsejson = new JSONObject();
+      responsejson.put("journey_id", journey_id);
+
+      System.out.println(responsejson.toJSONString());
+
+      return responsejson.toJSONString();
     };
+  }
+
+  public Route putJourneyRouteImage() {
+    return (request, response) -> "{}";
   }
 }
