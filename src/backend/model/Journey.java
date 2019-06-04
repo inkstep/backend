@@ -1,5 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Journey implements Validable {
 
   public final int userID;
@@ -12,8 +15,16 @@ public class Journey implements Validable {
   public final String availability;
   public final String deposit;
 
-  public Journey(int userID, int artistID, String tattooDesc, String size, String position,
-    String availability, String deposit, int noRefImages) {
+  @JsonCreator
+  public Journey(
+    @JsonProperty("user_id") int userID,
+    @JsonProperty("artist_id") int artistID,
+    @JsonProperty("tattoo_desc") String tattooDesc,
+    @JsonProperty("size") String size,
+    @JsonProperty("position") String position,
+    @JsonProperty("availability") String availability,
+    @JsonProperty("deposit") String deposit,
+    @JsonProperty("ref_images") int noRefImages) {
     this.userID = userID;
     this.artistID = artistID;
     this.tattooDesc = tattooDesc;
