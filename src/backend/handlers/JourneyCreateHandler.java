@@ -1,5 +1,6 @@
 package handlers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,7 +27,10 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
 
     String jsonResponse;
     try {
-      Map<String, String> responseMap = Map.of("journey_id", String.valueOf(id));
+
+      Map<String, String> responseMap = new HashMap<String, String>() {{
+        put("journey_id", String.valueOf(id));
+      }};
       jsonResponse = new ObjectMapper().writeValueAsString(responseMap);
     } catch (JsonProcessingException e) {
       e.printStackTrace();

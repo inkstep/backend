@@ -1,6 +1,7 @@
 package handlers;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -38,8 +39,10 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
 
     String jsonOut;
     try {
-      Map<String, String> responseMap = Map.of("user_id", String.valueOf(userId), 
-                                               "user_passphrase", passphrase.toString());
+      Map<String, String> responseMap = new HashMap<String, String>() {{
+        put("user_id", String.valueOf(userId));
+        put("user_passphrase", passphrase.toString());
+      }};
       jsonOut = new ObjectMapper().writeValueAsString(responseMap);
     } catch (IOException e) {
       e.printStackTrace();
