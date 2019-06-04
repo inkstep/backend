@@ -74,7 +74,7 @@ public class JourneyEndpoint {
       Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
           position, availability, deposit, 0);
 
-      int journeyId = store.putJourney(noRefImages);
+      int journeyId = store.putJourney(journey);
 
       System.out.println(journeyId);
 
