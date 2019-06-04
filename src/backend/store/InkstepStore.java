@@ -5,17 +5,32 @@ import java.util.List;
 import model.Artist;
 import model.Journey;
 import model.Studio;
+import model.User;
 
 public interface InkstepStore {
-  void addArtist(Artist artist);
 
-  List<Artist> getArtists();
+  // Users
+  User getUserFromID(int userID);
 
-  Studio getStudio(int studioID);
+  int putUser(User user);
+
+
+  // Journeys
+  void getJourneysForUser(User user);
 
   int putJourney(Journey journey);
 
   void putJourneyImages();
 
-  void getJourneysForUsername(String username);
+
+  // Studios
+  Studio getStudioFromID(int studioID);
+
+
+  // Artists
+  List<Artist> getArtists();
+
+  Artist getArtistFromID(int artistId);
+
+  void addArtist(Artist artist);
 }

@@ -1,15 +1,8 @@
 package endpoints;
 
-import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import email.JavaEmail;
 import model.Artist;
 import model.Journey;
-import model.Studio;
+import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -63,25 +56,47 @@ public class JourneyEndpoint {
 
       System.out.println(requestjson.toJSONString());
 
-      String userName = (String) requestjson.get("user_name");
-      String userEmail = (String) requestjson.get("user_email");
-      String artistName = (String) requestjson.get("artist_name");
-      String artistEmail = (String) requestjson.get("artist_email");
-      String studioName = (String) requestjson.get("studio_name");
+      String userId = (String) requestjson.get("user_id");
+      String artistId = (String) requestjson.get("artist_id");
       String tattooDesc = (String) requestjson.get("tattoo_desc");
       String size = (String) requestjson.get("size");
       String position = (String) requestjson.get("position");
       String availability = (String) requestjson.get("availability");
       String deposit = (String) requestjson.get("deposit");
+      String noRefImages = (String) requestjson.get("ref_images");
 
-      Studio studio = new Studio(studioName);
-      Artist artist = new Artist(artistName, artistEmail, studio);
-      Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
-        position, availability, deposit);
+      Artist artist = store.getArtistFromID(Integer.parseInt(artistId));
+      User user = store.getUserFromID(Integer.parseInt(userId));
 
-      journey.sendRequestEmail();
+      Journey journey = new Journey(user, artist, tattooDesc, size,
+          position, availability, deposit, Integer.parseInt(noRefImages));
 
-      return "{}";
+      int journeyId = store.putJourney(journey);
+
+      System.out.println(journeyId);
+
+      JSONObject responsejson = new JSONObject();
+      responsejson.put("journey_id", journeyId);
+
+      System.out.println(responsejson.toJSONString());
+
+      return responsejson.toJSONString();
+    };
+  }
+
+  public Route putJourneyRouteImage() {
+    return (request, response) -> {
+      System.out.println(request.body());
+
+      JSONParser parser = new JSONParser();
+      JSONObject requestjson = (JSONObject) parser.parse(request.body());
+
+      String journeyId = (String) requestjson.get("journey_id");
+      String image = (String) requestjson.get("image_data");
+
+      System.out.println(image);
+
+      return "james";
     };
   }
 }
