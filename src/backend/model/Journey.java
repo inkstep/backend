@@ -62,7 +62,7 @@ public class Journey {
 
   private String translateAvailability(String availability) {
     String[] days = {"Mondays", "Tuesdays", "Wednesdays", "Thursdays",
-            "Fridays", "Saturdays", "Sundays"};
+                     "Fridays", "Saturdays", "Sundays"};
     String readableAvailability = "";
     for (int i = 0; i < 7; i++) {
       if (availability.charAt(i) == '1') {
