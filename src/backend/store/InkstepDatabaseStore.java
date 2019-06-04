@@ -9,8 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
+
 import model.Artist;
 import model.Journey;
 import model.Studio;
@@ -82,8 +82,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  private List<List<String>> query(String table, List<String> columns,
-    String whereClause) {
+  private List<List<String>> query(String table, List<String> columns, String whereClause) {
     if (!connected) {
       System.out.println("Not connected!");
       return new ArrayList<>();
@@ -99,9 +98,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
 
-      PreparedStatement pstmt =
-        connection.prepareStatement("SELECT " + fields +
-          " FROM " + table + " WHERE " + whereClause);
+      PreparedStatement pstmt = connection
+        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE " + whereClause);
 
       ResultSet rs = pstmt.executeQuery();
 
@@ -168,11 +166,29 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override public List<Artist> getArtists() {
-    return new ArrayList<>();
+    open();
+
+    List<Artist> artists = new ArrayList<>();
+    try {
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
+      while (rs.next()) {
+        System.out.println(rs.toString());
+        int studioID = rs.getInt(2);
+        Studio studio = getStudioFromID(studioID);
+        String name = rs.getString(3);
+        String email = rs.getString(4);
+        artists.add(new Artist(name, email, studio));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    close();
+    return artists;
   }
 
-  @Override
-  public int putUser(User user) {
+  @Override public int putUser(User user) {
     open();
 
     Map<String, String> data = new HashMap<>();
@@ -186,8 +202,10 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override
-  public int createJourney(Journey journey) {
+  @Override public void getJourneysForUser(User user) {
+  }
+
+  @Override public int createJourney(Journey journey) {
     open();
 
     Map<String, String> data = new HashMap<>();
@@ -206,26 +224,18 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override
-  public void putJourneyImages() {
-
+  @Override public void putJourneyImages() {
   }
 
-  @Override
-  public void getJourneysForUsername(String username) {
 
-  }
-
-  @Override
-  public Artist getArtistFromId(int artistId) {
+  @Override public Artist getArtistFromID(int artistId) {
     open();
 
     List<String> columns = new ArrayList<>();
     columns.add("StudioID");
     columns.add("Name");
     columns.add("Email");
-    List<List<String>> results =
-      query("artists", columns, "ID = " + artistId);
+    List<List<String>> results = query("artists", columns, "ID = " + artistId);
 
     System.out.println(results);
 
@@ -237,21 +247,19 @@ public class InkstepDatabaseStore implements InkstepStore {
 
     close();
 
-    Studio studio = getStudioFromId(studioId);
+    Studio studio = getStudioFromID(studioId);
 
     return new Artist(name, email, studioId, artistId);
   }
 
-  @Override
-  public User getUserFromId(int userId) {
+  @Override public User getUserFromID(int userID) {
     open();
 
     List<String> columns = new ArrayList<>();
     columns.add("Name");
     columns.add("Email");
     columns.add("Passphrase");
-    List<List<String>> results =
-      query("users", columns, "ID = " + userId);
+    List<List<String>> results = query("users", columns, "ID = " + userID);
 
     List<String> row1 = results.get(0);
 
@@ -260,16 +268,14 @@ public class InkstepDatabaseStore implements InkstepStore {
     String passphrase = row1.get(2);
 
     close();
-    return new User(name, email, passphrase, userId);
+    return new User(name, email, passphrase, userID);
   }
 
-  @Override
-  public Studio getStudioFromId(int studioId) {
+  @Override public Studio getStudioFromID(int studioID) {
     open();
     List<String> columns = new ArrayList<>();
     columns.add("Name");
-    List<List<String>> results =
-      query("studios", columns, "ID = " + studioId);
+    List<List<String>> results = query("studios", columns, "ID = " + studioID);
     close();
 
     List<String> row1 = results.get(0);

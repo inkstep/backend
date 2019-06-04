@@ -3,7 +3,6 @@ package endpoints;
 import email.JavaEmail;
 import model.Artist;
 import model.Journey;
-import model.Studio;
 import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -69,7 +68,6 @@ public class JourneyEndpoint {
       String availability = (String) requestjson.get("availability");
       String deposit = (String) requestjson.get("deposit");
       String noRefImages = (String) requestjson.get("ref_images");
-
 
       Journey journey = new Journey(Integer.valueOf(userId), Integer.valueOf(artistId), tattooDesc, size,
           position, availability, deposit, Integer.parseInt(noRefImages));
