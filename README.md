@@ -29,6 +29,10 @@ Run ./run to run the server
 
 Returns details of a current journey. _Note_: v1 just returns prefilled data
 
+#### `PUT /journey`
+
+Creates a new journey object. Returns an empty json {}
+
 #### JSON params
 
 | Param | Description |
@@ -43,22 +47,7 @@ Returns details of a current journey. _Note_: v1 just returns prefilled data
 | `position` | Position on the body of the tattoo |
 | `availability` | The availability of the user |
 | `deposit` | Whether the user is willing to put down a deposit |
-
-#### `PUT /journey`
-
-Creates a new journey object. Returns an empty json {}
-
-#### JSON params
-
-| Param | Description |
-| ---- | ------ |
-| `user_name` | The username |
-| `artist_name` | The name of the artist |
-| `artst_email` | The email of the artist |
-| `tattoo` | What the tattoo will be of |
-| `size` | Size of the tattoo |
-| `pos` | Position on the body of the tattoo |
-| `desc` | Longer description of the desired tattoo |
+| `ref_images` | The number of reference images needed |
 
 
 ## /user

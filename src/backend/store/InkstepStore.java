@@ -3,6 +3,7 @@ package store;
 import java.util.List;
 
 import model.Artist;
+import model.Journey;
 
 public interface InkstepStore {
   void addArtist(Artist artist);
@@ -11,5 +12,9 @@ public interface InkstepStore {
 
   int putJourney(String noRefImages);
 
+  int putJourney(Journey journey);
+
   void putJourneyImages();
+
+  void getJourneysForUsername(String username);
 }
