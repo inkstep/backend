@@ -2,11 +2,15 @@ package endpoints;
 
 import javax.mail.MessagingException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import email.JavaEmail;
 import model.Artist;
 import model.Journey;
 import model.Studio;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import spark.Route;
@@ -24,17 +28,25 @@ public class JourneyEndpoint {
     return (request, response) -> {
       System.out.println("Request received GET journey");
 
-      JSONObject journeyObject = new JSONObject();
+      JSONObject journeyObject1 = new JSONObject() {
+        {
+          put("user_name", "Jimmy");
+          put("artist_name", "Rickay");
+          put("artist_email", "Rickay@theemail.com");
+          put("tattoo", "star");
+          put("size", "10cm");
+          put("pos", "neck");
+          put("desc", "I like tattoo's");
+        }
+      };
+      JSONArray journeys = new JSONArray() {
+        {
+          add(journeyObject1);
+        }
+      };
 
-      journeyObject.put("user_name", "Jimmy");
-      journeyObject.put("artist_name", "Rickay");
-      journeyObject.put("artist_email", "Rickay@theemail.com");
-      journeyObject.put("tattoo", "star");
-      journeyObject.put("size", "10cm");
-      journeyObject.put("pos", "neck");
-      journeyObject.put("desc", "I like tattoo's");
 
-      return journeyObject.toJSONString();
+      return journeys.toJSONString();
     };
   }
 

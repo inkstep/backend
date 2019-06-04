@@ -2,18 +2,21 @@ package store;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import java.util.Map;
 import model.Artist;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
   private static final String DB_URL =
-    "jdbc:mysql://inkstepdb.cqjzj0pfmjrn.eu-west-2.rds.amazonaws.com:3306/inkstep";
+    "jdbc:mysql://inkstepdb.cqjzj0pfmjrn.eu-west-2.rds.amazonaws.com:3306/inkstep?useSSL=false";
   private static final String DB_USERNAME = "docg1827107group";
   private static final String DB_PASSWORD = System.getenv("INKSTEP_AWS_DB_PW");
 
@@ -51,6 +54,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     if (connected) {
       return;
     }
+
+    System.out.println(DB_PASSWORD);
+
     try {
       Class.forName("com.mysql.jdbc.Driver");
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
@@ -88,11 +94,70 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
+  private int insert(String table, Map<String, String> data) {
+    if (!connected) {
+      return -1;
+    }
+    try {
+      StringBuilder fields = new StringBuilder(" (");
+      StringBuilder values = new StringBuilder(" (");
+
+      for (String field : data.keySet()) {
+        fields.append(field).append(",");
+        values.append(data.get(field)).append(",");
+      }
+
+      fields = new StringBuilder(fields.substring(0, fields.length() - 1));
+      values = new StringBuilder(values.substring(0, values.length() - 1));
+
+      fields.append(") ");
+      values.append(") ");
+
+      String cmd = "INSERT INTO " + table + fields + "VALUE" + values;
+
+      System.out.println(cmd);
+
+      PreparedStatement pstmt = connection.prepareStatement(cmd);
+      pstmt.execute();
+
+      pstmt = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+      ResultSet rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        return rs.getInt(1);
+      }
+
+      return -1;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return -1;
+  }
+
   @Override public void addArtist(Artist artist) {
 
   }
 
   @Override public List<Artist> getArtists() {
     return new ArrayList<>();
+  }
+
+  @Override
+  public int putJourney(String noRefImages) {
+    open();
+    Map<String, String> data = new HashMap<>();
+    data.put("NoRefImgs", noRefImages);
+
+    int returnId = insert("journeys", data);
+
+    close();
+
+    return returnId;
+  }
+
+  @Override
+  public void putJourneyImages() {
+
   }
 }

@@ -8,8 +8,7 @@ public class DatabaseConnectionTest {
 
   private final InkstepStore store = new InkstepDatabaseStore();
 
-  @Test public void canConnectToDatabase() {
-  }
+  @Test public void canConnectToDatabase() {}
 
   @Test public void canPrepareQuery() {
     //    Users.setDatabaseConnection(databaseConnectionMock);
