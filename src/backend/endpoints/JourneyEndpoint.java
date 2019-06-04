@@ -66,12 +66,12 @@ public class JourneyEndpoint {
       Journey journey = new Journey(userName, userEmail, artist, studio,
           tattooDesc, size, position, availability, deposit);
 
-      int journey_id = store.putJourney(noRefImages);
+      int journeyId = store.putJourney(noRefImages);
 
-      System.out.println(journey_id);
+      System.out.println(journeyId);
 
       JSONObject responsejson = new JSONObject();
-      responsejson.put("journey_id", journey_id);
+      responsejson.put("journey_id", journeyId);
 
       System.out.println(responsejson.toJSONString());
 
