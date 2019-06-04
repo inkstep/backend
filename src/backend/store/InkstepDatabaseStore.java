@@ -149,11 +149,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     Map<String, String> data = new HashMap<>();
     data.put("NoRefImgs", noRefImages);
 
-    int return_id = insert("journeys", data);
+    int returnId = insert("journeys", data);
 
     close();
 
-    return return_id;
+    return returnId;
   }
 
   @Override

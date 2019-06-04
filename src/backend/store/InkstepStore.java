@@ -10,5 +10,6 @@ public interface InkstepStore {
   List<Artist> getArtists();
 
   int putJourney(String noRefImages);
+
   void putJourneyImages();
 }
