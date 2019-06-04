@@ -58,8 +58,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       return;
     }
 
-    System.out.println(DB_PASSWORD);
-
     try {
       Class.forName("com.mysql.jdbc.Driver");
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
