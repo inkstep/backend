@@ -1,19 +1,19 @@
 package model;
 
 public class Artist {
-  final String name;
-  final String email;
-  final Studio studio;
   public int id;
+  public int studioID;
+  public String name;
+  public String email;
 
-  public Artist(String name, String email, Studio studio) {
+  public Artist(String name, String email, int studioID) {
     this.name = name;
     this.email = email;
-    this.studio = studio;
+    this.studioID = studioID;
   }
 
-  public Artist(String name, String email, Studio studio, int id) {
-    this(name, email, studio);
+  public Artist(String name, String email, int studioID, int id) {
+    this(name, email, studioID);
     this.id = id;
   }
 }

@@ -1,5 +1,6 @@
 package handlers;
 
+import email.JourneyMail;
 import model.Journey;
 import store.InkstepStore;
 
@@ -18,7 +19,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
     protected Answer processImpl(Journey journey, Map<String, String> urlParams, boolean shouldReturnHtml) {
         int id = store.createJourney(journey);
 
-        journey.sendRequestEmail();
+        new JourneyMail(store, journey).sendRequestEmail();
 
         return Answer.ok(String.valueOf(id));
     }

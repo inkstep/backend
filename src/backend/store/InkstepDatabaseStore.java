@@ -192,8 +192,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
     Map<String, String> data = new HashMap<>();
     data.put("NoRefImgs", journey.noRefImages);
-    data.put("UserID", String.valueOf(journey.user.id));
-    data.put("ArtistID", String.valueOf(journey.artist.id));
+    data.put("UserID", String.valueOf(journey.userID));
+    data.put("ArtistID", String.valueOf(journey.artistID));
     data.put("Description", journey.tattooDesc);
     data.put("Size", journey.size);
     data.put("Position", journey.position);
@@ -239,7 +239,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
     Studio studio = getStudioFromId(studioId);
 
-    return new Artist(name, email, studio, artistId);
+    return new Artist(name, email, studioId, artistId);
   }
 
   @Override
