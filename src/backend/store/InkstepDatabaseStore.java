@@ -105,8 +105,8 @@ public class InkstepDatabaseStore implements InkstepStore {
       StringBuilder values = new StringBuilder(" (");
 
       for (String field : data.keySet()) {
-        fields.append(field).append(",");
-        values.append(data.get(field)).append(",");
+        fields.append("`").append(field).append("`").append(",");
+        values.append("'").append(data.get(field)).append("'").append(",");
       }
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
@@ -115,7 +115,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       fields.append(") ");
       values.append(") ");
 
-      String cmd = "INSERT INTO " + table + fields + "VALUE" + values;
+      String cmd = "INSERT INTO " + table + fields + "VALUES" + values;
 
       System.out.println(cmd);
 

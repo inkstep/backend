@@ -9,7 +9,7 @@ Backend server for inkstep
 ![](https://img.shields.io/badge/server-aws-yellow.svg)
 ![](https://img.shields.io/badge/project-inkstep-black.svg)
 
-url for HTTP requests 
+url for HTTP requests
 
 <http://inkstep-backend.eu-west-2.elasticbeanstalk.com/>
 
@@ -20,7 +20,7 @@ Run ./clean to clean the directory
 
 Run ./run to run the server
 
-# API Endpoints 
+# API Endpoints
 
 -
 ## /journey
@@ -53,10 +53,11 @@ Creates a new journey object. Returns an empty json {}
 ## /user
 #### `PUT /user`
 
-Creates a new user in the database. Returns a json {"user_name":"XXX", "passphrase":"XXX"}
+Creates a new user in the database. Returns a json {"user_id":"1", "passphrase":"XXX"}
 
 #### JSON params
 
 | Param | Description |
 | ---- | ------ |
-| `name` | The username |
+| `user_name` | The username |
+| `user_email` | The email |
