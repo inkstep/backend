@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import model.Artist;
 import model.Journey;
+import model.Studio;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -141,7 +142,31 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override public List<Artist> getArtists() {
-    return new ArrayList<>();
+    open();
+
+    List<Artist> artists = new ArrayList<>();
+    try {
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
+      while (rs.next()) {
+        System.out.println(rs.toString());
+        int studioID = rs.getInt(2);
+        Studio studio = getStudio(studioID);
+        String name = rs.getString(3);
+        String email = rs.getString(4);
+        artists.add(new Artist(name, email, studio));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    close();
+    return artists;
+  }
+
+  @Override
+  public Studio getStudio(int studioID) {
+    return new Studio("");
   }
 
   @Override
@@ -164,6 +189,6 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override
   public void getJourneysForUsername(String username) {
-    
+
   }
 }
