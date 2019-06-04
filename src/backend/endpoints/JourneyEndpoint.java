@@ -77,7 +77,7 @@ public class JourneyEndpoint {
       Studio studio = new Studio(studioName);
       Artist artist = new Artist(artistName, artistEmail, studio);
       Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
-        position, availability, deposit);
+        position, availability, deposit, 0);
 
       journey.sendRequestEmail();
 
