@@ -19,16 +19,11 @@ public abstract class AbstractRequestHandler<V extends Validable>
   private Class<V> valueClass;
   protected InkstepStore store;
 
-  private static final int HTTP_BAD_REQUEST = 400;
+  private static final int BAD_REQUEST = 400;
 
   public AbstractRequestHandler(Class<V> valueClass, InkstepStore store) {
     this.valueClass = valueClass;
     this.store = store;
-  }
-
-  private static boolean shouldReturnHtml(Request request) {
-    String accept = request.headers("Accept");
-    return accept != null && accept.contains("text/html");
   }
 
   public static String dataToJson(Object data) {
@@ -43,29 +38,24 @@ public abstract class AbstractRequestHandler<V extends Validable>
     }
   }
 
-  public final Answer process(V value, Map<String, String> queryParams, boolean shouldReturnHtml) {
+  public final Answer process(V value, Map<String, String> queryParams) {
     if (!value.isValid()) {
-      return Answer.empty(HTTP_BAD_REQUEST);
+      return Answer.empty(BAD_REQUEST);
     } else {
-      return processImpl(value, queryParams, shouldReturnHtml);
+      return processImpl(value, queryParams);
     }
   }
 
-  protected abstract Answer processImpl(V value, Map<String, String> queryParams,
-    boolean shouldReturnHtml);
+  protected abstract Answer processImpl(V value, Map<String, String> queryParams);
 
   @Override public Object handle(Request request, Response response) throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     V value = objectMapper.readValue(request.body(), valueClass);
 
     Map<String, String> queryParams = new HashMap<>();
-    Answer answer = process(value, queryParams, shouldReturnHtml(request));
+    Answer answer = process(value, queryParams);
     response.status(answer.getCode());
-    if (shouldReturnHtml(request)) {
-      response.type("text/html");
-    } else {
-      response.type("application/json");
-    }
+    response.type("application/json");
     response.body(answer.getBody());
     return answer.getBody();
   }

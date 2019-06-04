@@ -15,8 +15,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
     this.store = store;
   }
 
-  @Override protected Answer processImpl(Journey journey, Map<String, String> urlParams,
-    boolean shouldReturnHtml) {
+  @Override protected Answer processImpl(Journey journey, Map<String, String> urlParams) {
     int id = store.createJourney(journey);
 
     new JourneyMail(store, journey).sendRequestEmail();
