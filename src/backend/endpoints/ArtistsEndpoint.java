@@ -20,14 +20,19 @@ public class ArtistsEndpoint {
     return (request, response) -> {
       System.out.println("Request received GET artists");
 
-      JSONObject journeyObject = new JSONObject();
-
       List<Artist> artists = store.getArtists();
-      String jsonArtistList = JSONArray.toJSONString(artists);
 
-      journeyObject.put("artists", jsonArtistList);
+      JSONArray jsonArtists = new JSONArray();
+      artists.forEach(a -> jsonArtists.add(new JSONObject() {
+        {
+          put("id", a.id);
+          put("studioID", a.studioID);
+          put("name", a.name);
+          put("email", a.email);
+        }
+      }));
 
-      return journeyObject.toJSONString();
+      return jsonArtists.toJSONString();
     };
   }
 }
