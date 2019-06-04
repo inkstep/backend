@@ -37,7 +37,7 @@ public class Journey {
       "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
         + "!\n" + "You have received a new client request from " + userName + "!\n\n" + userName
         + " would love to get a " + tattooDesc + " on their " + position + " about " + size
-        + " large.\n" + userName + " is available on " + availability + " and " + (deposit
+        + " large.\n" + userName + " is available on " + translateAvailability(availability) + " and " + (deposit
         .equals("1") ? "is" : "is not") + " willing to leave a deposit\n\n"
         + "If you would like to get in touch with " + userName + " their email is " + userEmail
         + ", or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
@@ -57,5 +57,20 @@ public class Journey {
     } catch (MessagingException e) {
       e.printStackTrace();
     }
+  }
+
+  private String translateAvailability(String availability) {
+    String[] days = {"Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"};
+    String readableAvailability = "";
+    for (int i = 0; i < 7; i++) {
+      if (availability.charAt(i) == '1') {
+        if(readableAvailability != "") {
+          readableAvailability += ", ";
+        }
+        readableAvailability += days[i];
+      }
+    }
+
+    return readableAvailability;
   }
 }
