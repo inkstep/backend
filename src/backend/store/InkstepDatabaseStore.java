@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import model.Artist;
 import model.Journey;
+import model.User;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -145,15 +146,37 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
+  public int putUser(User user) {
+    open();
+
+    Map<String, String> data = new HashMap<>();
+    data.put("Name", user.name);
+    data.put("Email", user.email);
+    data.put("Passphrase", user.passphrase);
+
+    int returnId = insert("users", data);
+
+    close();
+    return returnId;
+  }
+
+  @Override
   public int putJourney(Journey journey) {
     open();
+
     Map<String, String> data = new HashMap<>();
     data.put("NoRefImgs", journey.noRefImages);
+    //data.put("UserID", );
+    //data.put("ArtistID", );
+    data.put("Description", journey.tattooDesc);
+    data.put("Size", journey.size);
+    data.put("Position", journey.position);
+    data.put("Availability", journey.availability);
+    data.put("Deposit", journey.deposit);
 
     int returnId = insert("journeys", data);
 
     close();
-
     return returnId;
   }
 

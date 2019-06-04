@@ -7,13 +7,13 @@ import javax.mail.MessagingException;
 public class Journey {
 
   public final String noRefImages;
-  private final User user;
-  private final Artist artist;
-  private final String tattooDesc;
-  private final String size;
-  private final String position;
-  private final String availability;
-  private final String deposit;
+  public final User user;
+  public final Artist artist;
+  public final String tattooDesc;
+  public final String size;
+  public final String position;
+  public final String availability;
+  public final String deposit;
 
   public Journey(User user, Artist artist,
     String tattooDesc, String size, String position, String availability,

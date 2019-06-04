@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import model.User;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import spark.Route;
 import store.InkstepStore;
 
@@ -22,32 +24,6 @@ public class UsersEndpoint {
 
   public UsersEndpoint(InkstepStore store) {
     this.store = store;
-  }
-
-  public Object putUser(String userName) throws SQLException {
-    String passphrase = null;
-
-    /* Attempt to generate a passphrase */
-    try {
-      passphrase = generatePassphrase();
-    } catch (IOException e) {
-      e.printStackTrace();
-
-      return "Error generating user a passphrase";
-    }
-
-    /* Create a connection to the database and make an sql insert */
-    //    PreparedStatement pstmt = databaseConnection
-    //      .prepareStatement("insert into users (user_name, user_passphrase) values (?, ?)");
-
-    //    pstmt.setString(1, userName);
-    //    pstmt.setString(2, passphrase);
-
-    //    pstmt.executeUpdate();
-
-    //    databaseConnection.close();
-
-    return "User: " + userName + ", Passphrase: " + passphrase;
   }
 
   /* Generate a passphrase out of 4 random words from a list */
@@ -71,20 +47,21 @@ public class UsersEndpoint {
 
   public Route putUserRoute() {
     return (request, response) -> {
-      System.out.println("Request received PUT user");
-      String userName = request.queryParams("name");
-      if (userName == null) {
-        return "name query not supplied";
-      }
 
-      String passphrase = "JimmyHarryDannyMatty";
+      JSONParser parser = new JSONParser();
+      JSONObject requestjson = (JSONObject) parser.parse(request.body());
 
-      JSONObject userResponse = new JSONObject();
+      String userName = (String) requestjson.get("user_name");
+      String userEmail = (String) requestjson.get("user_email");
+      String passphrase = generatePassphrase();
 
-      userResponse.put("name", userName);
-      userResponse.put("passphrase", passphrase);
+      User user = new User(userName, userEmail, passphrase);
 
-      return userResponse.toJSONString();
+
+
+      JSONObject responsejson = new JSONObject();
+      responsejson.put("user_id", 1);
+      return responsejson.toJSONString();
     };
   }
 }
