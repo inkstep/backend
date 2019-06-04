@@ -2,10 +2,10 @@ import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.put;
 
-import store.InkstepDatabaseStore;
 import endpoints.ArtistsEndpoint;
 import endpoints.JourneyEndpoint;
 import endpoints.UsersEndpoint;
+import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
 public class Main {

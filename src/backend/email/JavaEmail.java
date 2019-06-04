@@ -1,22 +1,14 @@
 package email;
 
-import java.util.List;
-import java.util.Properties;
-
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Address;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import java.util.List;
+import java.util.Properties;
 
 public class JavaEmail {
 
@@ -33,9 +25,9 @@ public class JavaEmail {
     emailProperties.put("mail.smtp.starttls.enable", "true");
   }
 
-  private void createEmailMessage(String to, String message, String subject,
-      String toReply, List<String> filenames) throws MessagingException {
-    String[] toEmails = { to };
+  private void createEmailMessage(String to, String message, String subject, String toReply,
+    List<String> filenames) throws MessagingException {
+    String[] toEmails = {to};
 
     mailSession = Session.getDefaultInstance(emailProperties, null);
     emailMessage = new MimeMessage(mailSession);
@@ -44,15 +36,15 @@ public class JavaEmail {
       emailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
     }
 
-    Address[] replyAddresses = { new InternetAddress(toReply)};
+    Address[] replyAddresses = {new InternetAddress(toReply)};
     emailMessage.setReplyTo(replyAddresses);
 
     emailMessage.setSubject(subject);
     emailMessage.setText(message);
   }
 
-  public void sendEmail(String to, String message, String subject,
-      String toReply, List<String> filenames) throws MessagingException {
+  public void sendEmail(String to, String message, String subject, String toReply,
+    List<String> filenames) throws MessagingException {
     setMailServerProperties();
     createEmailMessage(to, message, subject, toReply, filenames);
 

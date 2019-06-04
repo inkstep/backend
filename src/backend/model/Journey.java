@@ -1,9 +1,5 @@
 package model;
 
-import email.JavaEmail;
-import java.util.ArrayList;
-import javax.mail.MessagingException;
-
 public class Journey implements Validable {
 
   public final int userID;
@@ -16,8 +12,8 @@ public class Journey implements Validable {
   public final String availability;
   public final String deposit;
 
-  public Journey(int userID, int artistID, String tattooDesc,
-    String size, String position, String availability, String deposit, int noRefImages) {
+  public Journey(int userID, int artistID, String tattooDesc, String size, String position,
+    String availability, String deposit, int noRefImages) {
     this.userID = userID;
     this.artistID = artistID;
     this.tattooDesc = tattooDesc;
@@ -29,8 +25,8 @@ public class Journey implements Validable {
   }
 
   public String humanAvaliability() {
-    String[] days = {"Mondays", "Tuesdays", "Wednesdays", "Thursdays",
-      "Fridays", "Saturdays", "Sundays"};
+    String[] days =
+      {"Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"};
     StringBuilder readableAvailability = new StringBuilder();
     for (int i = 0; i < 7; i++) {
       if (availability.charAt(i) == '1') {
@@ -45,8 +41,7 @@ public class Journey implements Validable {
   }
 
   // TODO(DJRHails): Add proper validation for Journey Payload
-  @Override
-  public boolean isValid() {
+  @Override public boolean isValid() {
     return true;
   }
 }

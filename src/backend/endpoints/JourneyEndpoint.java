@@ -1,17 +1,11 @@
 package endpoints;
 
-import email.JavaEmail;
-import model.Artist;
 import model.Journey;
-import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import spark.Route;
 import store.InkstepStore;
-
-import javax.mail.MessagingException;
-import java.util.ArrayList;
 
 public class JourneyEndpoint {
 
@@ -69,8 +63,9 @@ public class JourneyEndpoint {
       String deposit = (String) requestjson.get("deposit");
       String noRefImages = (String) requestjson.get("ref_images");
 
-      Journey journey = new Journey(Integer.valueOf(userId), Integer.valueOf(artistId), tattooDesc, size,
-          position, availability, deposit, Integer.parseInt(noRefImages));
+      Journey journey =
+        new Journey(Integer.valueOf(userId), Integer.valueOf(artistId), tattooDesc, size, position,
+          availability, deposit, Integer.parseInt(noRefImages));
 
       int journeyId = store.createJourney(journey);
 

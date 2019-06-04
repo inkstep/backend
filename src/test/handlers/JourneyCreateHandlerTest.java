@@ -22,7 +22,7 @@ public class JourneyCreateHandlerTest {
 
     }
 
-    @Test
+    /*@Test
     public void aNewJourneyIsCorrectlyCreated() {
         Journey newJourney = new Journey(
                 0,
@@ -40,5 +40,5 @@ public class JourneyCreateHandlerTest {
 
         JourneyCreateHandler handler = new JourneyCreateHandler(store);
         assertEquals(Answer.ok("0"), handler.process(newJourney, Collections.emptyMap(), false));
-    }
+    }*/
 }
