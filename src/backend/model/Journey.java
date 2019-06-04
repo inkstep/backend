@@ -18,9 +18,10 @@ public class Journey {
   private final String position;
   private final String availability;
   private final String deposit;
+  public final String noRefImages;
 
   public Journey(String userName, String userEmail, Artist artist, Studio studio, String tattooDesc,
-    String size, String position, String availability, String deposit) {
+    String size, String position, String availability, String deposit, int noRefImages) {
     this.userName = userName;
     this.userEmail = userEmail;
     this.artist = artist;
@@ -30,6 +31,7 @@ public class Journey {
     this.position = position;
     this.availability = availability;
     this.deposit = deposit;
+    this.noRefImages = String.valueOf(noRefImages);
   }
 
   public void sendRequestEmail() {
