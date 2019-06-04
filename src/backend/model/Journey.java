@@ -5,27 +5,22 @@ import java.util.ArrayList;
 
 import email.JavaEmail;
 
-public class Journey {
+public class Journey implements Validable {
 
-  private final String userName;
-  private final String userEmail;
+  public final int userID;
+  public final int artistID;
 
-  private final Artist artist;
-  private final Studio studio;
-
-  private final String tattooDesc;
-  private final String size;
-  private final String position;
-  private final String availability;
-  private final String deposit;
+  public final String tattooDesc;
+  public final String size;
+  public final String position;
+  public final String availability;
+  public final String deposit;
   public final String noRefImages;
 
-  public Journey(String userName, String userEmail, Artist artist, Studio studio, String tattooDesc,
+  public Journey(int userID, int artistID, String tattooDesc,
     String size, String position, String availability, String deposit, int noRefImages) {
-    this.userName = userName;
-    this.userEmail = userEmail;
-    this.artist = artist;
-    this.studio = studio;
+    this.userID = userID;
+    this.artistID = artistID;
     this.tattooDesc = tattooDesc;
     this.size = size;
     this.position = position;
@@ -34,47 +29,53 @@ public class Journey {
     this.noRefImages = String.valueOf(noRefImages);
   }
 
-  public void sendRequestEmail() {
-    String emailTemplate =
-      "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
-        + "!\n" + "You have received a new client request from " + userName + "!\n\n" + userName
-        + " would love to get a " + tattooDesc + " on their " + position + " about " + size
-        + " large.\n" + userName + " is available on " + translateAvailability(availability)
-              + " and " + (deposit
-        .equals("1") ? "is" : "is not") + " willing to leave a deposit\n\n"
-        + "If you would like to get in touch with " + userName + " their email is " + userEmail
-        + ", or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
-        + "Sent from Inkstep on behalf of " + userName;
-
-    String toSend = String
-      .format(emailTemplate, artist.name, studio.name, artist.name, userName, userName, tattooDesc,
-        position, size, userName, availability, deposit.equals("Yes") ? "is" : "is not", userName,
-        userEmail, userName);
-
-    System.out.println(toSend);
-
-    JavaEmail javaEmail = new JavaEmail();
-
-    try {
-      javaEmail.sendEmail(artist.email, toSend, "Client Request", userEmail, new ArrayList<>());
-    } catch (MessagingException e) {
-      e.printStackTrace();
-    }
-  }
+//  public void sendRequestEmail() {
+//    String emailTemplate =
+//      "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
+//        + "!\n" + "You have received a new client request from " + userName + "!\n\n" + userName
+//        + " would love to get a " + tattooDesc + " on their " + position + " about " + size
+//        + " large.\n" + userName + " is available on " + translateAvailability(availability)
+//              + " and " + (deposit
+//        .equals("1") ? "is" : "is not") + " willing to leave a deposit\n\n"
+//        + "If you would like to get in touch with " + userName + " their email is " + userEmail
+//        + ", or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
+//        + "Sent from Inkstep on behalf of " + userName;
+//
+//    String toSend = String
+//      .format(emailTemplate, artist.name, studio.name, artist.name, userName, userName, tattooDesc,
+//        position, size, userName, availability, deposit.equals("Yes") ? "is" : "is not", userName,
+//        userEmail, userName);
+//
+//    System.out.println(toSend);
+//
+//    JavaEmail javaEmail = new JavaEmail();
+//
+//    try {
+//      javaEmail.sendEmail(artist.email, toSend, "Client Request", userEmail, new ArrayList<>());
+//    } catch (MessagingException e) {
+//      e.printStackTrace();
+//    }
+//  }
 
   private String translateAvailability(String availability) {
     String[] days = {"Mondays", "Tuesdays", "Wednesdays", "Thursdays",
                      "Fridays", "Saturdays", "Sundays"};
-    String readableAvailability = "";
+    StringBuilder readableAvailability = new StringBuilder();
     for (int i = 0; i < 7; i++) {
       if (availability.charAt(i) == '1') {
-        if (readableAvailability != "") {
-          readableAvailability += ", ";
+        if (!readableAvailability.toString().equals("")) {
+          readableAvailability.append(", ");
         }
-        readableAvailability += days[i];
+        readableAvailability.append(days[i]);
       }
     }
 
-    return readableAvailability;
+    return readableAvailability.toString();
+  }
+
+  // TODO(DJRHails): Add proper validation for Journey Payload
+  @Override
+  public boolean isValid() {
+    return true;
   }
 }
