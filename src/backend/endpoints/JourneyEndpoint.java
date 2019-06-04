@@ -3,6 +3,7 @@ package endpoints;
 import model.Artist;
 import model.Journey;
 import model.Studio;
+import model.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -70,9 +71,10 @@ public class JourneyEndpoint {
 
       Studio studio = new Studio(studioName);
       Artist artist = new Artist(artistName, artistEmail, studio);
+      User user = new User(userName, userEmail);
 
-      Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
-          position, availability, deposit, 0);
+      Journey journey = new Journey(user, artist, tattooDesc, size,
+          position, availability, deposit, Integer.parseInt(noRefImages));
 
       int journeyId = store.putJourney(journey);
 
