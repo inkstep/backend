@@ -10,9 +10,9 @@ public interface InkstepStore {
 
   List<Artist> getArtists();
 
-  int putJourney(Journey journey);
-
   void putJourneyImages();
 
   void getJourneysForUsername(String username);
+
+  int createJourney(Journey journey);
 }

@@ -145,7 +145,7 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public int putJourney(Journey journey) {
+  public int createJourney(Journey journey) {
     open();
     Map<String, String> data = new HashMap<>();
     data.put("NoRefImgs", journey.noRefImages);
