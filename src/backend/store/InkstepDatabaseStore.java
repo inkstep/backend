@@ -175,10 +175,9 @@ public class InkstepDatabaseStore implements InkstepStore {
       while (rs.next()) {
         System.out.println(rs.toString());
         int studioID = rs.getInt(2);
-        Studio studio = getStudioFromID(studioID);
         String name = rs.getString(3);
         String email = rs.getString(4);
-        artists.add(new Artist(name, email, studio));
+        artists.add(new Artist(name, email, studioID));
       }
     } catch (Exception e) {
       e.printStackTrace();

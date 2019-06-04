@@ -19,9 +19,9 @@ public class JourneyMail {
     }
 
     public void sendRequestEmail() {
-        Artist artist = store.getArtistFromId(journey.artistID);
-        User user = store.getUserFromId(journey.userID);
-        Studio studio = store.getStudioFromId(artist.studioID);
+        Artist artist = store.getArtistFromID(journey.artistID);
+        User user = store.getUserFromID(journey.userID);
+        Studio studio = store.getStudioFromID(artist.studioID);
         String emailTemplate =
                 "Client request for " + artist.name + " from " + studio.name
                         + "\n" + "Hi, " + artist.name
