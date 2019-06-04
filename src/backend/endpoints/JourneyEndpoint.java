@@ -28,21 +28,25 @@ public class JourneyEndpoint {
     return (request, response) -> {
       System.out.println("Request received GET journey");
 
-      JSONObject journeyObject1 = new JSONObject() {{
-        put("user_name", "Jimmy");
-        put("artist_name", "Rickay");
-        put("artist_email", "Rickay@theemail.com");
-        put("tattoo", "star");
-        put("size", "10cm");
-        put("pos", "neck");
-        put("desc", "I like tattoo's");
-      }};
-      JSONArray journeysJSON = new JSONArray() {{
-        add(journeyObject1);
-      }};
+      JSONObject journeyObject1 = new JSONObject() {
+        {
+          put("user_name", "Jimmy");
+          put("artist_name", "Rickay");
+          put("artist_email", "Rickay@theemail.com");
+          put("tattoo", "star");
+          put("size", "10cm");
+          put("pos", "neck");
+          put("desc", "I like tattoo's");
+        }
+      };
+      JSONArray journeys = new JSONArray() {
+        {
+          add(journeyObject1);
+        }
+      };
 
 
-      return journeysJSON.toJSONString();
+      return journeys.toJSONString();
     };
   }
 
