@@ -12,6 +12,7 @@ import java.util.List;
 
 import java.util.Map;
 import model.Artist;
+import model.Journey;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -144,10 +145,10 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public int putJourney(String noRefImages) {
+  public int putJourney(Journey journey) {
     open();
     Map<String, String> data = new HashMap<>();
-    data.put("NoRefImgs", noRefImages);
+    data.put("NoRefImgs", journey.noRefImages);
 
     int returnId = insert("journeys", data);
 
@@ -159,5 +160,10 @@ public class InkstepDatabaseStore implements InkstepStore {
   @Override
   public void putJourneyImages() {
 
+  }
+
+  @Override
+  public void getJourneysForUsername(String username) {
+    
   }
 }
