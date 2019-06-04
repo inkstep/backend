@@ -60,7 +60,7 @@ public class UsersEndpoint {
       int userId = store.putUser(user);
 
       JSONObject responsejson = new JSONObject();
-      responsejson.put("user_id", userId);
+      responsejson.put("user_id", Integer.toString(userId));
       responsejson.put("user_passphrase", passphrase);
       return responsejson.toJSONString();
     };
