@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Artist;
 import model.Journey;
+import model.Studio;
 import model.User;
 
 public interface InkstepStore {
@@ -18,4 +19,10 @@ public interface InkstepStore {
   void putJourneyImages();
 
   void getJourneysForUsername(String username);
+
+  Artist getArtistFromId(int artistId);
+
+  User getUserFromId(int userId);
+
+  Studio getStudioFromId(int studioId);
 }

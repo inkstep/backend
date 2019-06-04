@@ -57,11 +57,8 @@ public class JourneyEndpoint {
 
       System.out.println(requestjson.toJSONString());
 
-      String userName = (String) requestjson.get("user_name");
-      String userEmail = (String) requestjson.get("user_email");
-      String artistName = (String) requestjson.get("artist_name");
-      String artistEmail = (String) requestjson.get("artist_email");
-      String studioName = (String) requestjson.get("studio_name");
+      String userId = (String) requestjson.get("user_id");
+      String artistId = (String) requestjson.get("artist_id");
       String tattooDesc = (String) requestjson.get("tattoo_desc");
       String size = (String) requestjson.get("size");
       String position = (String) requestjson.get("position");
@@ -69,9 +66,8 @@ public class JourneyEndpoint {
       String deposit = (String) requestjson.get("deposit");
       String noRefImages = (String) requestjson.get("ref_images");
 
-      Studio studio = new Studio(studioName);
-      Artist artist = new Artist(artistName, artistEmail, studio);
-      User user = new User(userName, userEmail);
+      Artist artist = store.getArtistFromId(Integer.parseInt(artistId));
+      User user = store.getUserFromId(Integer.parseInt(userId));
 
       Journey journey = new Journey(user, artist, tattooDesc, size,
           position, availability, deposit, Integer.parseInt(noRefImages));
