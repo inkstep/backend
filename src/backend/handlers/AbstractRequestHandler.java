@@ -19,7 +19,7 @@ public abstract class AbstractRequestHandler<V extends Validable>
   private Class<V> valueClass;
   protected InkstepStore store;
 
-  private static final int BAD_REQUEST = 400;
+  public static final int BAD_REQUEST = 400;
 
   public AbstractRequestHandler(Class<V> valueClass, InkstepStore store) {
     this.valueClass = valueClass;

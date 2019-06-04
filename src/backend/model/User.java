@@ -1,12 +1,16 @@
 package model;
 
-public class User {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class User implements Validable {
   public String name;
   public String email;
   public String passphrase;
   public int id;
 
-  public User(String name, String email) {
+  @JsonCreator
+  public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
     this.name = name;
     this.email = email;
   }
@@ -19,5 +23,11 @@ public class User {
   public User(String userName, String userEmail, String passphrase, int id) {
     this(userName, userEmail, passphrase);
     this.id = id;
+  }
+
+  // TODO(DJRHails): Implement sensible validity check
+  @Override
+  public boolean isValid() {
+    return true;
   }
 }
