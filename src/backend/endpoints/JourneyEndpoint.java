@@ -80,6 +80,18 @@ public class JourneyEndpoint {
   }
 
   public Route putJourneyRouteImage() {
-    return (request, response) -> "{}";
+    return (request, response) -> {
+      System.out.println(request.body());
+
+      JSONParser parser = new JSONParser();
+      JSONObject requestjson = (JSONObject) parser.parse(request.body());
+
+      String journeyId = (String) requestjson.get("journey_id");
+      String image = (String) requestjson.get("image_data");
+
+      System.out.println(image);
+
+      return "james";
+    };
   }
 }
