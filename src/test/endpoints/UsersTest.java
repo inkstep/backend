@@ -12,8 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-;
-
 public class UsersTest {
 
   @Mock PreparedStatement preparedStatementMock;
