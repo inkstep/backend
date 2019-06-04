@@ -1,4 +1,5 @@
 import static spark.Spark.get;
+import static spark.Spark.path;
 import static spark.Spark.put;
 
 import store.InkstepDatabaseStore;
@@ -16,8 +17,12 @@ public class Main {
     get("/artists", artists.getArtistsRoute());
 
     JourneyEndpoint journeys = new JourneyEndpoint(store);
-    get("/journey", journeys.getJourneyRoute());
-    put("/journey", journeys.putJourneyRoute());
+
+    path("/journey", () -> {
+      get("", journeys.getJourneyRoute());
+      put("", journeys.putJourneyRoute());
+      put("/image", journeys.putJourneyRouteImage());
+    });
 
     UsersEndpoint user = new UsersEndpoint(store);
     put("/user", user.putUserRoute());

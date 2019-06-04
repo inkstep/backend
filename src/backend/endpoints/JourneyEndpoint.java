@@ -1,12 +1,5 @@
 package endpoints;
 
-import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import email.JavaEmail;
 import model.Artist;
 import model.Journey;
 import model.Studio;
@@ -73,15 +66,40 @@ public class JourneyEndpoint {
       String position = (String) requestjson.get("position");
       String availability = (String) requestjson.get("availability");
       String deposit = (String) requestjson.get("deposit");
+      String noRefImages = (String) requestjson.get("ref_images");
 
       Studio studio = new Studio(studioName);
       Artist artist = new Artist(artistName, artistEmail, studio);
+
       Journey journey = new Journey(userName, userEmail, artist, studio, tattooDesc, size,
-        position, availability, deposit, 0);
+          position, availability, deposit, 0);
 
-      journey.sendRequestEmail();
+      int journeyId = store.putJourney(journey);
 
-      return "{}";
+      System.out.println(journeyId);
+
+      JSONObject responsejson = new JSONObject();
+      responsejson.put("journey_id", journeyId);
+
+      System.out.println(responsejson.toJSONString());
+
+      return responsejson.toJSONString();
+    };
+  }
+
+  public Route putJourneyRouteImage() {
+    return (request, response) -> {
+      System.out.println(request.body());
+
+      JSONParser parser = new JSONParser();
+      JSONObject requestjson = (JSONObject) parser.parse(request.body());
+
+      String journeyId = (String) requestjson.get("journey_id");
+      String image = (String) requestjson.get("image_data");
+
+      System.out.println(image);
+
+      return "james";
     };
   }
 }
