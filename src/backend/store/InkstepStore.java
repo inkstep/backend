@@ -8,21 +8,29 @@ import model.Studio;
 import model.User;
 
 public interface InkstepStore {
-  void addArtist(Artist artist);
 
-  List<Artist> getArtists();
+  // Users
+  User getUserFromID(int userID);
 
   int putUser(User user);
 
-  int putJourney(Journey journey);
+
+  // Journeys
+  void getJourneysForUser(User user);
+
+  int createJourney(Journey journey);
 
   void putJourneyImages();
 
-  void getJourneysForUsername(String username);
 
-  Artist getArtistFromId(int artistId);
+  // Studios
+  Studio getStudioFromID(int studioID);
 
-  User getUserFromId(int userId);
 
-  Studio getStudioFromId(int studioId);
+  // Artists
+  List<Artist> getArtists();
+
+  Artist getArtistFromID(int artistId);
+
+  void addArtist(Artist artist);
 }
