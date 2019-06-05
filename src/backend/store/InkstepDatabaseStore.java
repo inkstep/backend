@@ -1,10 +1,31 @@
 package store;
 
-import static store.InkstepDatabaseSchema.*;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import static store.InkstepDatabaseSchema.ARTIST_EMAIL;
+import static store.InkstepDatabaseSchema.ARTIST_ID;
+import static store.InkstepDatabaseSchema.ARTIST_NAME;
+import static store.InkstepDatabaseSchema.ARTIST_STUDIO_ID;
+import static store.InkstepDatabaseSchema.JNY_ARTIST_ID;
+import static store.InkstepDatabaseSchema.JNY_AVAIL;
+import static store.InkstepDatabaseSchema.JNY_DEPOSIT;
+import static store.InkstepDatabaseSchema.JNY_DESCRIPTION;
+import static store.InkstepDatabaseSchema.JNY_ID;
+import static store.InkstepDatabaseSchema.JNY_IMAGE_DATA;
+import static store.InkstepDatabaseSchema.JNY_IMAGE_ID;
+import static store.InkstepDatabaseSchema.JNY_IMAGE_JNY_ID;
+import static store.InkstepDatabaseSchema.JNY_NO_REF_IMAGES;
+import static store.InkstepDatabaseSchema.JNY_POSITION;
+import static store.InkstepDatabaseSchema.JNY_SIZE;
+import static store.InkstepDatabaseSchema.JNY_USER_ID;
+import static store.InkstepDatabaseSchema.JOURNEYS;
+import static store.InkstepDatabaseSchema.JOURNEY_IMAGES;
+import static store.InkstepDatabaseSchema.STUDIO_ID;
+import static store.InkstepDatabaseSchema.STUDIO_NAME;
+import static store.InkstepDatabaseSchema.USERS;
+import static store.InkstepDatabaseSchema.USER_EMAIL;
+import static store.InkstepDatabaseSchema.USER_ID;
+import static store.InkstepDatabaseSchema.USER_NAME;
+import static store.InkstepDatabaseSchema.USER_PASSPHRASE;
+import static store.InkstepDatabaseSchema.USER_PHONE;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
@@ -12,6 +33,14 @@ import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import model.Artist;
 import model.Journey;
 import model.Studio;
@@ -79,10 +108,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  @Override public void addArtist(Artist artist) {
+  @Override
+  public void addArtist(Artist artist) {
   }
 
-  @Override public List<Artist> getArtists() {
+  @Override
+  public List<Artist> getArtists() {
     List<Artist> artists = new ArrayList<>();
     try {
       open();
@@ -104,7 +135,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return artists;
   }
 
-  @Override public int putUser(User user) {
+  @Override
+  public int putUser(User user) {
     int returnId = -1;
     try {
       open();
@@ -137,17 +169,19 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public void getJourneysForUser(User user) {
+  @Override
+  public void getJourneysForUser(User user) {
   }
 
-  @Override public int createJourney(Journey journey) {
+  @Override
+  public int createJourney(Journey journey) {
     int returnId = -1;
     try {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto =
-        new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -180,7 +214,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public int putJourneyImage(int journeyId, String image) {
+  @Override
+  public int putJourneyImage(int journeyId, String image) {
     int returnId = -1;
     try {
       open();
@@ -188,6 +223,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto = new DbColumn[] {JNY_IMAGE_JNY_ID, JNY_IMAGE_DATA};
       String query = getPreparedInsertQuery(JOURNEY_IMAGES, insertInto);
+
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
       // Insert values into statement
@@ -212,12 +248,80 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public Artist getArtistFromID(int artistId) {
+  @Override
+  public boolean hasGotAllImages(int journeyId) {
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{JNY_NO_REF_IMAGES};
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+      List<List<String>> results = query(columns, condition);
+
+      if (results.isEmpty()) {
+        return false;
+      }
+
+      List<String> row = results.get(0);
+      final int noRefImgs = Integer.parseInt(row.get(0));
+
+      columns = new DbColumn[]{JNY_IMAGE_ID};
+      condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
+      results = query(columns, condition);
+
+      final int noUploadedImgs = results.size();
+
+      close();
+
+      return noUploadedImgs == noRefImgs;
+    } catch (ClassNotFoundException | SQLException e) {
+      return false;
+    }
+  }
+
+  @Override
+  public Journey getJourneyFromId(int id) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
+      Condition condition = BinaryCondition.equalTo(JNY_ID, id);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 1) {
+        return null;
+      }
+
+      List<String> row = results.get(0);
+
+      return new Journey(
+        Integer.parseInt(row.get(0)),
+        Integer.parseInt(row.get(1)),
+        row.get(2),
+        row.get(3),
+        row.get(4),
+        row.get(5),
+        row.get(6),
+        Integer.parseInt(row.get(7))
+      );
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override
+  public Artist getArtistFromID(int artistId) {
     Artist artist = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
+      DbColumn[] columns = new DbColumn[]{ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
       List<List<String>> results = query(columns, condition);
 
@@ -238,12 +342,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     return artist;
   }
 
-  @Override public User getUserFromID(int userID) {
+  @Override
+  public User getUserFromID(int userID) {
     User user = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_PASSPHRASE};
+      DbColumn[] columns = new DbColumn[]{USER_NAME, USER_EMAIL, USER_PASSPHRASE};
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
@@ -264,12 +369,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     return user;
   }
 
-  @Override public Studio getStudioFromID(int studioID) {
+  @Override
+  public Studio getStudioFromID(int studioID) {
     Studio studio = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {STUDIO_NAME};
+      DbColumn[] columns = new DbColumn[]{STUDIO_NAME};
       Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
       List<List<String>> results = query(columns, condition);
 

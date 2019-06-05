@@ -2,6 +2,8 @@ package handlers;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import email.JavaEmail;
+import email.JourneyMail;
 import java.util.HashMap;
 import java.util.Map;
 import model.Validatable;
@@ -20,6 +22,12 @@ public class JourneyImagesCreateHandler
 
     int imageId = store.putJourneyImage(request.getJourneyId(),
       request.getImage());
+
+    boolean sendEmail = store.hasGotAllImages(request.getJourneyId());
+
+    if (sendEmail) {
+      new JourneyMail(store, store.getJourneyFromId(request.getJourneyId())).sendRequestEmail();
+    }
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("image_id", String.valueOf(imageId));

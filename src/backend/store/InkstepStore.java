@@ -22,6 +22,10 @@ public interface InkstepStore {
 
   int putJourneyImage(int journeyId, String image);
 
+  boolean hasGotAllImages(int journeyId);
+
+  Journey getJourneyFromId(int id);
+
 
   // Studios
   Studio getStudioFromID(int studioID);
