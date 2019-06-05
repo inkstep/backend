@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.User;
 import model.Validable;
@@ -33,28 +32,21 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
       return Answer.empty(BAD_REQUEST);
     }
 
-    User user = new User(value.useremail, value.useremail, passphrase.toString());
+    User user = new User(value.email, value.email, passphrase.toString());
 
     int userId = store.putUser(user);
 
-    String jsonOut;
-    try {
-      Map<String, String> responseMap = new HashMap<String, String>() {{
-        put("user_id", String.valueOf(userId));
-        put("user_passphrase", passphrase.toString());
-      }};
-      jsonOut = new ObjectMapper().writeValueAsString(responseMap);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Answer.empty(BAD_REQUEST);
-    }
+    Map<String, String> responseMap = new HashMap<String, String>() {{
+      put("user_id", String.valueOf(userId));
+      put("user_passphrase", passphrase.toString());
+    }};
 
-    return Answer.ok(jsonOut);
+    return Answer.ok(dataToJson(responseMap));
   }
 
   class Payload implements Validable {
 
-    public String useremail;
+    public String email;
     public String username;
 
     @JsonCreator
@@ -63,7 +55,7 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
       @JsonProperty("user_email") String userEmail
     ) {
       this.username = username;
-      this.useremail = userEmail;
+      this.email = userEmail;
     }
 
     @Override

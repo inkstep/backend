@@ -19,14 +19,6 @@ public class ArtistsRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
   protected Answer processImpl(EmptyPayload empty, Map<String, String> urlParams) {
     List<Artist> artists = store.getArtists();
 
-    final String jsonString;
-    try {
-      jsonString = new ObjectMapper().writeValueAsString(artists);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Answer.empty(BAD_REQUEST);
-    }
-
-    return Answer.ok(jsonString);
+    return Answer.ok(dataToJson(artists));
   }
 }
