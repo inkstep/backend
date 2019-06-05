@@ -54,7 +54,8 @@ public class InkstepDatabaseSchema {
   public static final DbTable JOURNEY_IMAGES = SCHEMA.addTable("journey_images");
   public static final DbColumn JNY_IMAGE_ID = JOURNEY_IMAGES.addColumn("ID", "int", 11); // PK
   public static final DbColumn JNY_IMAGE_JNY_ID = JOURNEY_IMAGES.addColumn("JourneyID", "int", 11);
-  public static final DbColumn JNY_IMAGE_DATA = JOURNEY_IMAGES.addColumn("ImageData", "mediumtext", 65536);
+  public static final DbColumn JNY_IMAGE_DATA =
+    JOURNEY_IMAGES.addColumn("ImageData", "mediumtext", 65536);
   public static final DbColumn[] JOURNEY_IMAGE_COLUMNS =
     new DbColumn[] {JNY_IMAGE_ID, JNY_IMAGE_JNY_ID};
 }

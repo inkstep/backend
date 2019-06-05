@@ -1,12 +1,10 @@
 package handlers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
+import java.util.Map;
 import model.Validatable;
-import org.json.simple.parser.JSONParser;
 import store.InkstepStore;
 
 public class JourneyImagesCreateHandler
@@ -16,10 +14,12 @@ public class JourneyImagesCreateHandler
     super(Payload.class, store);
   }
 
-  @Override protected Answer processImpl(Payload request, Map<String, String> urlParams) {
+  @Override
+  protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     System.out.println("Received img for journey " + request.getJourneyId());
 
-    int imageId = store.putJourneyImage(request.image);
+    int imageId = store.putJourneyImage(request.getJourneyId(),
+      request.getImage());
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("image_id", String.valueOf(imageId));
@@ -29,10 +29,12 @@ public class JourneyImagesCreateHandler
   }
 
   static class Payload implements Validatable {
+
     private int journeyId;
     private String image;
 
-    @JsonCreator Payload(@JsonProperty("journey_id") int journeyId,
+    @JsonCreator
+    Payload(@JsonProperty("journey_id") int journeyId,
       @JsonProperty("image_data") String image) {
       this.journeyId = journeyId;
       this.image = image;
@@ -46,7 +48,8 @@ public class JourneyImagesCreateHandler
       return journeyId;
     }
 
-    @Override public boolean isValid() {
+    @Override
+    public boolean isValid() {
       return journeyId >= 0 && image.length() > 0;
     }
   }
