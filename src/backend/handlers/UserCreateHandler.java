@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.User;
-import model.Validable;
+import model.Validatable;
 import model.Passphrase;
 import store.InkstepStore;
 
@@ -52,7 +52,7 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
     return Answer.ok(jsonOut);
   }
 
-  class Payload implements Validable {
+  class Payload implements Validatable {
 
     public String useremail;
     public String username;

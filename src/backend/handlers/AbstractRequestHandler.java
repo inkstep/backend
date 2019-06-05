@@ -7,13 +7,13 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import model.Validable;
+import model.Validatable;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import store.InkstepStore;
 
-public abstract class AbstractRequestHandler<V extends Validable>
+public abstract class AbstractRequestHandler<V extends Validatable>
   implements RequestHandler<V>, Route {
 
   private Class<V> valueClass;

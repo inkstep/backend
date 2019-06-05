@@ -18,8 +18,7 @@ public class Passphrase {
     this.phrase = phrase;
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     return phrase;
   }
 

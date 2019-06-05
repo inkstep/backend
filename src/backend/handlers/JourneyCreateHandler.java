@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import email.JourneyMail;
 import model.Journey;
 import store.InkstepStore;
@@ -19,15 +18,12 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
     this.store = store;
   }
 
-  @Override
-  protected Answer processImpl(Journey journey, Map<String, String> urlParams) {
+  @Override protected Answer processImpl(Journey journey, Map<String, String> urlParams) {
     int id = store.createJourney(journey);
-
     new JourneyMail(store, journey).sendRequestEmail();
 
     String jsonResponse;
     try {
-
       Map<String, String> responseMap = new HashMap<String, String>() {{
         put("journey_id", String.valueOf(id));
       }};

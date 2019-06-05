@@ -15,9 +15,8 @@ public class Artist {
     this.studioID = studioID;
   }
 
-  @JsonCreator
-  public Artist(@JsonProperty("name") String name, @JsonProperty("email") String email,
-      @JsonProperty("studioID") int studioID, @JsonProperty("id") int id) {
+  @JsonCreator public Artist(@JsonProperty("name") String name, @JsonProperty("email") String email,
+    @JsonProperty("studioID") int studioID, @JsonProperty("id") int id) {
     this(name, email, studioID);
     this.id = id;
   }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import model.Journey;
 import store.InkstepStore;
 
@@ -16,8 +15,7 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
     super(EmptyPayload.class, store);
   }
 
-  @Override
-  protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
+  @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
     final List<Journey> list = new ArrayList<Journey>(2);
     list.add(new Journey(0, 0, "Star", "10cm", "Neck", "0000000", "1", 0));
     list.add(new Journey(0, 1, "Flowers", "20cm", "Chest", "0000000", "1", 0));

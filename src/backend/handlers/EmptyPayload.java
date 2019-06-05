@@ -1,8 +1,8 @@
 package handlers;
 
-import model.Validable;
+import model.Validatable;
 
-public class EmptyPayload implements Validable {
+public class EmptyPayload implements Validatable {
   @Override public boolean isValid() {
     return true;
   }
