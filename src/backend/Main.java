@@ -2,6 +2,7 @@ import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.put;
 
+import handlers.ArtistRetrieveHandler;
 import handlers.ArtistsRetrieveHandler;
 import handlers.JourneyCreateHandler;
 import handlers.JourneyImagesCreateHandler;
@@ -15,7 +16,10 @@ public class Main {
   public static void main(final String[] args) {
     InkstepStore store = new InkstepDatabaseStore();
 
-    get("/artists", new ArtistsRetrieveHandler(store));
+    path("/artist", () -> {
+      get("", new ArtistsRetrieveHandler(store));
+      get("/:id", new ArtistRetrieveHandler(store));
+    });
 
     path("/journey", () -> {
       get("", new JourneyRetrieveHandler(store));
