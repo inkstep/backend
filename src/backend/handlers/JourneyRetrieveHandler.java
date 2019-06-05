@@ -20,14 +20,6 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
     list.add(new Journey(0, 0, "Star", "10cm", "Neck", "0000000", "1", 0));
     list.add(new Journey(0, 1, "Flowers", "20cm", "Chest", "0000000", "1", 0));
 
-    String jsonOut;
-    try {
-      jsonOut = new ObjectMapper().writeValueAsString(list);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Answer.empty(BAD_REQUEST);
-    }
-
-    return Answer.ok(jsonOut);
+    return Answer.ok(dataToJson(list));
   }
 }

@@ -25,12 +25,29 @@ public class JourneyRetrieveHandlerTest {
   public void dummyJourneyDataCanBeCorrectlyRetrieved() {
 
     JourneyRetrieveHandler handler = new JourneyRetrieveHandler(store);
-    assertEquals(Answer.ok(
-      "["
-      + "{\"size\":\"10cm\",\"position\":\"Neck\",\"availability\":\"0000000\",\"deposit\":\"1\",\"userID\":0,\"artistID\":0,\"noRefImages\":\"0\",\"tattooDesc\":\"Star\",\"valid\":true}"
-      + ","
-      + "{\"size\":\"20cm\",\"position\":\"Chest\",\"availability\":\"0000000\",\"deposit\":\"1\",\"userID\":0,\"artistID\":1,\"noRefImages\":\"0\",\"tattooDesc\":\"Flowers\",\"valid\":true}"
-      + "]"),
+    String expectedJson = "[ {\n" +
+      "  \"size\" : \"10cm\",\n" +
+      "  \"position\" : \"Neck\",\n" +
+      "  \"availability\" : \"0000000\",\n" +
+      "  \"deposit\" : \"1\",\n" +
+      "  \"userID\" : 0,\n" +
+      "  \"artistID\" : 0,\n" +
+      "  \"noRefImages\" : \"0\",\n" +
+      "  \"tattooDesc\" : \"Star\",\n" +
+      "  \"valid\" : true\n" +
+      "}, {\n" +
+      "  \"size\" : \"20cm\",\n" +
+      "  \"position\" : \"Chest\",\n" +
+      "  \"availability\" : \"0000000\",\n" +
+      "  \"deposit\" : \"1\",\n" +
+      "  \"userID\" : 0,\n" +
+      "  \"artistID\" : 1,\n" +
+      "  \"noRefImages\" : \"0\",\n" +
+      "  \"tattooDesc\" : \"Flowers\",\n" +
+      "  \"valid\" : true\n" +
+      "} ]";
+
+    assertEquals(Answer.ok(expectedJson),
       handler.process(new EmptyPayload(), Collections.emptyMap()));
   }
 }

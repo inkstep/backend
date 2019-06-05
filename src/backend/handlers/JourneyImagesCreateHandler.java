@@ -1,10 +1,12 @@
 package handlers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Validatable;
+import org.json.simple.parser.JSONParser;
 import store.InkstepStore;
 
 public class JourneyImagesCreateHandler
@@ -15,12 +17,16 @@ public class JourneyImagesCreateHandler
   }
 
   @Override protected Answer processImpl(Payload request, Map<String, String> urlParams) {
-    System.out.println(request.image);
+    System.out.println(request.getImage());
 
-    return Answer.empty(200);
+    Map<String, String> responseMap = new HashMap<String, String>() {{
+      put("image_id", String.valueOf(request.getJourneyId()));
+    }};
+
+    return Answer.ok(dataToJson(responseMap));
   }
 
-  class Payload implements Validatable {
+  static class Payload implements Validatable {
     private int journeyId;
     private String image;
 

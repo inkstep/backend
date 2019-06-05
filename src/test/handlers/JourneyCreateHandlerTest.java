@@ -39,12 +39,16 @@ public class JourneyCreateHandlerTest {
         "deposit", 0 // Number of Reference Images
     );
 
+    String expectedJson = "{\n" +
+      "  \"journey_id\" : \"0\"\n" +
+      "}";
+
     when(store.createJourney(newJourney)).thenReturn(0);
     when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name", "artist.email", 0));
     when(store.getStudioFromID(0)).thenReturn(new Studio("studio.name"));
     when(store.getUserFromID(0)).thenReturn(new User("username", "user.emai", "user.passphrase"));
 
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
-    assertEquals(Answer.ok("{\"journey_id\":\"0\"}"), handler.process(newJourney, Collections.emptyMap()));
+    assertEquals(Answer.ok(expectedJson), handler.process(newJourney, Collections.emptyMap()));
   }
 }

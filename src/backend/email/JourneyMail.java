@@ -18,10 +18,16 @@ public class JourneyMail {
     this.journey = journey;
   }
 
-  public void sendRequestEmail() {
+  public boolean sendRequestEmail() {
     Artist artist = store.getArtistFromID(journey.artistID);
     User user = store.getUserFromID(journey.userID);
-    Studio studio = store.getStudioFromID(artist.studioID);
+    Studio studio = null;
+    if (artist != null) {
+      studio = store.getStudioFromID(artist.studioID);
+    }
+    if (artist == null || user == null || studio == null) {
+      return false;
+    }
     String emailTemplate =
       "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
         + "!\n" + "You have received a new client request from " + user.name + "!\n\n" + user.name
@@ -41,7 +47,10 @@ public class JourneyMail {
         .sendEmail(artist.email, emailTemplate, "Client Request", user.email, new ArrayList<>());
     } catch (MessagingException e) {
       e.printStackTrace();
+      return false;
     }
+
+    return true;
   }
 
 }

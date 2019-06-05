@@ -39,6 +39,14 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
+  private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
+    InsertQuery insertQuery = new InsertQuery(table);
+    for (DbColumn column : columns) {
+      insertQuery.addPreparedColumns(column);
+    }
+    return insertQuery.validate().toString();
+  }
+
   // TODO(mm5917): inline
   private List<List<String>> query(String table, List<String> columns, String whereClause) {
     if (!connected) {
@@ -51,14 +59,17 @@ public class InkstepDatabaseStore implements InkstepStore {
       StringBuilder fields = new StringBuilder();
 
       for (String field : columns) {
-        fields.append(field).append(",");
+        fields.append("`").append(field).append("`,");
       }
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
 
-      PreparedStatement pstmt = connection
-        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE " + whereClause);
+      PreparedStatement pstmt =
+        connection.prepareStatement("SELECT " + fields + " FROM " + table + " WHERE ?");
 
+      pstmt.setString(1, whereClause);
+
+      System.out.println(pstmt.toString());
       ResultSet rs = pstmt.executeQuery();
 
       while (rs.next()) {
@@ -78,9 +89,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  @Override public void addArtist(Artist artist) {
-
-  }
+  @Override public void addArtist(Artist artist) {}
 
   @Override public List<Artist> getArtists() {
     List<Artist> artists = new ArrayList<>();
@@ -90,7 +99,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
       while (rs.next()) {
-        System.out.println(rs.toString());
         int studioID = rs.getInt(2);
         String name = rs.getString(3);
         String email = rs.getString(4);
@@ -103,14 +111,6 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return artists;
-  }
-
-  private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
-    InsertQuery insertQuery = new InsertQuery(table);
-    for (DbColumn column : columns) {
-      insertQuery.addPreparedColumns(column);
-    }
-    return insertQuery.validate().toString();
   }
 
   @Override public int putUser(User user) {
@@ -146,8 +146,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public void getJourneysForUser(User user) {
-  }
+  @Override public void getJourneysForUser(User user) {}
 
   @Override public int createJourney(Journey journey) {
     int returnId = -1;
@@ -189,10 +188,10 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public void putJourneyImages() {
-  }
+  @Override public void putJourneyImages() {}
 
   @Override public Artist getArtistFromID(int artistId) {
+    Artist artist = null;
     try {
       open();
 
@@ -202,25 +201,25 @@ public class InkstepDatabaseStore implements InkstepStore {
       columns.add("Email");
       List<List<String>> results = query("artists", columns, "ID = " + artistId);
 
-      System.out.println(results);
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        int studioId = Integer.parseInt(row1.get(0));
+        String name = row1.get(1);
+        String email = row1.get(2);
 
-      List<String> row1 = results.get(0);
-
-      int studioId = Integer.parseInt(row1.get(0));
-      String name = row1.get(1);
-      String email = row1.get(2);
+        artist = new Artist(name, email, studioId, artistId);
+      }
 
       close();
-
-      return new Artist(name, email, studioId, artistId);
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    return null;
+    return artist;
   }
 
   @Override public User getUserFromID(int userID) {
+    User user = null;
     try {
       open();
 
@@ -229,27 +228,26 @@ public class InkstepDatabaseStore implements InkstepStore {
       columns.add("Email");
       columns.add("Passphrase");
       List<List<String>> results = query("users", columns, "ID = " + userID);
-      if (results.size() == 0) {
-        return null;
+
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        String name = row1.get(0);
+        String email = row1.get(1);
+        String passphrase = row1.get(2);
+
+        user = new User(name, email, passphrase, userID);
       }
 
-      List<String> row1 = results.get(0);
-
-      String name = row1.get(0);
-      String email = row1.get(1);
-      String passphrase = row1.get(2);
-
       close();
-
-      return new User(name, email, passphrase, userID);
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    return null;
+    return user;
   }
 
   @Override public Studio getStudioFromID(int studioID) {
+    Studio studio = null;
     try {
       open();
 
@@ -258,15 +256,18 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<List<String>> results = query("studios", columns, "ID = " + studioID);
       close();
 
-      List<String> row1 = results.get(0);
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        String name = row1.get(0);
 
-      String name = row1.get(0);
+        studio = new Studio(name);
+      }
 
-      return new Studio(name);
+      close();
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    return null;
+    return studio;
   }
 }

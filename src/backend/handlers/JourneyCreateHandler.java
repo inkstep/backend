@@ -22,17 +22,10 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
     int id = store.createJourney(journey);
     new JourneyMail(store, journey).sendRequestEmail();
 
-    String jsonResponse;
-    try {
-      Map<String, String> responseMap = new HashMap<String, String>() {{
-        put("journey_id", String.valueOf(id));
-      }};
-      jsonResponse = new ObjectMapper().writeValueAsString(responseMap);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-      return Answer.empty(BAD_REQUEST);
-    }
+    Map<String, String> responseMap = new HashMap<String, String>() {{
+      put("journey_id", String.valueOf(id));
+    }};
 
-    return Answer.ok(jsonResponse);
+    return Answer.ok(dataToJson(responseMap));
   }
 }
