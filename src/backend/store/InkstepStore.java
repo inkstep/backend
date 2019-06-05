@@ -20,7 +20,7 @@ public interface InkstepStore {
 
   int createJourney(Journey journey);
 
-  int putJourneyImage(String image);
+  int putJourneyImage(int journeyId, String image);
 
 
   // Studios

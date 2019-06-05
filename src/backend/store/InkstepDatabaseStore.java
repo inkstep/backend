@@ -189,8 +189,37 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public int putJourneyImage(String image) {
-    return 1;
+  public int putJourneyImage(int journeyId, String image) {
+    int returnId = -1;
+    try {
+      open();
+
+      // Build prepared statement TODO(mm5917): remove ID column
+      DbColumn[] insertInto =
+        new DbColumn[] {JNY_IMAGE_JNY_ID, JNY_IMAGE_DATA};
+      String query = getPreparedInsertQuery(JOURNEYS, insertInto);
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      // Insert values into statement
+      preparedStatement.setInt(1, journeyId);
+      preparedStatement.setString(2, image);
+
+      // Execute the insert statement
+      preparedStatement.execute();
+
+      // Get the ID of the last inserted row to return
+      preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+      ResultSet rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        returnId = rs.getInt(1);
+      }
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
+    return returnId;
   }
 
   @Override public Artist getArtistFromID(int artistId) {
