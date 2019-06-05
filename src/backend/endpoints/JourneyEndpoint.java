@@ -99,7 +99,10 @@ public class JourneyEndpoint {
 
       System.out.println(image);
 
-      return "james";
+      JSONObject responsejson = new JSONObject();
+      responsejson.put("image_id", journeyId);
+
+      return responsejson.toJSONString();
     };
   }
 }
