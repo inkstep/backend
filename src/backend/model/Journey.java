@@ -1,6 +1,9 @@
 package model;
 
-public class Journey implements Validable {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Journey implements Validatable {
 
   public final int userID;
   public final int artistID;
@@ -12,8 +15,16 @@ public class Journey implements Validable {
   public final String availability;
   public final String deposit;
 
-  public Journey(int userID, int artistID, String tattooDesc, String size, String position,
-    String availability, String deposit, int noRefImages) {
+  @JsonCreator
+  public Journey(
+    @JsonProperty("user_id") int userID,
+    @JsonProperty("artist_id") int artistID,
+    @JsonProperty("tattoo_desc") String tattooDesc,
+    @JsonProperty("size") String size,
+    @JsonProperty("position") String position,
+    @JsonProperty("availability") String availability,
+    @JsonProperty("deposit") String deposit,
+    @JsonProperty("ref_images") int noRefImages) {
     this.userID = userID;
     this.artistID = artistID;
     this.tattooDesc = tattooDesc;
@@ -24,7 +35,7 @@ public class Journey implements Validable {
     this.noRefImages = String.valueOf(noRefImages);
   }
 
-  public String humanAvaliability() {
+  public String humanAvailability() {
     String[] days =
       {"Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"};
     StringBuilder readableAvailability = new StringBuilder();
@@ -41,7 +52,22 @@ public class Journey implements Validable {
   }
 
   // TODO(DJRHails): Add proper validation for Journey Payload
-  @Override public boolean isValid() {
-    return true;
+  @Override
+  public boolean isValid() {
+    return userID >= 0 && artistID >= 0 && availability.length() == 7;
+  }
+
+  @Override
+  public String toString() {
+    return "Journey {" +
+      " userID='" + userID + "'" +
+      ", artistID='" + artistID + "'" +
+      ", noRefImages='" + noRefImages + "'" +
+      ", tattooDesc='" + tattooDesc + "'" +
+      ", size='" + size + "'" +
+      ", position='" + position + "'" +
+      ", availability='" + availability + "'" +
+      ", deposit='" + deposit + "'" +
+      "}";
   }
 }

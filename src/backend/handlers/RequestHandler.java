@@ -2,9 +2,8 @@ package handlers;
 
 import java.util.Map;
 
-import model.Validable;
+import model.Validatable;
 
-public interface RequestHandler<V extends Validable> {
-  Answer process(V value, Map<String, String> urlParams, boolean shouldReturnHtml);
-
+public interface RequestHandler<V extends Validatable> {
+  Answer process(V value, Map<String, String> urlParams);
 }

@@ -58,8 +58,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       return;
     }
 
-    System.out.println(DB_PASSWORD);
-
     try {
       Class.forName("com.mysql.jdbc.Driver");
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
@@ -181,7 +179,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
       while (rs.next()) {
-        System.out.println(rs.toString());
         int studioID = rs.getInt(2);
         String name = rs.getString(3);
         String email = rs.getString(4);
@@ -244,6 +241,10 @@ public class InkstepDatabaseStore implements InkstepStore {
     columns.add("Email");
     List<List<String>> results = query("artists", columns, "ID = " + artistId);
 
+    if (results.size() == 0) {
+      close();
+      return null;
+    }
     System.out.println(results);
 
     List<String> row1 = results.get(0);
@@ -253,8 +254,6 @@ public class InkstepDatabaseStore implements InkstepStore {
     String email = row1.get(2);
 
     close();
-
-    Studio studio = getStudioFromID(studioId);
 
     return new Artist(name, email, studioId, artistId);
   }
@@ -267,6 +266,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     columns.add("Email");
     columns.add("Passphrase");
     List<List<String>> results = query("users", columns, "ID = " + userID);
+
+    if (results.size() == 0) {
+      close();
+      return null;
+    }
 
     List<String> row1 = results.get(0);
 
@@ -283,12 +287,18 @@ public class InkstepDatabaseStore implements InkstepStore {
     List<String> columns = new ArrayList<>();
     columns.add("Name");
     List<List<String>> results = query("studios", columns, "ID = " + studioID);
-    close();
+
+    if (results.size() == 0) {
+      close();
+      return null;
+    }
+
 
     List<String> row1 = results.get(0);
 
     String name = row1.get(0);
 
+    close();
     return new Studio(name);
   }
 }
