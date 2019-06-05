@@ -1,5 +1,5 @@
 package model;
 
-public interface Validable {
+public interface Validatable {
   boolean isValid();
 }

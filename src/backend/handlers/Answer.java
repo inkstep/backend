@@ -18,7 +18,7 @@ public class Answer {
   public static Answer ok(String body) {
     return new Answer(200, body);
   }
-  
+
   public String getBody() {
     return this.body;
   }
@@ -27,8 +27,7 @@ public class Answer {
     return this.code;
   }
 
-  @Override
-  public boolean equals(Object o) {
+  @Override public boolean equals(Object o) {
     if (o == this) {
       return true;
     }
@@ -39,16 +38,11 @@ public class Answer {
     return code == answer.code && Objects.equals(body, answer.body);
   }
 
-  @Override
-  public int hashCode() {
+  @Override public int hashCode() {
     return Objects.hash(code, body);
   }
 
-  @Override
-  public String toString() {
-    return "{" +
-      " code='" + getCode() + "'" +
-      ", body='" + getBody() + "'" +
-      "}";
+  @Override public String toString() {
+    return "{" + " code='" + getCode() + "'" + ", body='" + getBody() + "'" + "}";
   }
 }

@@ -3,7 +3,7 @@ package model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Journey implements Validable {
+public class Journey implements Validatable {
 
   public final int userID;
   public final int artistID;
@@ -35,7 +35,7 @@ public class Journey implements Validable {
     this.noRefImages = String.valueOf(noRefImages);
   }
 
-  public String humanAvaliability() {
+  public String humanAvailability() {
     String[] days =
       {"Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"};
     StringBuilder readableAvailability = new StringBuilder();
