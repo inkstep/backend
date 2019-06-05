@@ -187,7 +187,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto = new DbColumn[] {JNY_IMAGE_JNY_ID, JNY_IMAGE_DATA};
-      String query = getPreparedInsertQuery(JOURNEYS, insertInto);
+      String query = getPreparedInsertQuery(JOURNEY_IMAGES, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
       // Insert values into statement
