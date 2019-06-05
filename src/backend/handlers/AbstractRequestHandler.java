@@ -56,8 +56,8 @@ public abstract class AbstractRequestHandler<V extends Validatable>
     }
     V value = objectMapper.readValue(usableBody, valueClass);
 
-    Map<String, String> queryParams = new HashMap<>();
-    Answer answer = process(value, queryParams);
+    System.out.println(request.params());
+    Answer answer = process(value, new HashMap<>(request.params()));
     response.status(answer.getCode());
     response.type("application/json");
     response.body(answer.getBody());
