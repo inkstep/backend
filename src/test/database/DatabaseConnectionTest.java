@@ -1,5 +1,8 @@
 package database;
 
+import static junit.framework.TestCase.assertEquals;
+
+import model.User;
 import org.junit.Test;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -8,8 +11,17 @@ public class DatabaseConnectionTest {
 
   private final InkstepStore store = new InkstepDatabaseStore();
 
-  @Test public void canConnectToDatabase() {
-    store.getArtists();
+  @Test public void cannotInjectIntoInsertQuery() {
+    String payload = "','passphrase-lol',(select version())) -- ";
+    String username = "name-lol";
+    String passphrase = "real-passphrase";
+
+    User user = new User(username, payload, passphrase);
+    int id = store.putUser(user);
+    user = store.getUserFromID(id);
+
+    assertEquals(username, user.name);
+    assertEquals(payload, user.email);
   }
 
   @Test public void canPrepareQuery() {

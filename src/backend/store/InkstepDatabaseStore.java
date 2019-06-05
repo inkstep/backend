@@ -1,16 +1,14 @@
 package store;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import static store.InkstepDatabaseSchema.*;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.healthmarketscience.sqlbuilder.InsertQuery;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.Artist;
 import model.Journey;
 import model.Studio;
@@ -24,62 +22,24 @@ public class InkstepDatabaseStore implements InkstepStore {
   private static final String DB_PASSWORD = System.getenv("INKSTEP_AWS_DB_PW");
 
   private Connection connection;
-
   private boolean connected;
 
-  // Return a connection to the database with the following info
-  /*public static synchronized Connection getConnection() {
-    Connection c = null;
-    try {
-      Class.forName("org.postgresql.Driver");
-      String host = "db.doc.ic.ac.uk:5432";
-      String database = "g1827107_u";
-      String username = "g1827107_u";
-      String password = System.getenv("database_password");
-      String url = "jdbc:postgresql://" + host + "/" + database;
-      String driver = "org.postgresql.Driver";
-      Class.forName(driver);
-
-      c = DriverManager.getConnection(url, username,
-        password);
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(0);
-    }
-
-    System.out.println("Opened database successfully");
-
-    return c;
-  }*/
-
-  private void open() {
-    if (connected) {
-      return;
-    }
-
-    try {
+  private void open() throws ClassNotFoundException, SQLException {
+    if (!connected) {
       Class.forName("com.mysql.jdbc.Driver");
       connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
       connected = true;
-    } catch (Exception e) {
-      System.out.println("Failed to open connection");
-      e.printStackTrace();
     }
   }
 
-  private void close() {
+  private void close() throws SQLException {
     if (!connected) {
-      return;
-    }
-    try {
       connection.close();
       connected = false;
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
   }
 
+  // TODO(mm5917): inline
   private List<List<String>> query(String table, List<String> columns, String whereClause) {
     if (!connected) {
       System.out.println("Not connected!");
@@ -118,56 +78,15 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  private int insert(String table, Map<String, String> data) {
-    if (!connected) {
-      return -1;
-    }
-    try {
-      StringBuilder fields = new StringBuilder(" (");
-      StringBuilder values = new StringBuilder(" (");
-
-      for (String field : data.keySet()) {
-        fields.append("`").append(field).append("`").append(",");
-        values.append("'").append(data.get(field)).append("'").append(",");
-      }
-
-      fields = new StringBuilder(fields.substring(0, fields.length() - 1));
-      values = new StringBuilder(values.substring(0, values.length() - 1));
-
-      fields.append(") ");
-      values.append(") ");
-
-      String cmd = "INSERT INTO " + table + fields + "VALUES" + values;
-
-      System.out.println(cmd);
-
-      PreparedStatement pstmt = connection.prepareStatement(cmd);
-      pstmt.execute();
-
-      pstmt = connection.prepareStatement("SELECT LAST_INSERT_ID()");
-      ResultSet rs = pstmt.executeQuery();
-
-      if (rs.next()) {
-        return rs.getInt(1);
-      }
-
-      return -1;
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return -1;
-  }
-
   @Override public void addArtist(Artist artist) {
 
   }
 
   @Override public List<Artist> getArtists() {
-    open();
-
     List<Artist> artists = new ArrayList<>();
     try {
+      open();
+
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
       while (rs.next()) {
@@ -177,25 +96,53 @@ public class InkstepDatabaseStore implements InkstepStore {
         String email = rs.getString(4);
         artists.add(new Artist(name, email, studioID));
       }
+
+      close();
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    close();
     return artists;
   }
 
+  private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
+    InsertQuery insertQuery = new InsertQuery(table);
+    for (DbColumn column : columns) {
+      insertQuery.addPreparedColumns(column);
+    }
+    return insertQuery.validate().toString();
+  }
+
   @Override public int putUser(User user) {
-    open();
+    int returnId = -1;
+    try {
+      open();
 
-    Map<String, String> data = new HashMap<>();
-    data.put("Name", user.name);
-    data.put("Email", user.email);
-    data.put("Passphrase", user.passphrase);
+      // Build prepared statement TODO(mm5917): remove ID column
+      DbColumn[] insertInto = {USER_NAME, USER_EMAIL, USER_PHONE, USER_PASSPHRASE};
+      String query = getPreparedInsertQuery(USERS, insertInto);
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-    int returnId = insert("users", data);
+      // Insert values into statement
+      preparedStatement.setString(1, user.name);
+      preparedStatement.setString(2, user.email);
+      preparedStatement.setString(3, ""); // TODO(mm5917): get phone number
+      preparedStatement.setString(4, user.passphrase);
 
-    close();
+      // Execute the insert statement
+      preparedStatement.execute();
+
+      // Get the ID of the last inserted row to return
+      preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+      ResultSet rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        returnId = rs.getInt(1);
+      }
+
+      close();
+    } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
     return returnId;
   }
 
@@ -203,82 +150,123 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override public int createJourney(Journey journey) {
-    open();
+    int returnId = -1;
+    try {
+      open();
 
-    Map<String, String> data = new HashMap<>();
-    data.put("NoRefImgs", journey.noRefImages);
-    data.put("UserID", String.valueOf(journey.userID));
-    data.put("ArtistID", String.valueOf(journey.artistID));
-    data.put("Description", journey.tattooDesc);
-    data.put("Size", journey.size);
-    data.put("Position", journey.position);
-    data.put("Availability", journey.availability);
-    data.put("Deposit", journey.deposit);
+      // Build prepared statement TODO(mm5917): remove ID column
+      DbColumn[] insertInto =
+        new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
+      String query = getPreparedInsertQuery(JOURNEYS, insertInto);
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-    int returnId = insert("journeys", data);
+      // Insert values into statement
+      preparedStatement.setInt(1, journey.userID);
+      preparedStatement.setInt(2, journey.artistID);
+      preparedStatement.setString(3, journey.tattooDesc);
+      preparedStatement.setString(4, journey.size);
+      preparedStatement.setString(5, journey.position);
+      preparedStatement.setString(6, journey.availability);
+      preparedStatement.setString(7, journey.deposit);
+      preparedStatement.setString(8, journey.noRefImages);
 
-    close();
+      // Execute the insert statement
+      preparedStatement.execute();
+
+      // Get the ID of the last inserted row to return
+      preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+      ResultSet rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        returnId = rs.getInt(1);
+      }
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+
     return returnId;
   }
 
   @Override public void putJourneyImages() {
   }
 
-
   @Override public Artist getArtistFromID(int artistId) {
-    open();
+    try {
+      open();
 
-    List<String> columns = new ArrayList<>();
-    columns.add("StudioID");
-    columns.add("Name");
-    columns.add("Email");
-    List<List<String>> results = query("artists", columns, "ID = " + artistId);
+      List<String> columns = new ArrayList<>();
+      columns.add("StudioID");
+      columns.add("Name");
+      columns.add("Email");
+      List<List<String>> results = query("artists", columns, "ID = " + artistId);
 
-    System.out.println(results);
+      System.out.println(results);
 
-    List<String> row1 = results.get(0);
+      List<String> row1 = results.get(0);
 
-    int studioId = Integer.parseInt(row1.get(0));
-    String name = row1.get(1);
-    String email = row1.get(2);
+      int studioId = Integer.parseInt(row1.get(0));
+      String name = row1.get(1);
+      String email = row1.get(2);
 
-    close();
+      close();
 
-    Studio studio = getStudioFromID(studioId);
+      return new Artist(name, email, studioId, artistId);
 
-    return new Artist(name, email, studioId, artistId);
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   @Override public User getUserFromID(int userID) {
-    open();
+    try {
+      open();
 
-    List<String> columns = new ArrayList<>();
-    columns.add("Name");
-    columns.add("Email");
-    columns.add("Passphrase");
-    List<List<String>> results = query("users", columns, "ID = " + userID);
+      List<String> columns = new ArrayList<>();
+      columns.add("Name");
+      columns.add("Email");
+      columns.add("Passphrase");
+      List<List<String>> results = query("users", columns, "ID = " + userID);
+      if (results.size() == 0) {
+        return null;
+      }
 
-    List<String> row1 = results.get(0);
+      List<String> row1 = results.get(0);
 
-    String name = row1.get(0);
-    String email = row1.get(1);
-    String passphrase = row1.get(2);
+      String name = row1.get(0);
+      String email = row1.get(1);
+      String passphrase = row1.get(2);
 
-    close();
-    return new User(name, email, passphrase, userID);
+      close();
+
+      return new User(name, email, passphrase, userID);
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   @Override public Studio getStudioFromID(int studioID) {
-    open();
-    List<String> columns = new ArrayList<>();
-    columns.add("Name");
-    List<List<String>> results = query("studios", columns, "ID = " + studioID);
-    close();
+    try {
+      open();
 
-    List<String> row1 = results.get(0);
+      List<String> columns = new ArrayList<>();
+      columns.add("Name");
+      List<List<String>> results = query("studios", columns, "ID = " + studioID);
+      close();
 
-    String name = row1.get(0);
+      List<String> row1 = results.get(0);
 
-    return new Studio(name);
+      String name = row1.get(0);
+
+      return new Studio(name);
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }
