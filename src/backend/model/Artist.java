@@ -1,13 +1,23 @@
 package model;
 
-public class Artist {
-  final String name;
-  final String email;
-  final Studio studio;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  public Artist(String name, String email, Studio studio) {
+public class Artist {
+  public int id;
+  public int studioID;
+  public String name;
+  public String email;
+
+  public Artist(String name, String email, int studioID) {
     this.name = name;
     this.email = email;
-    this.studio = studio;
+    this.studioID = studioID;
+  }
+
+  @JsonCreator public Artist(@JsonProperty("name") String name, @JsonProperty("email") String email,
+    @JsonProperty("studioID") int studioID, @JsonProperty("id") int id) {
+    this(name, email, studioID);
+    this.id = id;
   }
 }

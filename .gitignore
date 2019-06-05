@@ -3,5 +3,9 @@ build/
 main.java.backend.iml
 out/
 target/
+.settings/
+.classpath
+.project
 password.txt
 inkstep.iml
+.vscode/launch.json

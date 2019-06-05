@@ -1,31 +1,32 @@
 package model;
 
-import javax.mail.MessagingException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import email.JavaEmail;
+public class Journey implements Validatable {
 
-public class Journey {
+  public final int userID;
+  public final int artistID;
 
-  private final String userName;
-  private final String userEmail;
-
-  private final Artist artist;
-  private final Studio studio;
-
-  private final String tattooDesc;
-  private final String size;
-  private final String position;
-  private final String availability;
-  private final String deposit;
   public final String noRefImages;
+  public final String tattooDesc;
+  public final String size;
+  public final String position;
+  public final String availability;
+  public final String deposit;
 
-  public Journey(String userName, String userEmail, Artist artist, Studio studio, String tattooDesc,
-    String size, String position, String availability, String deposit, int noRefImages) {
-    this.userName = userName;
-    this.userEmail = userEmail;
-    this.artist = artist;
-    this.studio = studio;
+  @JsonCreator
+  public Journey(
+    @JsonProperty("user_id") int userID,
+    @JsonProperty("artist_id") int artistID,
+    @JsonProperty("tattoo_desc") String tattooDesc,
+    @JsonProperty("size") String size,
+    @JsonProperty("position") String position,
+    @JsonProperty("availability") String availability,
+    @JsonProperty("deposit") String deposit,
+    @JsonProperty("ref_images") int noRefImages) {
+    this.userID = userID;
+    this.artistID = artistID;
     this.tattooDesc = tattooDesc;
     this.size = size;
     this.position = position;
@@ -34,47 +35,39 @@ public class Journey {
     this.noRefImages = String.valueOf(noRefImages);
   }
 
-  public void sendRequestEmail() {
-    String emailTemplate =
-      "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
-        + "!\n" + "You have received a new client request from " + userName + "!\n\n" + userName
-        + " would love to get a " + tattooDesc + " on their " + position + " about " + size
-        + " large.\n" + userName + " is available on " + translateAvailability(availability)
-              + " and " + (deposit
-        .equals("1") ? "is" : "is not") + " willing to leave a deposit\n\n"
-        + "If you would like to get in touch with " + userName + " their email is " + userEmail
-        + ", or simply reply to this email!\n\n" + "Happy tattoo'ing!\n\n"
-        + "Sent from Inkstep on behalf of " + userName;
-
-    String toSend = String
-      .format(emailTemplate, artist.name, studio.name, artist.name, userName, userName, tattooDesc,
-        position, size, userName, availability, deposit.equals("Yes") ? "is" : "is not", userName,
-        userEmail, userName);
-
-    System.out.println(toSend);
-
-    JavaEmail javaEmail = new JavaEmail();
-
-    try {
-      javaEmail.sendEmail(artist.email, toSend, "Client Request", userEmail, new ArrayList<>());
-    } catch (MessagingException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private String translateAvailability(String availability) {
-    String[] days = {"Mondays", "Tuesdays", "Wednesdays", "Thursdays",
-                     "Fridays", "Saturdays", "Sundays"};
-    String readableAvailability = "";
+  public String humanAvailability() {
+    String[] days =
+      {"Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"};
+    StringBuilder readableAvailability = new StringBuilder();
     for (int i = 0; i < 7; i++) {
       if (availability.charAt(i) == '1') {
-        if (readableAvailability != "") {
-          readableAvailability += ", ";
+        if (!readableAvailability.toString().equals("")) {
+          readableAvailability.append(", ");
         }
-        readableAvailability += days[i];
+        readableAvailability.append(days[i]);
       }
     }
 
-    return readableAvailability;
+    return readableAvailability.toString();
+  }
+
+  // TODO(DJRHails): Add proper validation for Journey Payload
+  @Override
+  public boolean isValid() {
+    return userID >= 0 && artistID >= 0 && availability.length() == 7;
+  }
+
+  @Override
+  public String toString() {
+    return "Journey {" +
+      " userID='" + userID + "'" +
+      ", artistID='" + artistID + "'" +
+      ", noRefImages='" + noRefImages + "'" +
+      ", tattooDesc='" + tattooDesc + "'" +
+      ", size='" + size + "'" +
+      ", position='" + position + "'" +
+      ", availability='" + availability + "'" +
+      ", deposit='" + deposit + "'" +
+      "}";
   }
 }
