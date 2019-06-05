@@ -6,7 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.InsertQuery;
+import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.Artist;
@@ -40,40 +43,30 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
-    InsertQuery insertQuery = new InsertQuery(table);
-    for (DbColumn column : columns) {
-      insertQuery.addPreparedColumns(column);
-    }
-    return insertQuery.validate().toString();
+    return new InsertQuery(table).addPreparedColumns(columns).validate().toString();
   }
 
-  // TODO(mm5917): inline
-  private List<List<String>> query(String table, List<String> columns, String whereClause) {
+  private String getPreparedSelectQuery(DbColumn[] columns, Condition condition) {
+    return new SelectQuery().addColumns(columns).addCondition(condition).validate().toString();
+  }
+
+  private List<List<String>> query(DbColumn[] columns, Condition whereClause) {
     if (!connected) {
       return new ArrayList<>();
     }
     try {
-      List<List<String>> returnValues = new ArrayList<>();
-
-      StringBuilder fields = new StringBuilder();
-
-      for (String field : columns) {
-        fields.append("`").append(field).append("`,");
-      }
-
-      fields = new StringBuilder(fields.substring(0, fields.length() - 1));
-
-      PreparedStatement pstmt = connection
-        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE " + whereClause);
+      PreparedStatement pstmt =
+        connection.prepareStatement(getPreparedSelectQuery(columns, whereClause));
 
       System.out.println(pstmt.toString());
       ResultSet rs = pstmt.executeQuery();
 
+      List<List<String>> returnValues = new ArrayList<>();
       while (rs.next()) {
         List<String> dataFields = new ArrayList<>();
 
-        for (String field : columns) {
-          dataFields.add(rs.getString(field));
+        for (DbColumn field : columns) {
+          dataFields.add(rs.getString(field.getColumnNameSQL()));
         }
         returnValues.add(dataFields);
       }
@@ -187,15 +180,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override
-  public int putJourneyImage(int journeyId, String image) {
+  @Override public int putJourneyImage(int journeyId, String image) {
     int returnId = -1;
     try {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
-      DbColumn[] insertInto =
-        new DbColumn[] {JNY_IMAGE_JNY_ID, JNY_IMAGE_DATA};
+      DbColumn[] insertInto = new DbColumn[] {JNY_IMAGE_JNY_ID, JNY_IMAGE_DATA};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -226,11 +217,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      List<String> columns = new ArrayList<>();
-      columns.add("StudioID");
-      columns.add("Name");
-      columns.add("Email");
-      List<List<String>> results = query("artists", columns, "ID = " + artistId);
+      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
+      Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
+      List<List<String>> results = query(columns, condition);
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
@@ -254,11 +243,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      List<String> columns = new ArrayList<>();
-      columns.add("Name");
-      columns.add("Email");
-      columns.add("Passphrase");
-      List<List<String>> results = query("users", columns, "ID = " + userID);
+      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_PASSPHRASE};
+      Condition condition = BinaryCondition.equalTo(USER_ID, userID);
+      List<List<String>> results = query(columns, condition);
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
@@ -282,10 +269,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      List<String> columns = new ArrayList<>();
-      columns.add("Name");
-      List<List<String>> results = query("studios", columns, "ID = " + studioID);
-      close();
+      DbColumn[] columns = new DbColumn[] {STUDIO_NAME};
+      Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
+      List<List<String>> results = query(columns, condition);
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
