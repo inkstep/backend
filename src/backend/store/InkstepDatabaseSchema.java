@@ -45,7 +45,7 @@ public class InkstepDatabaseSchema {
   public static final DbColumn JNY_POSITION = JOURNEYS.addColumn("Position", "varchar", 45);
   public static final DbColumn JNY_AVAIL = JOURNEYS.addColumn("Availability", "varchar", 45);
   public static final DbColumn JNY_DEPOSIT = JOURNEYS.addColumn("Deposit", "varchar", 45);
-  public static final DbColumn JNY_NO_REF_IMAGES = JOURNEYS.addColumn("NoRefImages", "int", 11);
+  public static final DbColumn JNY_NO_REF_IMAGES = JOURNEYS.addColumn("NoRefImgs", "int", 11);
   public static final DbColumn[] JOURNEY_COLUMNS =
     new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
       JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
