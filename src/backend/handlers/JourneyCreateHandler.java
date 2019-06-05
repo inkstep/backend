@@ -19,6 +19,8 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
   }
 
   @Override protected Answer processImpl(Journey journey, Map<String, String> urlParams) {
+    System.out.println("Journey Put!");
+
     int id = store.createJourney(journey);
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
