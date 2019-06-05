@@ -50,7 +50,6 @@ public class InkstepDatabaseStore implements InkstepStore {
   // TODO(mm5917): inline
   private List<List<String>> query(String table, List<String> columns, String whereClause) {
     if (!connected) {
-      System.out.println("Not connected!");
       return new ArrayList<>();
     }
     try {
@@ -64,10 +63,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
 
-      PreparedStatement pstmt =
-        connection.prepareStatement("SELECT " + fields + " FROM " + table + " WHERE ?");
-
-      pstmt.setString(1, whereClause);
+      PreparedStatement pstmt = connection
+        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE " + whereClause);
 
       System.out.println(pstmt.toString());
       ResultSet rs = pstmt.executeQuery();
@@ -89,7 +86,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  @Override public void addArtist(Artist artist) {}
+  @Override public void addArtist(Artist artist) {
+  }
 
   @Override public List<Artist> getArtists() {
     List<Artist> artists = new ArrayList<>();
@@ -146,7 +144,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public void getJourneysForUser(User user) {}
+  @Override public void getJourneysForUser(User user) {
+  }
 
   @Override public int createJourney(Journey journey) {
     int returnId = -1;
