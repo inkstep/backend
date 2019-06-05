@@ -91,15 +91,17 @@ public class InkstepDatabaseStore implements InkstepStore {
       StringBuilder fields = new StringBuilder();
 
       for (String field : columns) {
-        fields.append(field).append(",");
+        fields.append("`").append(field).append("`,");
       }
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
 
       PreparedStatement pstmt = connection
-        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE " + whereClause);
+        .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE ?");
 
       ResultSet rs = pstmt.executeQuery();
+
+      pstmt.setString(1, whereClause);
 
       while (rs.next()) {
         List<String> dataFields = new ArrayList<>();
@@ -126,9 +128,9 @@ public class InkstepDatabaseStore implements InkstepStore {
       StringBuilder fields = new StringBuilder(" (");
       StringBuilder values = new StringBuilder(" (");
 
-      for (String field : data.keySet()) {
-        fields.append("`").append(field).append("`").append(",");
-        values.append("'").append(data.get(field)).append("'").append(",");
+      for (String field: data.keySet()) {
+        fields.append("`").append(field).append("`,");
+        values.append("?,");
       }
 
       fields = new StringBuilder(fields.substring(0, fields.length() - 1));
@@ -137,11 +139,17 @@ public class InkstepDatabaseStore implements InkstepStore {
       fields.append(") ");
       values.append(") ");
 
+
       String cmd = "INSERT INTO " + table + fields + "VALUES" + values;
 
-      System.out.println(cmd);
-
       PreparedStatement pstmt = connection.prepareStatement(cmd);
+
+      int index = 1;
+      for (String field : data.keySet()) {
+        pstmt.setString(index, data.get(field));
+        index++;
+      }
+
       pstmt.execute();
 
       pstmt = connection.prepareStatement("SELECT LAST_INSERT_ID()");
