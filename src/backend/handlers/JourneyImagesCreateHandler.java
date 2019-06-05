@@ -20,7 +20,7 @@ public class JourneyImagesCreateHandler
     return Answer.empty(200);
   }
 
-  class Payload implements Validatable {
+  static class Payload implements Validatable {
     private int journeyId;
     private String image;
 

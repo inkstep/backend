@@ -44,7 +44,7 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
     return Answer.ok(dataToJson(responseMap));
   }
 
-  class Payload implements Validatable {
+  static class Payload implements Validatable {
 
     public String email;
     public String username;
