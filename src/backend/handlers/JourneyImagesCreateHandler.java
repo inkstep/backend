@@ -17,10 +17,12 @@ public class JourneyImagesCreateHandler
   }
 
   @Override protected Answer processImpl(Payload request, Map<String, String> urlParams) {
-    System.out.println(request.getImage());
+    System.out.println("Received img for journey " + request.getJourneyId());
+
+    int imageId = store.putJourneyImage(request.image);
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
-      put("image_id", String.valueOf(request.getJourneyId()));
+      put("image_id", String.valueOf(imageId));
     }};
 
     return Answer.ok(dataToJson(responseMap));

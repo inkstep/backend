@@ -20,7 +20,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Journey> {
 
   @Override protected Answer processImpl(Journey journey, Map<String, String> urlParams) {
     int id = store.createJourney(journey);
-    new JourneyMail(store, journey).sendRequestEmail();
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("journey_id", String.valueOf(id));

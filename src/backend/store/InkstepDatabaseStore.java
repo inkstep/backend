@@ -229,7 +229,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public void putJourneyImages() {
+  @Override
+  public int putJourneyImage(String image) {
+    return 1;
   }
 
 
