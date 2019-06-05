@@ -99,9 +99,10 @@ public class InkstepDatabaseStore implements InkstepStore {
       PreparedStatement pstmt = connection
         .prepareStatement("SELECT " + fields + " FROM " + table + " WHERE ?");
 
-      ResultSet rs = pstmt.executeQuery();
-
       pstmt.setString(1, whereClause);
+
+      System.out.println(pstmt.toString());
+      ResultSet rs = pstmt.executeQuery();
 
       while (rs.next()) {
         List<String> dataFields = new ArrayList<>();

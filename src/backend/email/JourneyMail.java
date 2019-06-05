@@ -21,7 +21,10 @@ public class JourneyMail {
   public boolean sendRequestEmail() {
     Artist artist = store.getArtistFromID(journey.artistID);
     User user = store.getUserFromID(journey.userID);
-    Studio studio = store.getStudioFromID(artist.studioID);
+    Studio studio = null;
+    if (artist != null) {
+      studio = store.getStudioFromID(artist.studioID);
+    }
     if (artist == null || user == null || studio == null) {
       return false;
     }
