@@ -287,7 +287,7 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public List<File> getImagesFromJourneyId(int journeyId) {
+  public List<String> getImagesFromJourneyId(int journeyId) {
     try {
       open();
 
@@ -305,28 +305,14 @@ public class InkstepDatabaseStore implements InkstepStore {
         return new ArrayList<>();
       }
 
-      List<File> images = new ArrayList<>();
-
-      int imgCount = 0;
+      List<String> encodedData = new ArrayList<>();
 
       for (List<String> row : results) {
-        String encodedImage = row.get(0);
-
-        System.out.println("Decoding file");
-
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedImage);
-        File imageFile = new File("email" + imgCount + ".png");
-        FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
-
-        System.out.println("File created " + imageFile.getAbsolutePath());
-
-        images.add(imageFile);
-
-        imgCount++;
+        encodedData.add(row.get(0));
       }
 
-      return images;
-    } catch (ClassNotFoundException | SQLException | IOException e) {
+      return encodedData;
+    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
 

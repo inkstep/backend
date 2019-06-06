@@ -27,7 +27,7 @@ public interface InkstepStore {
 
   boolean hasGotAllImages(int journeyId);
 
-  List<File> getImagesFromJourneyId(int journeyId);
+  List<String> getImagesFromJourneyId(int journeyId);
 
 
   // Studios

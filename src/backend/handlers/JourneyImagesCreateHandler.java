@@ -5,11 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import email.JavaEmail;
 import email.JourneyMail;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import model.Validatable;
+import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
 
 public class JourneyImagesCreateHandler
@@ -31,7 +35,27 @@ public class JourneyImagesCreateHandler
     if (sendEmail) {
       System.out.println("SENDING EMAIL!");
 
-      List<File> images = store.getImagesFromJourneyId(request.getJourneyId());
+      List<String> imageData = store.getImagesFromJourneyId(request.getJourneyId());
+      List<File> images = new ArrayList<>();
+
+      int imgCount = 0;
+
+      for (String encodedImage : imageData) {
+        System.out.println("Decoding file");
+
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedImage);
+        File imageFile = new File("email" + imgCount + ".png");
+        try {
+          FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
+          System.out.println("File created " + imageFile.getAbsolutePath());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+        images.add(imageFile);
+
+        imgCount++;
+      }
 
       System.out.println("Sending " + images.size() + " pictures as attachments");
 
