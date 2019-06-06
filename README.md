@@ -46,6 +46,17 @@ Creates a new journey object. Returns an empty json {}
 | `deposit` | Whether the user is willing to put down a deposit |
 | `ref_images` | The number of reference images needed |
 
+#### `PUT /journey/image`
+
+Puts the given base64encode image in to the database
+
+#### JSON params
+
+| Param | Description |
+| ---- | ------ |
+| `journey_id` | The journey id |
+| `image_data` | The base64Encoded image |
+
 
 ## /user
 #### `PUT /user`
