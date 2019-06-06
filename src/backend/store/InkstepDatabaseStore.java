@@ -319,10 +319,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       close();
 
-      if (results.size() != 6) {
-        System.out.println("Results fetched " + results.size() + " does not match 6");
-        return new ArrayList<>();
-      }
+      System.out.println("Results fetched " + results.size());
 
       List<String> encodedData = new ArrayList<>();
 
@@ -333,9 +330,8 @@ public class InkstepDatabaseStore implements InkstepStore {
       return encodedData;
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
+      return new ArrayList<>();
     }
-
-    return new ArrayList<>();
   }
 
   @Override
