@@ -297,18 +297,22 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       DbColumn[] columns = new DbColumn[]{JNY_IMAGE_DATA};
       Condition condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
+
+      System.out.println("About to query ImageJourneys");
+
       List<List<String>> results = query(columns, condition);
 
       close();
 
       if (results.size() != 6) {
+        System.out.println("Results fetched " + results.size() + " does not match 6");
         return new ArrayList<>();
       }
 
       List<File> images = new ArrayList<>();
 
       int imgCount = 0;
-      
+
       for (List<String> row : results) {
         String encodedImage = row.get(0);
 
