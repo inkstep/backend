@@ -46,7 +46,7 @@ public class JourneyCreateHandlerTest {
       "}";
 
     when(store.createJourney(newJourney)).thenReturn(0);
-    when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name", "artist.email", 0));
+    when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name", "artist.email", 0, 1));
     when(store.getStudioFromID(0)).thenReturn(new Studio("studio.name", 1));
     when(store.getUserFromID(0)).thenReturn(new User("username", "user.emai", "user.passphrase"));
 

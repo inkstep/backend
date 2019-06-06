@@ -127,10 +127,11 @@ public class InkstepDatabaseStore implements InkstepStore {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
       while (rs.next()) {
+        int artistID = rs.getInt(1);
         int studioID = rs.getInt(2);
         String name = rs.getString(3);
         String email = rs.getString(4);
-        artists.add(new Artist(name, email, studioID));
+        artists.add(new Artist(name, email, studioID,artistID));
       }
 
       close();

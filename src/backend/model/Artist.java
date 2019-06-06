@@ -9,15 +9,11 @@ public class Artist {
   public String name;
   public String email;
 
-  public Artist(String name, String email, int studioID) {
-    this.name = name;
-    this.email = email;
-    this.studioID = studioID;
-  }
-
   @JsonCreator public Artist(@JsonProperty("name") String name, @JsonProperty("email") String email,
-    @JsonProperty("studioID") int studioID, @JsonProperty("id") int id) {
-    this(name, email, studioID);
+    @JsonProperty("studioID") int studioID, @JsonProperty("artistId") int id) {
+    this.name = name;
+    this.studioID = studioID;
+    this.email = email;
     this.id = id;
   }
 }
