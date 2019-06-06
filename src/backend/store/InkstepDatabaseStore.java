@@ -301,16 +301,17 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       close();
 
-      if (results.size() != 1) {
+      if (results.size() != 6) {
         return new ArrayList<>();
       }
 
       List<File> images = new ArrayList<>();
 
       int imgCount = 0;
+      
+      for (List<String> row : results) {
+        String encodedImage = row.get(0);
 
-      List<String> encodedImages = results.get(0);
-      for (String encodedImage : encodedImages) {
         System.out.println("Decoding file");
 
         byte[] decodedBytes = Base64.getDecoder().decode(encodedImage);
