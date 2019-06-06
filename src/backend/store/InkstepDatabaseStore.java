@@ -182,10 +182,6 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public void getJourneysForUser(User user) {
-  }
-
-  @Override
   public int createJourney(Journey journey) {
     int returnId = -1;
     try {
@@ -368,6 +364,48 @@ public class InkstepDatabaseStore implements InkstepStore {
         Integer.parseInt(row.get(7))
       );
 
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+
+  @Override
+  public List<Journey> getJourneysForUserID(int userId) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
+      Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() == 0) {
+        return null;
+      }
+
+      List<Journey> journeys = new ArrayList<>();
+
+      for (List<String> row : results) {
+
+        journeys.add(new Journey(
+          Integer.parseInt(row.get(0)),
+          Integer.parseInt(row.get(1)),
+          row.get(2),
+          row.get(3),
+          row.get(4),
+          row.get(5),
+          row.get(6),
+          Integer.parseInt(row.get(7))
+        ));
+      }
+
+      return journeys;
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
       return null;

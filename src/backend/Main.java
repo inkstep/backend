@@ -2,12 +2,7 @@ import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.put;
 
-import handlers.ArtistRetrieveHandler;
-import handlers.ArtistsRetrieveHandler;
-import handlers.JourneyCreateHandler;
-import handlers.JourneyImagesCreateHandler;
-import handlers.JourneyRetrieveHandler;
-import handlers.UserCreateHandler;
+import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
@@ -22,11 +17,15 @@ public class Main {
     });
 
     path("/journey", () -> {
-      get("", new JourneyRetrieveHandler(store));
       put("", new JourneyCreateHandler(store));
+      get("", new JourneysRetrieveHandler(store));
+      get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
     });
+    path("/user", () -> {
+      put("", new UserCreateHandler(store));
+      get("/:id", new UserRetrieveHandler(store));
+    });
 
-    put("/user", new UserCreateHandler(store));
   }
 }
