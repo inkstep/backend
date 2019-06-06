@@ -370,7 +370,6 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-
   @Override
   public List<Journey> getJourneysForUserID(int userId) {
     try {

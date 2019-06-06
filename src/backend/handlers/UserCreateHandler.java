@@ -32,7 +32,7 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
       return Answer.empty(BAD_REQUEST);
     }
 
-    User user = new User(value.email, value.email, passphrase.toString());
+    User user = new User(value.username, value.email, passphrase.toString());
 
     int userId = store.putUser(user);
 

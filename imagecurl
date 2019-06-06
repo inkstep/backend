@@ -1,0 +1,9 @@
+#!/bin/bash
+
+file="$(cat $1 | base64)"
+
+cmd="curl -X PUT -d '{\"journey_id\":\"8\",\"image_data\":\"$file\"}' localhost:4567/journey/image"
+
+echo $cmd
+
+$cmd
