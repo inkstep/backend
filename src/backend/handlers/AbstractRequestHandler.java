@@ -22,6 +22,8 @@ public abstract class AbstractRequestHandler<V extends Validatable>
   public static final int BAD_REQUEST = 400;
 
   public AbstractRequestHandler(Class<V> valueClass, InkstepStore store) {
+    System.out.println("Received request for " + valueClass.getName());
+
     this.valueClass = valueClass;
     this.store = store;
   }
@@ -40,6 +42,7 @@ public abstract class AbstractRequestHandler<V extends Validatable>
 
   public final Answer process(V value, Map<String, String> queryParams) {
     if (!value.isValid()) {
+      System.out.println("Request not valid!");
       return Answer.empty(BAD_REQUEST);
     } else {
       return processImpl(value, queryParams);

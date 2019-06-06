@@ -137,7 +137,6 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override
   public int putUser(User user) {
-    int returnId = -1;
     try {
       open();
 
@@ -158,15 +157,22 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Get the ID of the last inserted row to return
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
+
+      int returnId = -1;
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
 
       close();
+
+      return returnId;
     } catch (SQLException | ClassNotFoundException e) {
       e.printStackTrace();
     }
-    return returnId;
+
+    System.out.println("Database insert for user failed with returnId - 1");
+
+    return -1;
   }
 
   @Override
