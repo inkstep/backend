@@ -30,6 +30,7 @@ public class Main {
     });
 
     path("/studio", () -> {
+      get("", new StudiosRetrieveHandler(store));
       get("/:id", new StudioRetrieveHandler(store));
     });
 

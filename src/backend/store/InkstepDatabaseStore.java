@@ -33,8 +33,6 @@ import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -42,13 +40,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
-import org.apache.commons.io.FileUtils;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -116,6 +112,28 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override
   public void addArtist(Artist artist) {
+  }
+
+  @Override
+  public List<Studio> getStudios() {
+    List<Studio> studios = new ArrayList<>();
+    try {
+      open();
+
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM studios");
+      while (rs.next()) {
+        int id = rs.getInt(1);
+        String name = rs.getString(2);
+        studios.add(new Studio(name, id));
+      }
+
+      close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return studios;
   }
 
   @Override

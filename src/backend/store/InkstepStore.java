@@ -40,4 +40,6 @@ public interface InkstepStore {
   Artist getArtistFromID(int artistId);
 
   void addArtist(Artist artist);
+
+  List<Studio> getStudios();
 }
