@@ -104,6 +104,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         returnValues.add(dataFields);
       }
 
+      System.out.println("Results fetched " + returnValues.size());
+
       return returnValues;
     } catch (Exception e) {
       e.printStackTrace();
@@ -309,6 +311,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<String> encodedImages = results.get(0);
       for (String encodedImage : encodedImages) {
+        System.out.println("Decoding file");
+
         byte[] decodedBytes = Base64.getDecoder().decode(encodedImage);
         File imageFile = new File("email" + imgCount + ".png");
         FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
