@@ -354,6 +354,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<String> row = results.get(0);
 
       return new Journey(
+        id,
         Integer.parseInt(row.get(0)),
         Integer.parseInt(row.get(1)),
         row.get(2),
@@ -377,7 +378,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       // Build prepared statement
       DbColumn[] columns =
-        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+        new DbColumn[]{JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);
@@ -395,12 +396,13 @@ public class InkstepDatabaseStore implements InkstepStore {
         journeys.add(new Journey(
           Integer.parseInt(row.get(0)),
           Integer.parseInt(row.get(1)),
-          row.get(2),
+          Integer.parseInt(row.get(2)),
           row.get(3),
           row.get(4),
           row.get(5),
           row.get(6),
-          Integer.parseInt(row.get(7))
+          row.get(7),
+          Integer.parseInt(row.get(8))
         ));
       }
 

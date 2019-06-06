@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Journey implements Validatable {
 
+  public final int journeyID;
   public final int userID;
   public final int artistID;
 
@@ -17,6 +18,7 @@ public class Journey implements Validatable {
 
   @JsonCreator
   public Journey(
+    int journeyID,
     @JsonProperty("user_id") int userID,
     @JsonProperty("artist_id") int artistID,
     @JsonProperty("tattoo_desc") String tattooDesc,
@@ -25,6 +27,7 @@ public class Journey implements Validatable {
     @JsonProperty("availability") String availability,
     @JsonProperty("deposit") String deposit,
     @JsonProperty("ref_images") int noRefImages) {
+    this.journeyID = journeyID;
     this.userID = userID;
     this.artistID = artistID;
     this.tattooDesc = tattooDesc;
@@ -60,6 +63,7 @@ public class Journey implements Validatable {
   @Override
   public String toString() {
     return "Journey {" +
+      " ID='" + journeyID + "'" +
       " userID='" + userID + "'" +
       ", artistID='" + artistID + "'" +
       ", noRefImages='" + noRefImages + "'" +
