@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import email.JavaEmail;
 import email.JourneyMail;
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import model.Validatable;
 import store.InkstepStore;
@@ -26,7 +28,13 @@ public class JourneyImagesCreateHandler
     boolean sendEmail = store.hasGotAllImages(request.getJourneyId());
 
     if (sendEmail) {
-      new JourneyMail(store, store.getJourneyFromId(request.getJourneyId())).sendRequestEmail();
+      List<File> images = store.getImagesFromJourneyId(request.getJourneyId());
+
+      new JourneyMail(
+        store,
+        store.getJourneyFromId(request.getJourneyId()),
+        images
+      ).sendRequestEmail();
     }
 
     Map<String, String> responseMap = new HashMap<String, String>() {{

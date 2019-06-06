@@ -1,14 +1,22 @@
 package email;
 
+import java.io.File;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Address;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Properties;
+import javax.mail.internet.MimeMultipart;
 
 public class JavaEmail {
 
@@ -26,7 +34,7 @@ public class JavaEmail {
   }
 
   private void createEmailMessage(String to, String message, String subject, String toReply,
-    List<String> filenames) throws MessagingException {
+    List<File> files) throws MessagingException {
     String[] toEmails = {to};
 
     mailSession = Session.getDefaultInstance(emailProperties, null);
@@ -38,15 +46,32 @@ public class JavaEmail {
 
     Address[] replyAddresses = {new InternetAddress(toReply)};
     emailMessage.setReplyTo(replyAddresses);
-
     emailMessage.setSubject(subject);
-    emailMessage.setText(message);
+
+    // Set the body
+    BodyPart messageBodyPart = new MimeBodyPart();
+    messageBodyPart.setText(message);
+    Multipart multipart = new MimeMultipart();
+    multipart.addBodyPart(messageBodyPart);
+
+    int imgCount = 0;
+    for (File file : files) {
+      // Add attachtment
+      messageBodyPart = new MimeBodyPart();
+      DataSource source = new FileDataSource(file);
+      messageBodyPart.setDataHandler(new DataHandler(source));
+      messageBodyPart.setFileName("refImg" + imgCount + ".png");
+      multipart.addBodyPart(messageBodyPart);
+    }
+
+    // Send the complete message parts
+    emailMessage.setContent(multipart);
   }
 
   public void sendEmail(String to, String message, String subject, String toReply,
-    List<String> filenames) throws MessagingException {
+    List<File> files) throws MessagingException {
     setMailServerProperties();
-    createEmailMessage(to, message, subject, toReply, filenames);
+    createEmailMessage(to, message, subject, toReply, files);
 
     String emailHost = "smtp.gmail.com";
     String fromUser = "Inksteptattoo";

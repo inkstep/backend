@@ -1,5 +1,6 @@
 package store;
 
+import java.io.File;
 import java.util.List;
 
 import model.Artist;
@@ -20,11 +21,13 @@ public interface InkstepStore {
 
   int createJourney(Journey journey);
 
+  Journey getJourneyFromId(int id);
+
   int putJourneyImage(int journeyId, String image);
 
   boolean hasGotAllImages(int journeyId);
 
-  Journey getJourneyFromId(int id);
+  List<File> getImagesFromJourneyId(int journeyId);
 
 
   // Studios

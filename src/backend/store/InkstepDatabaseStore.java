@@ -33,6 +33,8 @@ import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -40,11 +42,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
+import org.apache.commons.io.FileUtils;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -282,6 +286,42 @@ public class InkstepDatabaseStore implements InkstepStore {
     } catch (ClassNotFoundException | SQLException e) {
       return false;
     }
+  }
+
+  @Override
+  public List<File> getImagesFromJourneyId(int journeyId) {
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{JNY_IMAGE_DATA};
+      Condition condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 1) {
+        return new ArrayList<>();
+      }
+
+      List<File> images = new ArrayList<>();
+
+      int imgCount = 0;
+
+      List<String> encodedImages = results.get(0);
+      for (String encodedImage : encodedImages) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedImage);
+        File imageFile = new File("email" + imgCount + ".png");
+        FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
+
+        images.add(imageFile);
+      }
+
+      return images;
+    } catch (ClassNotFoundException | SQLException | IOException e) {
+      e.printStackTrace();
+    }
+
+    return new ArrayList<>();
   }
 
   @Override

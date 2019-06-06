@@ -1,5 +1,7 @@
 package email;
 
+import java.io.File;
+import java.util.List;
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 
@@ -12,10 +14,12 @@ import store.InkstepStore;
 public class JourneyMail {
   private InkstepStore store;
   private Journey journey;
+  private List<File> images;
 
-  public JourneyMail(InkstepStore store, Journey journey) {
+  public JourneyMail(InkstepStore store, Journey journey, List<File> images) {
     this.store = store;
     this.journey = journey;
+    this.images = images;
   }
 
   public boolean sendRequestEmail() {
@@ -44,7 +48,7 @@ public class JourneyMail {
 
     try {
       javaEmail
-        .sendEmail(artist.email, emailTemplate, "Client Request", user.email, new ArrayList<>());
+        .sendEmail(artist.email, emailTemplate, "Client Request", user.email, images);
     } catch (MessagingException e) {
       e.printStackTrace();
       return false;
