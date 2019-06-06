@@ -325,6 +325,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         System.out.println("File created " + imageFile.getAbsolutePath());
 
         images.add(imageFile);
+
+        imgCount++;
       }
 
       return images;
