@@ -18,7 +18,7 @@ public class Journey implements Validatable {
 
   @JsonCreator
   public Journey(
-    int journeyID,
+    @JsonProperty("id") int journeyID,
     @JsonProperty("user_id") int userID,
     @JsonProperty("artist_id") int artistID,
     @JsonProperty("tattoo_desc") String tattooDesc,
