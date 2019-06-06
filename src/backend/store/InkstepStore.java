@@ -17,7 +17,7 @@ public interface InkstepStore {
 
 
   // Journeys
-  void getJourneysForUser(User user);
+  List<Journey> getJourneysForUserID(int userId);
 
   int createJourney(Journey journey);
 
