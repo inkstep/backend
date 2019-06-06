@@ -21,7 +21,7 @@ public class Main {
       get("", new JourneysRetrieveHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
-      get("/images", new JourneyImagesRetrieveHandler(store));
+      get("/images/:id", new JourneyImagesRetrieveHandler(store));
     });
     path("/user", () -> {
       put("", new UserCreateHandler(store));
