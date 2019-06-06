@@ -22,7 +22,8 @@ public class JourneyCreateHandlerTest {
 
   @Test
   public void aInvalidNewJourneyReturnsBadRequest() {
-    Journey newJourney = new Journey(0, // ArtistID
+    Journey newJourney = new Journey(1, // JourneyID
+      0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "00010", // Bad Avaliability Bitmap
         "deposit", 0 // Number of Reference Images
@@ -33,7 +34,8 @@ public class JourneyCreateHandlerTest {
 
   @Test
   public void aNewJourneyIsCorrectlyCreated() {
-    Journey newJourney = new Journey(0, // ArtistID
+    Journey newJourney = new Journey(1, // JourneyID
+      0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "0001010", // Avaliability Bitmap
         "deposit", 0 // Number of Reference Images
