@@ -12,7 +12,9 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
   }
 
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
-    List<String> imageData = store.getImagesFromJourneyId(Integer.valueOf(urlParams.get(";id")));
+    System.out.println("Attempting to retrieve images for journey_id " + urlParams.get(":id"));
+
+    List<String> imageData = store.getImagesFromJourneyId(Integer.valueOf(urlParams.get(":id")));
 
     return Answer.ok(dataToJson(imageData));
   }
