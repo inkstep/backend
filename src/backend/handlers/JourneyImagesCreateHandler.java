@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import email.JavaEmail;
 import email.JourneyMail;
 import java.io.File;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,11 @@ public class JourneyImagesCreateHandler
     boolean sendEmail = store.hasGotAllImages(request.getJourneyId());
 
     if (sendEmail) {
+      System.out.println("SENDING EMAIL!");
+
       List<File> images = store.getImagesFromJourneyId(request.getJourneyId());
+
+      System.out.println("Sending " + images.size() + " pictures as attachments");
 
       new JourneyMail(
         store,

@@ -313,6 +313,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         File imageFile = new File("email" + imgCount + ".png");
         FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
 
+        System.out.println("File created " + imageFile.getAbsolutePath());
+
         images.add(imageFile);
       }
 
