@@ -23,9 +23,14 @@ public class Main {
       put("/image", new JourneyImagesCreateHandler(store));
       get("/images/:id", new JourneyImagesRetrieveHandler(store));
     });
+
     path("/user", () -> {
       put("", new UserCreateHandler(store));
       get("/:id", new UserRetrieveHandler(store));
+    });
+
+    path("/studio", () -> {
+      get("/:id", new StudioRetrieveHandler(store));
     });
 
   }
