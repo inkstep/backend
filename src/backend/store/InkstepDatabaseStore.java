@@ -455,7 +455,6 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override
   public Studio getStudioFromID(int studioID) {
-    Studio studio = null;
     try {
       open();
 
@@ -467,7 +466,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         List<String> row1 = results.get(0);
         String name = row1.get(0);
 
-        studio = new Studio(name);
+        return new Studio(name, studioID);
       }
 
       close();
@@ -475,6 +474,6 @@ public class InkstepDatabaseStore implements InkstepStore {
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    return studio;
+    return null;
   }
 }
