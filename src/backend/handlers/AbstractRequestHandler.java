@@ -52,12 +52,13 @@ public abstract class AbstractRequestHandler<V extends Validatable>
   protected abstract Answer processImpl(V value, Map<String, String> queryParams);
 
   @Override public Object handle(Request request, Response response) throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
+
     String usableBody = request.body();
     if (usableBody.equals("")) {
       usableBody = "{}";
     }
-    V value = objectMapper.readValue(usableBody, valueClass);
+
+    V value = (new ObjectMapper()).readValue(usableBody, valueClass);
 
     Map<String, String> parameters = new HashMap<>(request.params());
 
