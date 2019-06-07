@@ -28,6 +28,7 @@ import static store.InkstepDatabaseSchema.USER_PASSPHRASE;
 import static store.InkstepDatabaseSchema.USER_PHONE;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
@@ -134,6 +135,33 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return studios;
+  }
+
+  @Override
+  public User getUserFromPassphraseEmail(String passphrase, String email) {
+    User user = null;
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{USER_ID, USER_NAME};
+      Condition condition = ComboCondition.and(BinaryCondition.equalTo(USER_PASSPHRASE, passphrase),
+        BinaryCondition.equalTo(USER_EMAIL, email));
+      List<List<String>> results = query(columns, condition);
+
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        int id = Integer.parseInt(row1.get(0));
+        String name = row1.get(1);
+
+        user = new User(name, email, passphrase, id);
+      }
+
+      close();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+    return user;
   }
 
   @Override

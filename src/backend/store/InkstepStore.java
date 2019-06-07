@@ -42,4 +42,6 @@ public interface InkstepStore {
   void addArtist(Artist artist);
 
   List<Studio> getStudios();
+
+  User getUserFromPassphraseEmail(String passphrase, String email);
 }

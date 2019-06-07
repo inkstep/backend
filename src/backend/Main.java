@@ -27,6 +27,7 @@ public class Main {
     path("/user", () -> {
       put("", new UserCreateHandler(store));
       get("/:id", new UserRetrieveHandler(store));
+      get("/:passphrase/:email", new UserLogonHandler(store));
     });
 
     path("/studio", () -> {
