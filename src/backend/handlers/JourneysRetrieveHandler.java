@@ -13,6 +13,8 @@ public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload
   }
 
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
+    System.out.println("Retrieving journeys");
+
     List<Journey> journeys = store.getJourneysForUserID(Integer.valueOf(urlParams.get("user")));
     return Answer.ok(dataToJson(journeys));
   }

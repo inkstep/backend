@@ -387,7 +387,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       close();
 
       if (results.size() == 0) {
-        return null;
+        return new ArrayList<>();
       }
 
       List<Journey> journeys = new ArrayList<>();
@@ -410,7 +410,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       return journeys;
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-      return null;
+      return new ArrayList<>();
     }
   }
 
