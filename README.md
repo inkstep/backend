@@ -77,3 +77,9 @@ Creates a new user in the database. Returns a json {"user_id":"1", "passphrase":
 ### `GET /user/:id`
 
 Retrieves the user information for the corresponding user id.
+
+## /artist
+
+### `GET /artist/:id`
+
+Retrieves the artist information for the corresponding user id.
