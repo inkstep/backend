@@ -25,9 +25,13 @@ Run ./run to run the server
 -
 ## /journey
 
-#### `GET /journey`
+#### `GET /journey/:id`
 
-Returns details of a current journey. _Note_: v1 just returns prefilled data
+Returns details of the journey corresponding to :id.
+
+#### `GET /journey/:id/images`
+
+Returns the images for the journey corresponding to :id.
 
 #### `PUT /journey`
 
@@ -46,7 +50,7 @@ Creates a new journey object. Returns an empty json {}
 | `deposit` | Whether the user is willing to put down a deposit |
 | `ref_images` | The number of reference images needed |
 
-#### `PUT /journey/image`
+### `PUT /journey/image`
 
 Puts the given base64encode image in to the database
 
@@ -59,7 +63,7 @@ Puts the given base64encode image in to the database
 
 
 ## /user
-#### `PUT /user`
+### `PUT /user`
 
 Creates a new user in the database. Returns a json {"user_id":"1", "passphrase":"XXX"}
 
@@ -69,3 +73,7 @@ Creates a new user in the database. Returns a json {"user_id":"1", "passphrase":
 | ---- | ------ |
 | `user_name` | The username |
 | `user_email` | The email |
+
+### `GET /user/:id`
+
+Retrieves the user information for the corresponding user id.
