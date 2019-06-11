@@ -459,7 +459,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_QUOTE;
+      DbColumn column = JNY_QUOTE_LOWER;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
