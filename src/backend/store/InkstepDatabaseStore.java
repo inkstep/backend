@@ -541,9 +541,9 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<String> row = results.get(0);
 
-      return new Journey(id, Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)), row.get(2),
-        row.get(3), row.get(4), row.get(5), row.get(6), Integer.parseInt(row.get(7)),
-        Integer.parseInt(row.get(8)), Integer.parseInt(row.get(9)), Integer.parseInt(row.get(10)));
+      return new Journey(id, getIntFromResult(row.get(0)), getIntFromResult(row.get(1)), row.get(2),
+        row.get(3), row.get(4), row.get(5), row.get(6), getIntFromResult(row.get(7)),
+        getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)));
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -582,5 +582,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
+  }
+
+  public int getIntFromResult(String result) {
+    if (result == null) {
+      return -1;
+    }
+
+    return Integer.parseInt(result);
   }
 }
