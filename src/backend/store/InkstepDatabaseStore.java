@@ -65,9 +65,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  private void close() throws SQLException {
+  private void close() {
     if (!connected) {
-      connection.close();
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
       connected = false;
     }
   }
@@ -111,9 +115,69 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
+  /* Artist */
   @Override
-  public void addArtist(Artist artist) {
+  public void addArtist(Artist artist) {}
+
+  @Override
+  public List<Artist> getArtists() {
+    List<Artist> artists = new ArrayList<>();
+    try {
+      open();
+
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
+
+      close();
+
+      while (rs.next()) {
+        int artistID = rs.getInt(1);
+        int studioID = rs.getInt(2);
+        String name = rs.getString(3);
+        String email = rs.getString(4);
+        artists.add(new Artist(name, email, studioID,artistID));
+      }
+
+
+    } catch (Exception e) {
+      close();
+      e.printStackTrace();
+    }
+
+    return artists;
   }
+
+  @Override
+  public Artist getArtistFromID(int artistId) {
+    Artist artist = null;
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
+      Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        int studioId = Integer.parseInt(row1.get(0));
+        String name = row1.get(1);
+        String email = row1.get(2);
+
+        artist = new Artist(name, email, studioId, artistId);
+      }
+
+
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+    return artist;
+  }
+
+
+  /* Studio */
 
   @Override
   public List<Studio> getStudios() {
@@ -123,19 +187,49 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM studios");
+
+      close();
+
       while (rs.next()) {
         int id = rs.getInt(1);
         String name = rs.getString(2);
         studios.add(new Studio(name, id));
       }
 
-      close();
     } catch (Exception e) {
+      close();
       e.printStackTrace();
     }
 
     return studios;
   }
+
+  @Override
+  public Studio getStudioFromID(int studioID) {
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{STUDIO_NAME};
+      Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        String name = row1.get(0);
+
+        return new Studio(name, studioID);
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  /* User */
 
   @Override
   public User getUserFromPassphraseEmail(String passphrase, String email) {
@@ -148,6 +242,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         BinaryCondition.equalTo(USER_EMAIL, email));
       List<List<String>> results = query(columns, condition);
 
+      close();
+
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
         int id = Integer.parseInt(row1.get(0));
@@ -156,36 +252,11 @@ public class InkstepDatabaseStore implements InkstepStore {
         user = new User(name, email, passphrase, id);
       }
 
-      close();
-
     } catch (ClassNotFoundException | SQLException e) {
+      close();
       e.printStackTrace();
     }
     return user;
-  }
-
-  @Override
-  public List<Artist> getArtists() {
-    List<Artist> artists = new ArrayList<>();
-    try {
-      open();
-
-      Statement stmt = connection.createStatement();
-      ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
-      while (rs.next()) {
-        int artistID = rs.getInt(1);
-        int studioID = rs.getInt(2);
-        String name = rs.getString(3);
-        String email = rs.getString(4);
-        artists.add(new Artist(name, email, studioID,artistID));
-      }
-
-      close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return artists;
   }
 
   @Override
@@ -211,15 +282,16 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
 
+      close();
+
       int returnId = -1;
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
 
-      close();
-
       return returnId;
     } catch (SQLException | ClassNotFoundException e) {
+      close();
       e.printStackTrace();
     }
 
@@ -227,6 +299,37 @@ public class InkstepDatabaseStore implements InkstepStore {
 
     return -1;
   }
+
+  @Override
+  public User getUserFromID(int userID) {
+    User user = null;
+    try {
+      open();
+
+      DbColumn[] columns = new DbColumn[]{USER_NAME, USER_EMAIL, USER_PASSPHRASE};
+      Condition condition = BinaryCondition.equalTo(USER_ID, userID);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 0) {
+        List<String> row1 = results.get(0);
+        String name = row1.get(0);
+        String email = row1.get(1);
+        String passphrase = row1.get(2);
+
+        user = new User(name, email, passphrase, userID);
+      }
+
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+
+    return user;
+  }
+
+  /* Journey */
 
   @Override
   public int createJourney(Journey journey) {
@@ -257,12 +360,14 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Get the ID of the last inserted row to return
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
+
+      close();
+
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
-
-      close();
     } catch (ClassNotFoundException | SQLException e) {
+      close();
       e.printStackTrace();
     }
 
@@ -291,12 +396,14 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Get the ID of the last inserted row to return
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
+
+      close();
+
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
-
-      close();
     } catch (ClassNotFoundException | SQLException e) {
+      close();
       e.printStackTrace();
     }
 
@@ -313,6 +420,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<List<String>> results = query(columns, condition);
 
       if (results.isEmpty()) {
+        close();
         return false;
       }
 
@@ -323,14 +431,16 @@ public class InkstepDatabaseStore implements InkstepStore {
       condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
       results = query(columns, condition);
 
-      final int noUploadedImgs = results.size();
-
       close();
+
+      final int noUploadedImgs = results.size();
 
       return noUploadedImgs == noRefImgs;
     } catch (ClassNotFoundException | SQLException e) {
-      return false;
+      close();
     }
+    
+    return false;
   }
 
   @Override
@@ -358,8 +468,9 @@ public class InkstepDatabaseStore implements InkstepStore {
       return encodedData;
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-      return new ArrayList<>();
     }
+
+    return new ArrayList<>();
   }
 
   @Override
@@ -396,8 +507,10 @@ public class InkstepDatabaseStore implements InkstepStore {
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
-      return null;
+      close();
     }
+
+    return null;
   }
 
   @Override
@@ -437,86 +550,10 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       return journeys;
     } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-      return new ArrayList<>();
-    }
-  }
-
-  @Override
-  public Artist getArtistFromID(int artistId) {
-    Artist artist = null;
-    try {
-      open();
-
-      DbColumn[] columns = new DbColumn[]{ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
-      Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
-      List<List<String>> results = query(columns, condition);
-
-      if (results.size() != 0) {
-        List<String> row1 = results.get(0);
-        int studioId = Integer.parseInt(row1.get(0));
-        String name = row1.get(1);
-        String email = row1.get(2);
-
-        artist = new Artist(name, email, studioId, artistId);
-      }
-
       close();
-
-    } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
-    return artist;
-  }
 
-  @Override
-  public User getUserFromID(int userID) {
-    User user = null;
-    try {
-      open();
-
-      DbColumn[] columns = new DbColumn[]{USER_NAME, USER_EMAIL, USER_PASSPHRASE};
-      Condition condition = BinaryCondition.equalTo(USER_ID, userID);
-      List<List<String>> results = query(columns, condition);
-
-      if (results.size() != 0) {
-        List<String> row1 = results.get(0);
-        String name = row1.get(0);
-        String email = row1.get(1);
-        String passphrase = row1.get(2);
-
-        user = new User(name, email, passphrase, userID);
-      }
-
-      close();
-
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-    return user;
-  }
-
-  @Override
-  public Studio getStudioFromID(int studioID) {
-    try {
-      open();
-
-      DbColumn[] columns = new DbColumn[]{STUDIO_NAME};
-      Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
-      List<List<String>> results = query(columns, condition);
-
-      if (results.size() != 0) {
-        List<String> row1 = results.get(0);
-        String name = row1.get(0);
-
-        return new Studio(name, studioID);
-      }
-
-      close();
-
-    } catch (ClassNotFoundException | SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
+    return new ArrayList<>();
   }
 }
