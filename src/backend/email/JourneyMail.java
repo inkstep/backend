@@ -26,7 +26,7 @@ public class JourneyMail {
     Artist artist = store.getArtistFromID(journey.artistID);
     User user = store.getUserFromID(journey.userID);
     Studio studio = null;
-    
+
     if (artist != null) {
       studio = store.getStudioFromID(artist.studioID);
     }
@@ -49,7 +49,7 @@ public class JourneyMail {
             + "If you would like to get in touch with " + user.name
             + " their " + "email " + "is " + user.email + "\n\n"
             + "If you want to accept this request, please reply to this email with the "
-            + "value of the quote in £ (e.g. for a quote of $1000 send '1000')\n"
+            + "range of the quote in £ (e.g. for a quote range of £1000 - £1500 send '1000-1500')\n"
             + "Sent from Inkstep on behalf of " + user.name + "\n\n";
 
     System.out.println(emailTemplate);

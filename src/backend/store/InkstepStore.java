@@ -1,12 +1,8 @@
 package store;
 
-import java.io.File;
 import java.util.List;
 
-import model.Artist;
-import model.Journey;
-import model.Studio;
-import model.User;
+import model.*;
 
 public interface InkstepStore {
 
@@ -29,13 +25,13 @@ public interface InkstepStore {
 
   List<String> getImagesFromJourneyId(int journeyId);
 
-  int getJourneyStatus(int journeyId);
+  JourneyStage getJourneyStage(int journeyId);
 
-  void updateQuote(int journeyId, String quoteString);
+  void updateQuote(int journeyId, String quoteLower, String quoteUpper);
 
   void offerAppointment(int journeyId, String appointmentString);
 
-  void updateStatus(int journeyId, int status);
+  void updateStage(int journeyId, JourneyStage stage);
 
   // Studios
   Studio getStudioFromID(int studioID);

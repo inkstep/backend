@@ -3,6 +3,7 @@ package handlers;
 
 import email.JavaEmail;
 import email.JavaMessage;
+import model.JourneyStage;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
@@ -21,19 +22,20 @@ public class EmailHandler implements Runnable {
           System.out.println("Message : " + message.getContent());
           String[] subject = message.getSubject().split(" ");
           int journeyId = Integer.parseInt(subject[subject.length - 1]);
-          int status = store.getJourneyStatus(journeyId);
+          int stage = store.getJourneyStage(journeyId).toCode();
 
-          switch (status) {
+          switch (stage) {
             case 0:
-              store.updateQuote(journeyId, message.getContent().split(" ")[0]);
-              store.updateStatus(journeyId, 1);
+              String quote = message.getContent().split(" ")[0];
+              store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
+              store.updateStage(journeyId, JourneyStage.QuoteReceived);
               break;
-            case 1:
+            case 2:
               store.offerAppointment(journeyId, message.getContent().split(" ")[0]);
-              store.updateStatus(journeyId, 2);
+              store.updateStage(journeyId, JourneyStage.AppointmentOfferReceived);
               break;
             default:
-              System.out.println("Status not implemented");
+              System.out.println("Stage not implemented");
           }
 
         } catch (Exception e) {
