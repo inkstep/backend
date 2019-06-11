@@ -2,6 +2,7 @@ package email;
 
 import com.sun.mail.pop3.POP3Store;
 import java.io.File;
+import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -14,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.ContentType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -94,7 +96,7 @@ public class JavaEmail {
     System.out.println("email sent successfully.");
   }
 
-  public void receiveEmail() {
+  public JavaMessage[] receiveEmail() {
     try {
       setMailServerProperties();
       Session emailSession = Session.getDefaultInstance(emailPopProp);
@@ -106,8 +108,14 @@ public class JavaEmail {
 
       //4) retrieve the messages from the folder in an array and print it
       Message[] messages = emailFolder.getMessages();
+      JavaMessage[] javaMessages = new JavaMessage[messages.length];
       for (int i = 0; i < messages.length; i++) {
         Message message = messages[i];
+        javaMessages[i] = new JavaMessage(
+            message.getSubject(),
+            message.getFrom()[0].toString(),
+            getTextFromMessage(message)
+        );
         message.setFlag(Flag.DELETED, true);
       }
 
@@ -115,8 +123,60 @@ public class JavaEmail {
       emailFolder.close(true);
       emailStore.close();
 
+      return javaMessages;
     } catch (Exception e) {
       System.out.println(e);
     }
+
+    return new JavaMessage[0];
+  }
+
+  private String getTextFromMessage(Message message) {
+    String result = "";
+    try {
+      if (message.isMimeType("text/plain")) {
+        result = message.getContent().toString();
+      } else if (message.isMimeType("multipart/*")) {
+        MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
+        result = getTextFromMimeMultipart(mimeMultipart);
+      }
+    } catch (MessagingException | IOException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
+  private String getTextFromMimeMultipart(
+      MimeMultipart mimeMultipart) throws IOException, MessagingException {
+
+    int count = mimeMultipart.getCount();
+    if (count == 0)
+      throw new MessagingException("Multipart with no body parts not supported.");
+    boolean multipartAlt = new ContentType(mimeMultipart.getContentType()).match("multipart/alternative");
+    if (multipartAlt)
+      // alternatives appear in an order of increasing
+      // faithfulness to the original content. Customize as req'd.
+      return getTextFromBodyPart(mimeMultipart.getBodyPart(count - 1));
+    String result = "";
+    for (int i = 0; i < count; i++) {
+      BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+      result += getTextFromBodyPart(bodyPart);
+    }
+    return result;
+  }
+
+  private String getTextFromBodyPart(
+      BodyPart bodyPart) throws IOException, MessagingException {
+
+    String result = "";
+    if (bodyPart.isMimeType("text/plain")) {
+      result = (String) bodyPart.getContent();
+    } else if (bodyPart.isMimeType("text/html")) {
+      String html = (String) bodyPart.getContent();
+      result = org.jsoup.Jsoup.parse(html).text();
+    } else if (bodyPart.getContent() instanceof MimeMultipart){
+      result = getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+    }
+    return result;
   }
 }
