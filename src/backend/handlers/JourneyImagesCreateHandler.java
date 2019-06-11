@@ -2,11 +2,9 @@ package handlers;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import email.JavaEmail;
 import email.JourneyMail;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -63,7 +61,7 @@ public class JourneyImagesCreateHandler
         store,
         store.getJourneyFromId(request.getJourneyId()),
         images
-      ).sendRequestEmail();
+      ).sendNewTattooRequestEmail();
     }
 
     Map<String, String> responseMap = new HashMap<String, String>() {{

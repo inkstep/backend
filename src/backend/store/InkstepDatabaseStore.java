@@ -7,6 +7,7 @@ import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
+import com.healthmarketscience.sqlbuilder.UpdateQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import java.sql.Connection;
@@ -21,6 +22,8 @@ import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
+
+import static store.InkstepDatabaseSchema.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -53,6 +56,12 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
     return new InsertQuery(table).addPreparedColumns(columns).validate().toString();
+  }
+
+  private String getPreparedUpdateQuery(DbTable table, DbColumn column,
+      Object value, Condition condition) {
+    return new UpdateQuery(table).addSetClause(column, value)
+        .addCondition(condition).validate().toString();
   }
 
   private List<List<String>> query(DbColumn[] columns, Condition whereClause) {
@@ -441,6 +450,100 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
+  }
+
+  @Override
+  public int getJourneyStatus(int journeyId) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+          new DbColumn[]{JNY_STATUS};
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 1) {
+        return -1;
+      }
+
+      List<String> row = results.get(0);
+
+      return Integer.parseInt(row.get(0));
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+      close();
+    }
+
+    return -1;
+  }
+
+  @Override
+  public void updateQuote(int journeyId, String quoteString) {
+    try {
+      open();
+
+      DbColumn column =  JNY_QUOTE;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void offerAppointment(int journeyId, String appointmentString) {
+    try {
+      open();
+
+      DbColumn column =  JNY_OFFERED_APPOINTMENT;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      appointmentString += ":00";
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, appointmentString, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void updateStatus(int journeyId, int status) {
+    try {
+      open();
+
+      DbColumn column =  JNY_STATUS;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, status, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
   }
 
   @Override
