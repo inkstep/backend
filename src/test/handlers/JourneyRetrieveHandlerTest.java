@@ -30,11 +30,13 @@ public class JourneyRetrieveHandlerTest {
     String availability = "0001010";
     String deposit = "deposit";
     int noRefImages = 3;
-    int status = 0;
+    int quoteLower = 80;
+    int quoteUpper = 100;
+    int stage = 0;
 
     Journey journey =
       new Journey(journeyID, artistID, studioID, description, size, position, availability, deposit,
-        noRefImages, status);
+        noRefImages, quoteLower, quoteUpper, stage);
     List<Journey> journeys = new ArrayList<>();
     journeys.add(journey);
 
@@ -50,10 +52,12 @@ public class JourneyRetrieveHandlerTest {
     assertThat(body, containsString("position : " + position));
     assertThat(body, containsString("availability : " + availability));
     assertThat(body, containsString("deposit : " + deposit));
-    assertThat(body, containsString("status : " + status));
+    assertThat(body, containsString("stage : " + stage));
     assertThat(body, containsString("journeyID : " + journeyID));
     assertThat(body, containsString("userID : " + userID));
     assertThat(body, containsString("artistID : " + artistID));
+    assertThat(body, containsString("quoteLower : " + quoteLower));
+    assertThat(body, containsString("quoteUpper : " + quoteUpper));
     assertThat(body, containsString("noRefImages : " + noRefImages));
     assertThat(body, containsString("tattooDesc : " + description));
     assertThat(body, containsString("valid : true"));
