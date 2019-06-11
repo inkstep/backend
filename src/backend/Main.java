@@ -2,6 +2,7 @@ import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.put;
 
+import email.JavaEmail;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -34,6 +35,5 @@ public class Main {
       get("", new StudiosRetrieveHandler(store));
       get("/:id", new StudioRetrieveHandler(store));
     });
-
   }
 }
