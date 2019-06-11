@@ -32,7 +32,7 @@ public class Journey implements Validatable {
     @JsonProperty("ref_images") int noRefImages,
     @JsonProperty("quote_lower") int quoteLower,
     @JsonProperty("quote_upper") int quoteUpper,
-    @JsonProperty("status") int status) {
+    @JsonProperty("stage") int stage) {
     this.journeyID = journeyID;
     this.userID = userID;
     this.artistID = artistID;
@@ -83,7 +83,7 @@ public class Journey implements Validatable {
       ", deposit='" + deposit + "'" +
       ", quoteLower='" + quoteLower + "'" +
       ", quoteUpper='" + quoteUpper + "'" +
-      ", status='" + status + "'" +
+      ", stage='" + stage + "'" +
       "}";
   }
 }
