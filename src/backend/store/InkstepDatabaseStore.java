@@ -16,6 +16,7 @@ import static store.InkstepDatabaseSchema.JNY_NO_REF_IMAGES;
 import static store.InkstepDatabaseSchema.JNY_POSITION;
 import static store.InkstepDatabaseSchema.JNY_QUOTE;
 import static store.InkstepDatabaseSchema.JNY_SIZE;
+import static store.InkstepDatabaseSchema.JNY_STATUS;
 import static store.InkstepDatabaseSchema.JNY_USER_ID;
 import static store.InkstepDatabaseSchema.JOURNEYS;
 import static store.InkstepDatabaseSchema.JOURNEY_IMAGES;
@@ -486,7 +487,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       // Build prepared statement
       DbColumn[] columns =
-          new DbColumn[]{JNY_QUOTE};
+          new DbColumn[]{JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
       List<List<String>> results = query(columns, condition);
 
