@@ -2,28 +2,17 @@ package store;
 
 import static store.InkstepDatabaseSchema.*;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.ComboCondition;
-import com.healthmarketscience.sqlbuilder.Condition;
-import com.healthmarketscience.sqlbuilder.InsertQuery;
-import com.healthmarketscience.sqlbuilder.SelectQuery;
-import com.healthmarketscience.sqlbuilder.UpdateQuery;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.healthmarketscience.sqlbuilder.*;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
-
-import static store.InkstepDatabaseSchema.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -58,10 +47,10 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new InsertQuery(table).addPreparedColumns(columns).validate().toString();
   }
 
-  private String getPreparedUpdateQuery(DbTable table, DbColumn column,
-      Object value, Condition condition) {
-    return new UpdateQuery(table).addSetClause(column, value)
-        .addCondition(condition).validate().toString();
+  private String getPreparedUpdateQuery(DbTable table, DbColumn column, Object value,
+    Condition condition) {
+    return new UpdateQuery(table).addSetClause(column, value).addCondition(condition).validate()
+      .toString();
   }
 
   private List<List<String>> query(DbColumn[] columns, Condition whereClause) {
@@ -97,11 +86,10 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   /* Artist */
-  @Override
-  public void addArtist(Artist artist) {}
+  @Override public void addArtist(Artist artist) {
+  }
 
-  @Override
-  public List<Artist> getArtists() {
+  @Override public List<Artist> getArtists() {
     List<Artist> artists = new ArrayList<>();
     try {
       open();
@@ -114,7 +102,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         int studioID = rs.getInt(2);
         String name = rs.getString(3);
         String email = rs.getString(4);
-        artists.add(new Artist(name, email, studioID,artistID));
+        artists.add(new Artist(name, email, studioID, artistID));
       }
 
       close();
@@ -126,13 +114,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     return artists;
   }
 
-  @Override
-  public Artist getArtistFromID(int artistId) {
+  @Override public Artist getArtistFromID(int artistId) {
     Artist artist = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
+      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
       List<List<String>> results = query(columns, condition);
 
@@ -156,8 +143,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* Studio */
 
-  @Override
-  public List<Studio> getStudios() {
+  @Override public List<Studio> getStudios() {
     List<Studio> studios = new ArrayList<>();
     try {
       open();
@@ -180,12 +166,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     return studios;
   }
 
-  @Override
-  public Studio getStudioFromID(int studioID) {
+  @Override public Studio getStudioFromID(int studioID) {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{STUDIO_NAME};
+      DbColumn[] columns = new DbColumn[] {STUDIO_NAME};
       Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
       List<List<String>> results = query(columns, condition);
 
@@ -210,13 +195,12 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* User */
 
-  @Override
-  public User getUserFromPassphraseEmail(String passphrase, String email) {
+  @Override public User getUserFromPassphraseEmail(String passphrase, String email) {
     User user = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{USER_ID, USER_NAME};
+      DbColumn[] columns = new DbColumn[] {USER_ID, USER_NAME};
       Condition condition = ComboCondition.and(BinaryCondition.equalTo(USER_PASSPHRASE, passphrase),
         BinaryCondition.equalTo(USER_EMAIL, email));
       List<List<String>> results = query(columns, condition);
@@ -237,8 +221,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return user;
   }
 
-  @Override
-  public int putUser(User user) {
+  @Override public int putUser(User user) {
     try {
       open();
 
@@ -260,8 +243,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
 
-      //close();
-
       int returnId = -1;
       if (rs.next()) {
         returnId = rs.getInt(1);
@@ -280,13 +261,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     return -1;
   }
 
-  @Override
-  public User getUserFromID(int userID) {
+  @Override public User getUserFromID(int userID) {
     User user = null;
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{USER_NAME, USER_EMAIL, USER_PASSPHRASE};
+      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_PASSPHRASE};
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
@@ -310,15 +290,14 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* Journey */
 
-  @Override
-  public int createJourney(Journey journey) {
+  @Override public int createJourney(Journey journey) {
     int returnId = -1;
     try {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto =
-        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+        new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -353,8 +332,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override
-  public int putJourneyImage(int journeyId, String image) {
+  @Override public int putJourneyImage(int journeyId, String image) {
     int returnId = -1;
     try {
       open();
@@ -389,12 +367,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override
-  public boolean hasGotAllImages(int journeyId) {
+  @Override public boolean hasGotAllImages(int journeyId) {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{JNY_NO_REF_IMAGES};
+      DbColumn[] columns = new DbColumn[] {JNY_NO_REF_IMAGES};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
       List<List<String>> results = query(columns, condition);
 
@@ -406,7 +383,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<String> row = results.get(0);
       final int noRefImgs = Integer.parseInt(row.get(0));
 
-      columns = new DbColumn[]{JNY_IMAGE_ID};
+      columns = new DbColumn[] {JNY_IMAGE_ID};
       condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
       results = query(columns, condition);
 
@@ -422,12 +399,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     return false;
   }
 
-  @Override
-  public List<String> getImagesFromJourneyId(int journeyId) {
+  @Override public List<String> getImagesFromJourneyId(int journeyId) {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[]{JNY_IMAGE_DATA};
+      DbColumn[] columns = new DbColumn[] {JNY_IMAGE_DATA};
       Condition condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
 
       System.out.println("About to query ImageJourneys");
@@ -452,14 +428,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  @Override
-  public int getJourneyStatus(int journeyId) {
+  @Override public int getJourneyStatus(int journeyId) {
     try {
       open();
 
       // Build prepared statement
-      DbColumn[] columns =
-          new DbColumn[]{JNY_STATUS};
+      DbColumn[] columns = new DbColumn[] {JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
       List<List<String>> results = query(columns, condition);
 
@@ -481,12 +455,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     return -1;
   }
 
-  @Override
-  public void updateQuote(int journeyId, String quoteString) {
+  @Override public void updateQuote(int journeyId, String quoteString) {
     try {
       open();
 
-      DbColumn column =  JNY_QUOTE;
+      DbColumn column = JNY_QUOTE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
@@ -502,12 +475,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  @Override
-  public void offerAppointment(int journeyId, String appointmentString) {
+  @Override public void offerAppointment(int journeyId, String appointmentString) {
     try {
       open();
 
-      DbColumn column =  JNY_OFFERED_APPOINTMENT;
+      DbColumn column = JNY_OFFERED_APPOINTMENT;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       appointmentString += ":00";
@@ -525,12 +497,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  @Override
-  public void updateStatus(int journeyId, int status) {
+  @Override public void updateStatus(int journeyId, int status) {
     try {
       open();
 
-      DbColumn column =  JNY_STATUS;
+      DbColumn column = JNY_STATUS;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       String query = getPreparedUpdateQuery(JOURNEYS, column, status, condition);
@@ -546,14 +517,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  @Override
-  public Journey getJourneyFromId(int id) {
+  @Override public Journey getJourneyFromId(int id) {
     try {
       open();
 
       // Build prepared statement
       DbColumn[] columns =
-        new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+        new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = query(columns, condition);
@@ -566,18 +536,9 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<String> row = results.get(0);
 
-      return new Journey(
-        id,
-        Integer.parseInt(row.get(0)),
-        Integer.parseInt(row.get(1)),
-        row.get(2),
-        row.get(3),
-        row.get(4),
-        row.get(5),
-        row.get(6),
-        Integer.parseInt(row.get(7)),
-        Integer.parseInt(row.get(8))
-      );
+      return new Journey(id, Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)), row.get(2),
+        row.get(3), row.get(4), row.get(5), row.get(6), Integer.parseInt(row.get(7)),
+        Integer.parseInt(row.get(8)));
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -587,14 +548,13 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  @Override
-  public List<Journey> getJourneysForUserID(int userId) {
+  @Override public List<Journey> getJourneysForUserID(int userId) {
     try {
       open();
 
       // Build prepared statement
       DbColumn[] columns =
-        new DbColumn[]{JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+        new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);
@@ -603,18 +563,9 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
-        journeys.add(new Journey(
-          Integer.parseInt(row.get(0)),
-          Integer.parseInt(row.get(1)),
-          Integer.parseInt(row.get(2)),
-          row.get(3),
-          row.get(4),
-          row.get(5),
-          row.get(6),
-          row.get(7),
-          Integer.parseInt(row.get(8)),
-          Integer.parseInt(row.get(9))
-        ));
+        journeys.add(new Journey(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)),
+          Integer.parseInt(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7),
+          Integer.parseInt(row.get(8)), Integer.parseInt(row.get(9))));
       }
 
       return journeys;
