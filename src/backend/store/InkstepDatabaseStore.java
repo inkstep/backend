@@ -455,20 +455,20 @@ public class InkstepDatabaseStore implements InkstepStore {
     return -1;
   }
 
-  @Override public void updateQuote(int journeyId, String quoteString) {
+  @Override public void updateQuote(int journeyId, String quoteLower, String quoteUpper) {
     try {
       open();
 
       DbColumn column = JNY_QUOTE_LOWER;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, column, quoteLower, condition);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
       preparedStatement.execute();
 
       column = JNY_QUOTE_UPPER;
 
-      query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
+      query = getPreparedUpdateQuery(JOURNEYS, column, quoteLower, condition);
       preparedStatement = connection.prepareStatement(query);
       preparedStatement.execute();
 
