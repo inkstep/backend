@@ -15,6 +15,7 @@ public class Journey implements Validatable {
   public final String position;
   public final String availability;
   public final String deposit;
+  public final JourneyStatus status;
 
   @JsonCreator
   public Journey(
@@ -26,7 +27,8 @@ public class Journey implements Validatable {
     @JsonProperty("position") String position,
     @JsonProperty("availability") String availability,
     @JsonProperty("deposit") String deposit,
-    @JsonProperty("ref_images") int noRefImages) {
+    @JsonProperty("ref_images") int noRefImages,
+    @JsonProperty("status") int status) {
     this.journeyID = journeyID;
     this.userID = userID;
     this.artistID = artistID;
@@ -36,6 +38,7 @@ public class Journey implements Validatable {
     this.availability = availability;
     this.deposit = deposit;
     this.noRefImages = String.valueOf(noRefImages);
+    this.status = JourneyStatus.values()[status];
   }
 
   public String humanAvailability() {

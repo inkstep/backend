@@ -44,6 +44,8 @@ public class InkstepDatabaseSchema {
   public static final DbColumn JNY_NO_REF_IMAGES = JOURNEYS.addColumn("NoRefImgs", "int", 11);
   public static final DbColumn JNY_STATUS = JOURNEYS.addColumn("Status", "int", 11);
   public static final DbColumn JNY_QUOTE = JOURNEYS.addColumn("Quote", "int", 11);
+  public static final DbColumn JNY_OFFERED_APPOINTMENT =
+    JOURNEYS.addColumn("OfferedAppointment", "datetime", 17);
 
   // Journey Images
   public static final DbTable JOURNEY_IMAGES = SCHEMA.addTable("journey_images");

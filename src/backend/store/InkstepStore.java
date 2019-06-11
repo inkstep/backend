@@ -31,7 +31,9 @@ public interface InkstepStore {
 
   int getJourneyStatus(int journeyId);
 
-  void updateQuote(int journeyId, String content);
+  void updateQuote(int journeyId, String quoteString);
+
+  void offerAppointment(int journeyId, String appointmentString);
 
   void updateStatus(int journeyId, int status);
 
