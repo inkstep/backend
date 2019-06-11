@@ -29,6 +29,9 @@ public interface InkstepStore {
 
   List<String> getImagesFromJourneyId(int journeyId);
 
+  int getJourneyStatus(int journeyId);
+
+  void updateQuote(int journeyId, String content);
 
   // Studios
   Studio getStudioFromID(int studioID);

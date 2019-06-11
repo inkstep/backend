@@ -14,6 +14,7 @@ import static store.InkstepDatabaseSchema.JNY_IMAGE_ID;
 import static store.InkstepDatabaseSchema.JNY_IMAGE_JNY_ID;
 import static store.InkstepDatabaseSchema.JNY_NO_REF_IMAGES;
 import static store.InkstepDatabaseSchema.JNY_POSITION;
+import static store.InkstepDatabaseSchema.JNY_QUOTE;
 import static store.InkstepDatabaseSchema.JNY_SIZE;
 import static store.InkstepDatabaseSchema.JNY_USER_ID;
 import static store.InkstepDatabaseSchema.JOURNEYS;
@@ -32,6 +33,7 @@ import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.InsertQuery;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
+import com.healthmarketscience.sqlbuilder.UpdateQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import java.sql.Connection;
@@ -78,6 +80,12 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   private String getPreparedInsertQuery(DbTable table, DbColumn[] columns) {
     return new InsertQuery(table).addPreparedColumns(columns).validate().toString();
+  }
+
+  private String getPreparedUpdateQuery(DbTable table, DbColumn column,
+      Object value, Condition condition) {
+    return new UpdateQuery(table).addSetClause(column, value)
+        .addCondition(condition).validate().toString();
   }
 
   private String getPreparedSelectQuery(DbColumn[] columns, Condition condition) {
@@ -469,6 +477,56 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
+  }
+
+  @Override
+  public int getJourneyStatus(int journeyId) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+          new DbColumn[]{JNY_QUOTE};
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+      List<List<String>> results = query(columns, condition);
+
+      close();
+
+      if (results.size() != 1) {
+        return -1;
+      }
+
+      List<String> row = results.get(0);
+
+      return Integer.parseInt(row.get(0));
+
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+      close();
+    }
+
+    return -1;
+  }
+
+  @Override
+  public void updateQuote(int journeyId, String content) {
+    try {
+      open();
+
+      DbColumn column =  JNY_QUOTE;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, content, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
   }
 
   @Override

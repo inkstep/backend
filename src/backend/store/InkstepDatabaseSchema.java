@@ -42,6 +42,7 @@ public class InkstepDatabaseSchema {
   public static final DbColumn JNY_AVAIL = JOURNEYS.addColumn("Availability", "varchar", 45);
   public static final DbColumn JNY_DEPOSIT = JOURNEYS.addColumn("Deposit", "varchar", 45);
   public static final DbColumn JNY_NO_REF_IMAGES = JOURNEYS.addColumn("NoRefImgs", "int", 11);
+  public static final DbColumn JNY_QUOTE = JOURNEYS.addColumn("Quote", "int", 11);
 
   // Journey Images
   public static final DbTable JOURNEY_IMAGES = SCHEMA.addTable("journey_images");
