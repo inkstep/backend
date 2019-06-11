@@ -48,7 +48,7 @@ public class JourneyMail {
 
     try {
       javaEmail
-        .sendEmail(artist.email, emailTemplate, "Client Request", user.email, images);
+        .sendEmail(artist.email, emailTemplate, "Client Request - " + journey.journeyID, "inksteptattoo@gmail.com", images);
     } catch (MessagingException e) {
       e.printStackTrace();
       return false;
