@@ -150,13 +150,20 @@ public class JavaEmail {
       MimeMultipart mimeMultipart) throws IOException, MessagingException {
 
     int count = mimeMultipart.getCount();
-    if (count == 0)
+    if (count == 0) {
       throw new MessagingException("Multipart with no body parts not supported.");
-    boolean multipartAlt = new ContentType(mimeMultipart.getContentType()).match("multipart/alternative");
-    if (multipartAlt)
+    }
+
+    boolean multipartAlt = new ContentType(
+        mimeMultipart.getContentType()
+    ).match("multipart/alternative");
+
+    if (multipartAlt) {
       // alternatives appear in an order of increasing
       // faithfulness to the original content. Customize as req'd.
       return getTextFromBodyPart(mimeMultipart.getBodyPart(count - 1));
+    }
+
     String result = "";
     for (int i = 0; i < count; i++) {
       BodyPart bodyPart = mimeMultipart.getBodyPart(i);
@@ -167,7 +174,6 @@ public class JavaEmail {
 
   private String getTextFromBodyPart(
       BodyPart bodyPart) throws IOException, MessagingException {
-
     String result = "";
     if (bodyPart.isMimeType("text/plain")) {
       result = (String) bodyPart.getContent();
