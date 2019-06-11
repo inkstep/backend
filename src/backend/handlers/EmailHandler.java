@@ -21,16 +21,16 @@ public class EmailHandler implements Runnable {
           System.out.println("Message : " + message.getContent());
           String[] subject = message.getSubject().split(" ");
           int journeyId = Integer.parseInt(subject[subject.length - 1]);
-          int status = store.getJourneyStatus(journeyId);
+          int status = store.getJourneyStage(journeyId);
 
           switch (status) {
             case 0:
               store.updateQuote(journeyId, message.getContent().split(" ")[0]);
-              store.updateStatus(journeyId, 1);
+              store.updateStage(journeyId, 1);
               break;
-            case 1:
+            case 2:
               store.offerAppointment(journeyId, message.getContent().split(" ")[0]);
-              store.updateStatus(journeyId, 2);
+              store.updateStage(journeyId, 3);
               break;
             default:
               System.out.println("Status not implemented");

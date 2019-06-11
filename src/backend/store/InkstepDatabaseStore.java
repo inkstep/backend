@@ -16,10 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Artist;
-import model.Journey;
-import model.Studio;
-import model.User;
+
+import model.*;
 
 import static store.InkstepDatabaseSchema.*;
 
@@ -454,32 +452,32 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public int getJourneyStatus(int journeyId) {
+  public Stage getJourneyStage(int journeyId) {
     try {
       open();
 
       // Build prepared statement
       DbColumn[] columns =
-          new DbColumn[]{JNY_STATUS};
+          new DbColumn[]{JNY_STAGE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
       List<List<String>> results = query(columns, condition);
 
       close();
 
       if (results.size() != 1) {
-        return -1;
+        return null;
       }
 
       List<String> row = results.get(0);
 
-      return Integer.parseInt(row.get(0));
+      return Stage.values()[Integer.parseInt(row.get(0))];
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
       close();
     }
 
-    return -1;
+    return null;
   }
 
   @Override
@@ -527,14 +525,14 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public void updateStatus(int journeyId, int status) {
+  public void updateStage(int journeyId, Stage stage) {
     try {
       open();
 
-      DbColumn column =  JNY_STATUS;
+      DbColumn column =  JNY_STAGE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, status, condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, column, stage.ordinal(), condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
