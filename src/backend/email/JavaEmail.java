@@ -180,7 +180,7 @@ public class JavaEmail {
     } else if (bodyPart.isMimeType("text/html")) {
       String html = (String) bodyPart.getContent();
       result = org.jsoup.Jsoup.parse(html).text();
-    } else if (bodyPart.getContent() instanceof MimeMultipart){
+    } else if (bodyPart.getContent() instanceof MimeMultipart) {
       result = getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
     }
     return result;
