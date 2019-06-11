@@ -15,6 +15,8 @@ public class EmailHandler implements Runnable {
       for (JavaMessage message : messages) {
         try {
           System.out.println("Message : " + message.getContent());
+          String[] subject = message.getSubject().split(" ");
+          int journeyId = Integer.parseInt(subject[subject.length - 1]);
         } catch (Exception e) {
           e.printStackTrace();
         }

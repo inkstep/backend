@@ -12,6 +12,7 @@ import model.User;
 import store.InkstepStore;
 
 public class JourneyMail {
+
   private InkstepStore store;
   private Journey journey;
   private List<File> images;
@@ -33,14 +34,21 @@ public class JourneyMail {
       return false;
     }
     String emailTemplate =
-      "Client request for " + artist.name + " from " + studio.name + "\n" + "Hi, " + artist.name
-        + "!\n" + "You have received a new client request from " + user.name + "!\n\n" + user.name
-        + " would love to get a " + journey.tattooDesc + " on their " + journey.position + " about "
-        + journey.size + " large.\n" + user.name + " is available on " + journey.humanAvailability()
-        + " and " + (journey.deposit.equals("1") ? "is" : "is not")
-        + " willing to leave a deposit\n\n" + "If you would like to get in touch with " + user.name
-        + " their " + "email " + "is " + user.email + ", or simply reply to this email!\n\n"
-        + "Happy tattoo'ing!\n\n" + "Sent from Inkstep on behalf of " + user.name;
+        "Client request for " + artist.name + " from " + studio.name + "\n"
+            + "Hi, " + artist.name
+            + "!\n" + "You have received a new client request from " + user.name
+            + "!\n\n" + user.name
+            + " would love to get a " + journey.tattooDesc + " on their "
+            + journey.position + " about "
+            + journey.size + " large.\n" + user.name + " is available on "
+            + journey.humanAvailability()
+            + " and " + (journey.deposit.equals("1") ? "is" : "is not")
+            + " willing to leave a deposit\n\n"
+            + "If you would like to get in touch with " + user.name
+            + " their " + "email " + "is " + user.email + "\n\n"
+            + "If you want to accept this request reply to this email with the "
+            + "monetary value (e.g. 1000) as your quote\n"
+            + "Sent from Inkstep on behalf of " + user.name + "\n\n";
 
     System.out.println(emailTemplate);
 
@@ -48,13 +56,13 @@ public class JourneyMail {
 
     try {
       javaEmail
-        .sendEmail(
-            artist.email,
-            emailTemplate,
-            "Client Request - " + journey.journeyID,
-            "inksteptattoo@gmail.com",
-            images
-        );
+          .sendEmail(
+              artist.email,
+              emailTemplate,
+              "Client Request - " + journey.journeyID,
+              "inksteptattoo@gmail.com",
+              images
+          );
     } catch (MessagingException e) {
       e.printStackTrace();
       return false;
