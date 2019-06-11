@@ -27,6 +27,8 @@ public class JourneyCreateHandlerTest {
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "00010", // Bad Avaliability Bitmap
         "deposit", 0, // Number of Reference Images
+        0,
+        0,
         0 // Status code
     );
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
@@ -40,6 +42,8 @@ public class JourneyCreateHandlerTest {
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "0001010", // Avaliability Bitmap
         "deposit", 0, // Number of Reference Images
+        0,
+      0,
       0 // Status code
     );
 
