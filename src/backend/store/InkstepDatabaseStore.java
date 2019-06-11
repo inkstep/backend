@@ -463,9 +463,13 @@ public class InkstepDatabaseStore implements InkstepStore {
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
-
       PreparedStatement preparedStatement = connection.prepareStatement(query);
+      preparedStatement.execute();
 
+      column = JNY_QUOTE_UPPER;
+
+      query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
+      preparedStatement = connection.prepareStatement(query);
       preparedStatement.execute();
 
       close();
