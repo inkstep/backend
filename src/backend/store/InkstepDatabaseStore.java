@@ -9,11 +9,7 @@ import java.util.List;
 import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import model.Artist;
-import model.Journey;
-import model.Studio;
-import model.User;
-import model.Stage;
+import model.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -430,7 +426,7 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public Stage getJourneyStage(int journeyId) {
+  public JourneyStage getJourneyStage(int journeyId) {
     try {
       open();
 
@@ -448,7 +444,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<String> row = results.get(0);
 
-      return Stage.values()[Integer.parseInt(row.get(0))];
+      return JourneyStage.values()[Integer.parseInt(row.get(0))];
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -501,14 +497,14 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public void updateStage(int journeyId, Stage stage) {
+  public void updateStage(int journeyId, JourneyStage stage) {
     try {
       open();
 
       DbColumn column =  JNY_STAGE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, stage.ordinal(), condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, column, stage.toCode(), condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -528,7 +524,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STAGE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = query(columns, condition);
 
@@ -559,7 +555,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STAGE};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);
 

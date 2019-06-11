@@ -25,13 +25,13 @@ public interface InkstepStore {
 
   List<String> getImagesFromJourneyId(int journeyId);
 
-  Stage getJourneyStage(int journeyId);
+  JourneyStage getJourneyStage(int journeyId);
 
   void updateQuote(int journeyId, String quoteString);
 
   void offerAppointment(int journeyId, String appointmentString);
 
-  void updateStage(int journeyId, Stage stage);
+  void updateStage(int journeyId, JourneyStage stage);
 
   // Studios
   Studio getStudioFromID(int studioID);

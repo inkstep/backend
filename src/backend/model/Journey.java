@@ -15,7 +15,7 @@ public class Journey implements Validatable {
   public final String position;
   public final String availability;
   public final String deposit;
-  public final JourneyStatus status;
+  public final JourneyStage status;
 
   @JsonCreator
   public Journey(
@@ -38,7 +38,7 @@ public class Journey implements Validatable {
     this.availability = availability;
     this.deposit = deposit;
     this.noRefImages = String.valueOf(noRefImages);
-    this.status = JourneyStatus.values()[status];
+    this.status = JourneyStage.values()[status];
   }
 
   public String humanAvailability() {
