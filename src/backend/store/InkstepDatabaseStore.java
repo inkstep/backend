@@ -569,10 +569,10 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
-        journeys.add(new Journey(Integer.parseInt(row.get(0)), Integer.parseInt(row.get(1)),
-          Integer.parseInt(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7),
-          Integer.parseInt(row.get(8)), Integer.parseInt(row.get(9)), Integer.parseInt(row.get(10)),
-            Integer.parseInt(row.get(11))));
+        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7),
+          getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)),
+          getIntFromResult(row.get(11))));
       }
 
       return journeys;
