@@ -1,31 +1,6 @@
 package store;
 
-import static store.InkstepDatabaseSchema.ARTIST_EMAIL;
-import static store.InkstepDatabaseSchema.ARTIST_ID;
-import static store.InkstepDatabaseSchema.ARTIST_NAME;
-import static store.InkstepDatabaseSchema.ARTIST_STUDIO_ID;
-import static store.InkstepDatabaseSchema.JNY_ARTIST_ID;
-import static store.InkstepDatabaseSchema.JNY_AVAIL;
-import static store.InkstepDatabaseSchema.JNY_DEPOSIT;
-import static store.InkstepDatabaseSchema.JNY_DESCRIPTION;
-import static store.InkstepDatabaseSchema.JNY_ID;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_DATA;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_ID;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_JNY_ID;
-import static store.InkstepDatabaseSchema.JNY_NO_REF_IMAGES;
-import static store.InkstepDatabaseSchema.JNY_POSITION;
-import static store.InkstepDatabaseSchema.JNY_SIZE;
-import static store.InkstepDatabaseSchema.JNY_USER_ID;
-import static store.InkstepDatabaseSchema.JOURNEYS;
-import static store.InkstepDatabaseSchema.JOURNEY_IMAGES;
-import static store.InkstepDatabaseSchema.STUDIO_ID;
-import static store.InkstepDatabaseSchema.STUDIO_NAME;
-import static store.InkstepDatabaseSchema.USERS;
-import static store.InkstepDatabaseSchema.USER_EMAIL;
-import static store.InkstepDatabaseSchema.USER_ID;
-import static store.InkstepDatabaseSchema.USER_NAME;
-import static store.InkstepDatabaseSchema.USER_PASSPHRASE;
-import static store.InkstepDatabaseSchema.USER_PHONE;
+import static store.InkstepDatabaseSchema.*;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.ComboCondition;
@@ -80,17 +55,14 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new InsertQuery(table).addPreparedColumns(columns).validate().toString();
   }
 
-  private String getPreparedSelectQuery(DbColumn[] columns, Condition condition) {
-    return new SelectQuery().addColumns(columns).addCondition(condition).validate().toString();
-  }
-
   private List<List<String>> query(DbColumn[] columns, Condition whereClause) {
     if (!connected) {
       return new ArrayList<>();
     }
     try {
-      PreparedStatement pstmt =
-        connection.prepareStatement(getPreparedSelectQuery(columns, whereClause));
+      String query =
+        new SelectQuery().addColumns(columns).addCondition(whereClause).validate().toString();
+      PreparedStatement pstmt = connection.prepareStatement(query);
 
       System.out.println(pstmt.toString());
       ResultSet rs = pstmt.executeQuery();
@@ -479,7 +451,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[]{JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = query(columns, condition);
 
@@ -500,7 +472,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         row.get(4),
         row.get(5),
         row.get(6),
-        Integer.parseInt(row.get(7))
+        Integer.parseInt(row.get(7)),
+        Integer.parseInt(row.get(8))
       );
 
     } catch (ClassNotFoundException | SQLException e) {
@@ -519,20 +492,14 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[]{JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES};
+          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STATUS};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);
 
       close();
 
-      if (results.size() == 0) {
-        return new ArrayList<>();
-      }
-
       List<Journey> journeys = new ArrayList<>();
-
       for (List<String> row : results) {
-
         journeys.add(new Journey(
           Integer.parseInt(row.get(0)),
           Integer.parseInt(row.get(1)),
@@ -542,7 +509,8 @@ public class InkstepDatabaseStore implements InkstepStore {
           row.get(5),
           row.get(6),
           row.get(7),
-          Integer.parseInt(row.get(8))
+          Integer.parseInt(row.get(8)),
+          Integer.parseInt(row.get(9))
         ));
       }
 
