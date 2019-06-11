@@ -1,5 +1,6 @@
 package handlers;
 
+import handlers.JourneyCreateHandler.Payload;
 import model.Artist;
 import model.Journey;
 import model.Studio;
@@ -11,7 +12,6 @@ import store.InkstepStore;
 
 import java.util.Collections;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,14 +22,11 @@ public class JourneyCreateHandlerTest {
 
   @Test
   public void aInvalidNewJourneyReturnsBadRequest() {
-    Journey newJourney = new Journey(1, // JourneyID
+    Payload newJourney = new Payload(
       0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "00010", // Bad Avaliability Bitmap
-        "deposit", 0, // Number of Reference Images
-        0,
-        0,
-        0 // Status code
+        "deposit", 0 // Number of Reference Images
     );
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
     assertEquals(Answer.empty(AbstractRequestHandler.BAD_REQUEST), handler.process(newJourney, Collections.emptyMap()));
@@ -37,26 +34,38 @@ public class JourneyCreateHandlerTest {
 
   @Test
   public void aNewJourneyIsCorrectlyCreated() {
-    Journey newJourney = new Journey(1, // JourneyID
+    Payload payload = new Payload(
       0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "0001010", // Avaliability Bitmap
-        "deposit", 0, // Number of Reference Images
-        0,
-      0,
-      0 // Status code
+        "deposit", 0 // Number of Reference Images
     );
 
     String expectedJson = "{\n" +
       "  \"journey_id\" : \"0\"\n" +
       "}";
 
-    when(store.createJourney(newJourney)).thenReturn(0);
+    Journey journey = new Journey(
+      -1,
+      payload.userID,
+      payload.artistID,
+      payload.tattooDesc,
+      payload.size,
+      payload.position,
+      payload.availability,
+      payload.deposit,
+      payload.noRefImages,
+      -1,
+      -1,
+      0
+    );
+
+    when(store.createJourney(journey)).thenReturn(0);
     when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name", "artist.email", 0, 1));
     when(store.getStudioFromID(0)).thenReturn(new Studio("studio.name", 1));
     when(store.getUserFromID(0)).thenReturn(new User("username", "user.emai", "user.passphrase"));
 
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
-    assertEquals(Answer.ok(expectedJson), handler.process(newJourney, Collections.emptyMap()));
+    assertEquals(Answer.ok(expectedJson), handler.process(payload, Collections.emptyMap()));
   }
 }
