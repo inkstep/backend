@@ -4,7 +4,6 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
-import handlers.JourneysRetrieveHandler;
 
 public class InkstepDatabaseSchema {
 
@@ -44,8 +43,9 @@ public class InkstepDatabaseSchema {
   public static final DbColumn JNY_DEPOSIT = JOURNEYS.addColumn("Deposit", "varchar", 45);
   public static final DbColumn JNY_NO_REF_IMAGES = JOURNEYS.addColumn("NoRefImgs", "int", 11);
   public static final DbColumn JNY_STAGE = JOURNEYS.addColumn("Stage", "int", 11);
-  public static final DbColumn JNY_QUOTE = JOURNEYS.addColumn("Quote", "int", 11);
-  public static final DbColumn JNY_OFFERED_APPOINTMENT = JOURNEYS.addColumn("OfferedAppointment", "datetime", 17);
+  public static final DbColumn JNY_QUOTE_LOWER = JOURNEYS.addColumn("QuoteLower", "int", 11);
+  public static final DbColumn JNY_OFFERED_APPOINTMENT =
+    JOURNEYS.addColumn("OfferedAppointment", "datetime", 17);
 
   // Journey Images
   public static final DbTable JOURNEY_IMAGES = SCHEMA.addTable("journey_images");
