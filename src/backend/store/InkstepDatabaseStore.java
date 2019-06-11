@@ -128,8 +128,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM artists");
 
-      close();
-
       while (rs.next()) {
         int artistID = rs.getInt(1);
         int studioID = rs.getInt(2);
@@ -138,7 +136,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         artists.add(new Artist(name, email, studioID,artistID));
       }
 
-
+      close();
     } catch (Exception e) {
       close();
       e.printStackTrace();
@@ -157,8 +155,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
       List<List<String>> results = query(columns, condition);
 
-      close();
-
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
         int studioId = Integer.parseInt(row1.get(0));
@@ -168,7 +164,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         artist = new Artist(name, email, studioId, artistId);
       }
 
-
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -188,14 +184,13 @@ public class InkstepDatabaseStore implements InkstepStore {
       Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM studios");
 
-      close();
-
       while (rs.next()) {
         int id = rs.getInt(1);
         String name = rs.getString(2);
         studios.add(new Studio(name, id));
       }
 
+      close();
     } catch (Exception e) {
       close();
       e.printStackTrace();
@@ -213,15 +208,18 @@ public class InkstepDatabaseStore implements InkstepStore {
       Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
       List<List<String>> results = query(columns, condition);
 
-      close();
+
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
         String name = row1.get(0);
 
+        close();
+
         return new Studio(name, studioID);
       }
 
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -242,8 +240,6 @@ public class InkstepDatabaseStore implements InkstepStore {
         BinaryCondition.equalTo(USER_EMAIL, email));
       List<List<String>> results = query(columns, condition);
 
-      close();
-
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
         int id = Integer.parseInt(row1.get(0));
@@ -252,6 +248,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         user = new User(name, email, passphrase, id);
       }
 
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -282,12 +279,14 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
 
-      close();
+      //close();
 
       int returnId = -1;
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
+
+      close();
 
       return returnId;
     } catch (SQLException | ClassNotFoundException e) {
@@ -310,8 +309,6 @@ public class InkstepDatabaseStore implements InkstepStore {
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
-      close();
-
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
         String name = row1.get(0);
@@ -321,6 +318,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         user = new User(name, email, passphrase, userID);
       }
 
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -361,11 +359,11 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
 
-      close();
-
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
+
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -397,11 +395,11 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
       ResultSet rs = preparedStatement.executeQuery();
 
-      close();
-
       if (rs.next()) {
         returnId = rs.getInt(1);
       }
+
+      close();
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
