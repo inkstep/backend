@@ -46,8 +46,8 @@ public class JourneyMail {
             + " willing to leave a deposit\n\n"
             + "If you would like to get in touch with " + user.name
             + " their " + "email " + "is " + user.email + "\n\n"
-            + "If you want to accept this request reply to this email with the "
-            + "monetary value (e.g. 1000) as your quote\n"
+            + "If you want to accept this request, please reply to this email with the "
+            + "value of the quote in £ (e.g. for a quote of $1000 send '1000')\n"
             + "Sent from Inkstep on behalf of " + user.name + "\n\n";
 
     System.out.println(emailTemplate);
