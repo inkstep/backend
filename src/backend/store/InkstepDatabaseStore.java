@@ -55,7 +55,7 @@ public class InkstepDatabaseStore implements InkstepStore {
   private static final String DB_PASSWORD = System.getenv("INKSTEP_AWS_DB_PW");
 
   private Connection connection;
-  private boolean connected;
+  private boolean connected = false;
 
   private void open() throws ClassNotFoundException, SQLException {
     if (!connected) {
@@ -66,7 +66,7 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   private void close() {
-    if (!connected) {
+    if (connected) {
       try {
         connection.close();
       } catch (SQLException e) {
@@ -439,7 +439,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     } catch (ClassNotFoundException | SQLException e) {
       close();
     }
-    
+
     return false;
   }
 
