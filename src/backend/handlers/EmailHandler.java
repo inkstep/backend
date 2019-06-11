@@ -28,6 +28,10 @@ public class EmailHandler implements Runnable {
               store.updateQuote(journeyId, message.getContent().split(" ")[0]);
               store.updateStatus(journeyId, 1);
               break;
+            case 1:
+              store.offerAppointment(journeyId, message.getContent().split(" ")[0]);
+              store.updateStatus(journeyId, 2);
+              break;
             default:
               System.out.println("Status not implemented");
           }

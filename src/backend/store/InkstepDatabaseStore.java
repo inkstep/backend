@@ -1,34 +1,5 @@
 package store;
 
-import static store.InkstepDatabaseSchema.ARTIST_EMAIL;
-import static store.InkstepDatabaseSchema.ARTIST_ID;
-import static store.InkstepDatabaseSchema.ARTIST_NAME;
-import static store.InkstepDatabaseSchema.ARTIST_STUDIO_ID;
-import static store.InkstepDatabaseSchema.JNY_ARTIST_ID;
-import static store.InkstepDatabaseSchema.JNY_AVAIL;
-import static store.InkstepDatabaseSchema.JNY_DEPOSIT;
-import static store.InkstepDatabaseSchema.JNY_DESCRIPTION;
-import static store.InkstepDatabaseSchema.JNY_ID;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_DATA;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_ID;
-import static store.InkstepDatabaseSchema.JNY_IMAGE_JNY_ID;
-import static store.InkstepDatabaseSchema.JNY_NO_REF_IMAGES;
-import static store.InkstepDatabaseSchema.JNY_POSITION;
-import static store.InkstepDatabaseSchema.JNY_QUOTE;
-import static store.InkstepDatabaseSchema.JNY_SIZE;
-import static store.InkstepDatabaseSchema.JNY_STATUS;
-import static store.InkstepDatabaseSchema.JNY_USER_ID;
-import static store.InkstepDatabaseSchema.JOURNEYS;
-import static store.InkstepDatabaseSchema.JOURNEY_IMAGES;
-import static store.InkstepDatabaseSchema.STUDIO_ID;
-import static store.InkstepDatabaseSchema.STUDIO_NAME;
-import static store.InkstepDatabaseSchema.USERS;
-import static store.InkstepDatabaseSchema.USER_EMAIL;
-import static store.InkstepDatabaseSchema.USER_ID;
-import static store.InkstepDatabaseSchema.USER_NAME;
-import static store.InkstepDatabaseSchema.USER_PASSPHRASE;
-import static store.InkstepDatabaseSchema.USER_PHONE;
-
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
@@ -49,6 +20,8 @@ import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
+
+import static store.InkstepDatabaseSchema.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
 
@@ -510,14 +483,37 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
-  public void updateQuote(int journeyId, String content) {
+  public void updateQuote(int journeyId, String quoteString) {
     try {
       open();
 
       DbColumn column =  JNY_QUOTE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, content, condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, column, quoteString, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void offerAppointment(int journeyId, String appointmentString) {
+    try {
+      open();
+
+      DbColumn column =  JNY_OFFERED_APPOINTMENT;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      appointmentString += ":00";
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, appointmentString, condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
