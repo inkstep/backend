@@ -468,7 +468,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       column = JNY_QUOTE_UPPER;
 
-      query = getPreparedUpdateQuery(JOURNEYS, column, quoteLower, condition);
+      query = getPreparedUpdateQuery(JOURNEYS, column, quoteUpper, condition);
       preparedStatement = connection.prepareStatement(query);
       preparedStatement.execute();
 
