@@ -26,6 +26,7 @@ public class EmailHandler implements Runnable {
           switch (status) {
             case 0:
               store.updateQuote(journeyId, message.getContent().split(" ")[0]);
+              store.updateStatus(journeyId, 1);
               break;
             default:
               System.out.println("Status not implemented");

@@ -531,6 +531,27 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   @Override
+  public void updateStatus(int journeyId, int status) {
+    try {
+      open();
+
+      DbColumn column =  JNY_STATUS;
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+
+      String query = getPreparedUpdateQuery(JOURNEYS, column, status, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+  }
+
+  @Override
   public Journey getJourneyFromId(int id) {
     try {
       open();

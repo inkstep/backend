@@ -33,6 +33,8 @@ public interface InkstepStore {
 
   void updateQuote(int journeyId, String content);
 
+  void updateStatus(int journeyId, int status);
+
   // Studios
   Studio getStudioFromID(int studioID);
 
