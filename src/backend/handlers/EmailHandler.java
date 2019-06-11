@@ -26,7 +26,8 @@ public class EmailHandler implements Runnable {
 
           switch (stage) {
             case 0:
-              store.updateQuote(journeyId, message.getContent().split(" ")[0]);
+              String quote = message.getContent().split(" ")[0];
+              store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
               store.updateStage(journeyId, JourneyStage.QuoteReceived);
               break;
             case 2:
@@ -34,7 +35,7 @@ public class EmailHandler implements Runnable {
               store.updateStage(journeyId, JourneyStage.AppointmentOfferReceived);
               break;
             default:
-              System.out.println("Status not implemented");
+              System.out.println("Stage not implemented");
           }
 
         } catch (Exception e) {
