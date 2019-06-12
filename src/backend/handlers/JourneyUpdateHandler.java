@@ -21,6 +21,7 @@ public class JourneyUpdateHandler
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
     JourneyStage newStage = JourneyStage.values()[request.getStage()];
+    store.updateStage(journeyId, newStage);
 
     if (newStage == JourneyStage.WaitingAppointmentOffer) {
       new JourneyMail(
@@ -29,9 +30,8 @@ public class JourneyUpdateHandler
               null
       ).sendQuoteAcceptedEmail();
     }
-
     Map<String, String> responseMap = new HashMap<String, String>() {{
-      put("", String.valueOf(3));
+      put("JourneyID", String.valueOf(journeyId));
     }};
 
     return Answer.ok(dataToJson(responseMap));
