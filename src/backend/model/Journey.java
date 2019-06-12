@@ -18,6 +18,7 @@ public class Journey implements Validatable {
   public final int quoteLower;
   public final int quoteUpper;
   public final JourneyStage stage;
+  public final String bookingDate;
 
   @JsonCreator
   public Journey(
@@ -32,7 +33,8 @@ public class Journey implements Validatable {
     @JsonProperty("ref_images") int noRefImages,
     @JsonProperty("quote_lower") int quoteLower,
     @JsonProperty("quote_upper") int quoteUpper,
-    @JsonProperty("stage") int stage) {
+    @JsonProperty("stage") int stage,
+    @JsonProperty("booking_date") String bookingDate) {
     this.journeyID = journeyID;
     this.userID = userID;
     this.artistID = artistID;
@@ -45,6 +47,7 @@ public class Journey implements Validatable {
     this.quoteLower = quoteLower;
     this.quoteUpper = quoteUpper;
     this.stage = JourneyStage.values()[stage];
+    this.bookingDate = bookingDate;
   }
 
   public String humanAvailability() {
@@ -84,6 +87,7 @@ public class Journey implements Validatable {
       ", quoteLower='" + quoteLower + "'" +
       ", quoteUpper='" + quoteUpper + "'" +
       ", stage='" + stage + "'" +
+      ", bookingDate='" + bookingDate + "'" +
       "}";
   }
 }

@@ -530,7 +530,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
-            JNY_STAGE};
+            JNY_STAGE, JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = query(columns, condition);
 
@@ -544,7 +544,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       return new Journey(id, getIntFromResult(row.get(0)), getIntFromResult(row.get(1)), row.get(2),
         row.get(3), row.get(4), row.get(5), row.get(6), getIntFromResult(row.get(7)),
-        getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)));
+        getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)),
+        row.get(11));
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -562,7 +563,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
-            JNY_STAGE};
+            JNY_STAGE, JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);
 
@@ -573,7 +574,7 @@ public class InkstepDatabaseStore implements InkstepStore {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
           getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7),
           getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)),
-          getIntFromResult(row.get(11))));
+          getIntFromResult(row.get(11)), row.get(12)));
       }
 
       return journeys;

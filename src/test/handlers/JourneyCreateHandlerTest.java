@@ -57,7 +57,8 @@ public class JourneyCreateHandlerTest {
       payload.noRefImages,
       -1,
       -1,
-      0
+      0,
+      null
     );
 
     when(store.createJourney(journey)).thenReturn(0);
