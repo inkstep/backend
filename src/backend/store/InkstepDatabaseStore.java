@@ -483,7 +483,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_OFFERED_APPOINTMENT;
+      DbColumn column = JNY_BOOKING_DATE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
       appointmentString += ":00";
