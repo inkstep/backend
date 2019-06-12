@@ -1,13 +1,11 @@
-import email.JavaEmail;
-import email.JavaMessage;
+import static spark.Spark.*;
+
 import handlers.*;
-import java.io.IOException;
-import javax.mail.Message;
-import javax.mail.MessagingException;
+
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
-import static spark.Spark.*;
+
 
 public class Main {
 
