@@ -6,11 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import email.JourneyMail;
 import model.JourneyStage;
 import model.Validatable;
-import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public class JourneyUpdateHandler
@@ -23,7 +20,7 @@ public class JourneyUpdateHandler
   @Override
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
-    JourneyStage newStage = JourneyStage.values()[request.Stage()];
+    JourneyStage newStage = JourneyStage.values()[request.getStage()];
 
     if (newStage == JourneyStage.WaitingAppointmentOffer) {
       new JourneyMail(
@@ -45,12 +42,12 @@ public class JourneyUpdateHandler
     private int stage;
 
     @JsonCreator
-    @JsonIgnoreProperties(ignoreUnknown=true)Payload(
+    @JsonIgnoreProperties(ignoreUnknown = true)Payload(
       @JsonProperty("stage") int newStage) {
       this.stage = newStage;
     }
 
-    public int Stage() {
+    public int getStage() {
       return stage;
     }
 
