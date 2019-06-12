@@ -542,9 +542,8 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<String> row = results.get(0);
 
       return new Journey(id, getIntFromResult(row.get(0)), getIntFromResult(row.get(1)), row.get(2),
-        row.get(3), row.get(4), row.get(5), row.get(6), getIntFromResult(row.get(7)),
-        getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)),
-        row.get(11));
+        row.get(3), row.get(4), row.get(5), getIntFromResult(row.get(6)), getIntFromResult(row.get(7)),
+        getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), row.get(11));
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -571,9 +570,9 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(7),
-          getIntFromResult(row.get(8)), getIntFromResult(row.get(9)), getIntFromResult(row.get(10)),
-          getIntFromResult(row.get(11)), row.get(12)));
+          getIntFromResult(row.get(2)),row.get(3), row.get(4), row.get(5),
+          row.get(6), getIntFromResult(row.get(7)), getIntFromResult(row.get(8)),
+          getIntFromResult(row.get(9)), getIntFromResult(row.get(10)), row.get(11)));
       }
 
       return journeys;
