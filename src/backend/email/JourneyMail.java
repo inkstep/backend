@@ -44,8 +44,7 @@ public class JourneyMail {
             + journey.position + " about "
             + journey.size + " large.\n" + user.name + " is available on "
             + journey.humanAvailability()
-            + " and " + (journey.deposit.equals("1") ? "is" : "is not")
-            + " willing to leave a deposit\n\n"
+            + " and is willing to leave a deposit\n\n"
             + "If you would like to get in touch with " + user.name
             + " their " + "email " + "is " + user.email + "\n\n"
             + "If you want to accept this request, please reply to this email with the "
