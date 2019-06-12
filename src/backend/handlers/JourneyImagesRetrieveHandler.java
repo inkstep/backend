@@ -48,7 +48,7 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
       BufferedImage after = new BufferedImage(
         image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
       AffineTransform at = new AffineTransform();
-      at.scale(2.0, 2.0);
+      at.scale(0.2, 0.2);
       AffineTransformOp scaleOp =
         new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
       after = scaleOp.filter(image, after);
