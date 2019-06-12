@@ -1,6 +1,6 @@
 package handlers;
 
-import java.awt.Image;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -46,14 +47,7 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
     List<String> resizedData = new ArrayList<>();
 
     for (BufferedImage image : images) {
-      BufferedImage after = new BufferedImage(
-        image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-      AffineTransform at = new AffineTransform();
-      at.scale(0.5, 0.5);
-      AffineTransformOp scaleOp =
-        new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-      after = scaleOp.filter(image, after);
-
+      BufferedImage after = ImageResizer.resize(image, 0.5);
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       try {
         ImageIO.write(after, "png", bos);
@@ -61,13 +55,47 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
         e.printStackTrace();
       }
 
-      try {
-        resizedData.add(new String(Base64.getEncoder().encode(bos.toByteArray()), "UTF-8"));
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }
+      resizedData.add(
+        new String(Base64.getEncoder().encode(bos.toByteArray()),
+        StandardCharsets.UTF_8));
     }
 
     return Answer.ok(dataToJson(resizedData));
   }
+}
+
+class ImageResizer {
+
+  /**
+   * Resizes an image to a absolute width and height (the image may not be
+   * proportional)
+   * @param scaledWidth absolute width in pixels
+   * @param scaledHeight absolute height in pixels
+   */
+  private static BufferedImage resize(BufferedImage inputImage, int scaledWidth, int scaledHeight) {
+
+    // creates output image
+    BufferedImage outputImage = new BufferedImage(scaledWidth,
+      scaledHeight, inputImage.getType());
+
+    // scales the input image to the output image
+    Graphics2D g2d = outputImage.createGraphics();
+    g2d.drawImage(inputImage, 0, 0, scaledWidth, scaledHeight, null);
+    g2d.dispose();
+
+    // writes to output file
+    return outputImage;
+  }
+
+  /**
+   * Resizes an image by a percentage of original size (proportional).
+   * @param percent a double number specifies percentage of the output image
+   * over the input image.
+   */
+  public static BufferedImage resize(BufferedImage inputImage, double percent) {
+    int scaledWidth = (int) (inputImage.getWidth() * percent);
+    int scaledHeight = (int) (inputImage.getHeight() * percent);
+    return resize(inputImage, scaledWidth, scaledHeight);
+  }
+
 }
