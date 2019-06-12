@@ -36,7 +36,7 @@ public class JourneyRetrieveHandlerTest {
 
     Journey journey =
       new Journey(journeyID, artistID, studioID, description, size, position, availability, deposit,
-        noRefImages, quoteLower, quoteUpper, stage);
+        noRefImages, quoteLower, quoteUpper, stage, null);
     List<Journey> journeys = new ArrayList<>();
     journeys.add(journey);
 
