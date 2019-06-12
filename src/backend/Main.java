@@ -1,7 +1,3 @@
-import static spark.Spark.get;
-import static spark.Spark.path;
-import static spark.Spark.put;
-
 import email.JavaEmail;
 import email.JavaMessage;
 import handlers.*;
@@ -10,6 +6,8 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
+
+import static spark.Spark.*;
 
 public class Main {
 
@@ -27,6 +25,7 @@ public class Main {
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
+      patch("/:id", new JourneyUpdateHandler(store));
     });
 
     path("/user", () -> {
