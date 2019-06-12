@@ -55,7 +55,7 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
 
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       try {
-        ImageIO.write(after, "png", bos );
+        ImageIO.write(after, "png", bos);
       } catch (IOException e) {
         e.printStackTrace();
       }
