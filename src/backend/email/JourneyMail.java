@@ -79,8 +79,8 @@ public class JourneyMail {
     }
 
     String emailContent =
-      "Hey " + artist.name + ",\n\n" + user.name + " has agreed to your quote of "+ journey.quoteLower + "-"
-              + journey.quoteUpper+ ".\n\n"
+      "Hey " + artist.name + ",\n\n" + user.name + " has agreed to your quote of "
+              + journey.quoteLower + "-" + journey.quoteUpper + ".\n\n"
               + "As a reminder, they are available on " + journey.humanAvailability() + "\n"
               + "To get them booked in, please reply to this email with an appointment time in the "
               + "format: YY-MM-DD HR:MN"
