@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -52,11 +53,15 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
         new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
       after = scaleOp.filter(image, after);
 
-      WritableRaster wr = after.getRaster();
-      DataBufferByte data   = (DataBufferByte) wr.getDataBuffer();
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      try {
+        ImageIO.write(after, "png", bos );
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
 
       try {
-        resizedData.add(new String(Base64.getEncoder().encode(data.getData()), "UTF-8"));
+        resizedData.add(new String(Base64.getEncoder().encode(bos.toByteArray()), "UTF-8"));
       } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
