@@ -20,13 +20,13 @@ public class EmailHandler implements Runnable {
       for (JavaMessage message : messages) {
         try {
           System.out.println("Message : " + message.getContent());
-          String[] subject = message.getSubject().split(" ");
+          String[] subject = message.getSubject().split(" |\n");
           int journeyId = Integer.parseInt(subject[subject.length - 1]);
           int stage = store.getJourneyStage(journeyId).toCode();
 
           switch (stage) {
             case 0:
-              String quote = message.getContent().split(" ")[0];
+              String quote = message.getContent().split(" |\n")[0];
               store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
               store.updateStage(journeyId, JourneyStage.QuoteReceived);
               break;
