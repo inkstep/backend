@@ -23,6 +23,7 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
     super(EmptyPayload.class, store);
   }
 
+  synchronized
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
     System.out.println("Attempting to retrieve images for journey_id " + urlParams.get(":id"));
 
