@@ -79,12 +79,13 @@ public class JourneyMail {
     }
 
     String emailContent =
-      "Hey " + artist.name + ",\n\n" + user.name + " has agreed to your quote of " + ".\n\n"
-        + "As a reminder, they are available on " + journey.humanAvailability() + "\n"
-        + "To get them booked in, please reply to this email with an appointment time in the "
-        + "format: YY-MM-DD HR:MN"
-        + "\n(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
-        + "Sent from inkstep. on behalf of " + user.name + "\n\n";
+      "Hey " + artist.name + ",\n\n" + user.name + " has agreed to your quote of "+ journey.quoteLower + "-"
+              + journey.quoteUpper+ ".\n\n"
+              + "As a reminder, they are available on " + journey.humanAvailability() + "\n"
+              + "To get them booked in, please reply to this email with an appointment time in the "
+              + "format: YY-MM-DD HR:MN"
+              + "\n(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
+              + "Sent from inkstep. on behalf of " + user.name + "\n\n";
 
     System.out.println(emailContent);
 

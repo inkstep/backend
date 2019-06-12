@@ -42,8 +42,9 @@ public class JourneyUpdateHandler
     private int stage;
 
     @JsonCreator
-    @JsonIgnoreProperties(ignoreUnknown = true)Payload(
-      @JsonProperty("stage") int newStage) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    Payload(
+      @JsonProperty("Stage") int newStage) {
       this.stage = newStage;
     }
 
