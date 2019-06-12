@@ -27,7 +27,7 @@ public class JourneyUpdateHandler
       new JourneyMail(
               store,
               store.getJourneyFromId(journeyId),
-              null
+              new ArrayList<>()
       ).sendQuoteAcceptedEmail();
     }
     Map<String, String> responseMap = new HashMap<String, String>() {{
