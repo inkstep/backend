@@ -26,7 +26,7 @@ public class JourneyCreateHandlerTest {
       0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "00010", // Bad Avaliability Bitmap
-        "deposit", 0 // Number of Reference Images
+          0 // Number of Reference Images
     );
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
     assertEquals(Answer.empty(AbstractRequestHandler.BAD_REQUEST), handler.process(newJourney, Collections.emptyMap()));
@@ -38,7 +38,7 @@ public class JourneyCreateHandlerTest {
       0, // ArtistID
         0, // StudioID
         "tattoo.description", "tattoo.size", "tattoo.position", "0001010", // Avaliability Bitmap
-        "deposit", 0 // Number of Reference Images
+          0 // Number of Reference Images
     );
 
     String expectedJson = "{\n" +
@@ -53,7 +53,6 @@ public class JourneyCreateHandlerTest {
       payload.size,
       payload.position,
       payload.availability,
-      payload.deposit,
       payload.noRefImages,
       -1,
       -1,

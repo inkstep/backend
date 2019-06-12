@@ -14,7 +14,6 @@ public class Journey implements Validatable {
   public final String size;
   public final String position;
   public final String availability;
-  public final String deposit;
   public final int quoteLower;
   public final int quoteUpper;
   public final JourneyStage stage;
@@ -29,7 +28,6 @@ public class Journey implements Validatable {
     @JsonProperty("size") String size,
     @JsonProperty("position") String position,
     @JsonProperty("availability") String availability,
-    @JsonProperty("deposit") String deposit,
     @JsonProperty("ref_images") int noRefImages,
     @JsonProperty("quote_lower") int quoteLower,
     @JsonProperty("quote_upper") int quoteUpper,
@@ -42,7 +40,6 @@ public class Journey implements Validatable {
     this.size = size;
     this.position = position;
     this.availability = availability;
-    this.deposit = deposit;
     this.noRefImages = String.valueOf(noRefImages);
     this.quoteLower = quoteLower;
     this.quoteUpper = quoteUpper;
@@ -83,7 +80,6 @@ public class Journey implements Validatable {
       ", size='" + size + "'" +
       ", position='" + position + "'" +
       ", availability='" + availability + "'" +
-      ", deposit='" + deposit + "'" +
       ", quoteLower='" + quoteLower + "'" +
       ", quoteUpper='" + quoteUpper + "'" +
       ", stage='" + stage + "'" +

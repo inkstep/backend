@@ -295,7 +295,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_STAGE};
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_STAGE};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -306,9 +306,8 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement.setString(4, journey.size);
       preparedStatement.setString(5, journey.position);
       preparedStatement.setString(6, journey.availability);
-      preparedStatement.setString(7, journey.deposit);
-      preparedStatement.setString(8, journey.noRefImages);
-      preparedStatement.setInt(9, journey.stage.toCode());
+      preparedStatement.setString(7, journey.noRefImages);
+      preparedStatement.setInt(8, journey.stage.toCode());
 
       // Execute the insert statement
       preparedStatement.execute();
@@ -529,7 +528,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
             JNY_STAGE, JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = query(columns, condition);
@@ -562,7 +561,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_DEPOSIT, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
             JNY_STAGE, JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = query(columns, condition);

@@ -29,7 +29,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       payload.size,
       payload.position,
       payload.availability,
-      payload.deposit,
       payload.noRefImages,
       -1,
       -1,
@@ -55,7 +54,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
     public final String size;
     public final String position;
     public final String availability;
-    public final String deposit;
 
     @JsonCreator
     public Payload(
@@ -65,7 +63,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       @JsonProperty("size") String size,
       @JsonProperty("position") String position,
       @JsonProperty("availability") String availability,
-      @JsonProperty("deposit") String deposit,
       @JsonProperty("ref_images") int noRefImages) {
       this.userID = userID;
       this.artistID = artistID;
@@ -73,7 +70,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       this.size = size;
       this.position = position;
       this.availability = availability;
-      this.deposit = deposit;
       this.noRefImages = noRefImages;
     }
 
@@ -109,7 +105,6 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
         ", size='" + size + "'" +
         ", position='" + position + "'" +
         ", availability='" + availability + "'" +
-        ", deposit='" + deposit + "'" +
         "}";
     }
   }
