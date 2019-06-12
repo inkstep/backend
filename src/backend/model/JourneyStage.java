@@ -8,9 +8,7 @@ public enum JourneyStage {
   WaitingAppointmentOffer,
   AppointmentOfferReceived,
   AppointmentBooked,
-  ImmediateAftercare,
-  WeekOfAftercare,
-  MonthOfAftercare,
+  Aftercare,
   Healed;
 
   @JsonValue
