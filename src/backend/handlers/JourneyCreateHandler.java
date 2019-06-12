@@ -33,7 +33,8 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       payload.noRefImages,
       -1,
       -1,
-      JourneyStage.WaitingQuote.toCode()
+      JourneyStage.WaitingQuote.toCode(),
+      null
     );
 
     int id = store.createJourney(journey);
