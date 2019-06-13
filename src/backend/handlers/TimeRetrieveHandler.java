@@ -8,8 +8,8 @@ import store.InkstepStore;
 
 public class TimeRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
-  public TimeRetrieveHandler(Class<EmptyPayload> valueClass, InkstepStore store) {
-    super(valueClass, store);
+  public TimeRetrieveHandler(InkstepStore store) {
+    super(EmptyPayload.class, store);
   }
 
   @Override
