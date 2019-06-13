@@ -9,7 +9,8 @@ public enum JourneyStage {
   AppointmentOfferReceived,
   AppointmentBooked,
   Aftercare,
-  Healed;
+  Healed,
+  Finished;
 
   @JsonValue
   public int toCode() {
