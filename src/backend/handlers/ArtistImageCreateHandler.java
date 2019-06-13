@@ -43,7 +43,7 @@ public class ArtistImageCreateHandler extends AbstractRequestHandler<Payload> {
     // TODO(DJRHails): Add proper validation for Journey Payload
     @Override
     public boolean isValid() {
-      return artistID > 0;
+      return artistID >= 0;
     }
 
     @Override
