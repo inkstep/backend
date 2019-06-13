@@ -2,6 +2,12 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class Journey implements Validatable {
 
@@ -16,7 +22,7 @@ public class Journey implements Validatable {
   public final String availability;
   public final int quoteLower;
   public final int quoteUpper;
-  public final JourneyStage stage;
+  public JourneyStage stage;
   public final String bookingDate;
 
   @JsonCreator
@@ -43,8 +49,8 @@ public class Journey implements Validatable {
     this.noRefImages = String.valueOf(noRefImages);
     this.quoteLower = quoteLower;
     this.quoteUpper = quoteUpper;
-    this.stage = JourneyStage.values()[stage];
     this.bookingDate = bookingDate;
+    this.stage = JourneyStage.values()[stage];
   }
 
   public String humanAvailability() {
