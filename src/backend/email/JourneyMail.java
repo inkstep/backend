@@ -39,7 +39,9 @@ public class JourneyMail {
     return true;
   }
 
-  public static boolean sendNewTattooRequestEmail(InkstepStore store, Journey journey, List<File> images) {
+  public static boolean sendNewTattooRequestEmail(
+    InkstepStore store, Journey journey, List<File> images
+  ) {
     Artist artist = store.getArtistFromID(journey.artistID);
     User user = store.getUserFromID(journey.userID);
     Studio studio = null;
