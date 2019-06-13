@@ -502,7 +502,12 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       System.out.println("Appointment String was: " + appointmentString);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, JNY_BOOKING_DATE, appointmentString, condition);
+      String query = getPreparedUpdateQuery(
+        JOURNEYS,
+        JNY_BOOKING_DATE,
+        appointmentString,
+        condition
+      );
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
