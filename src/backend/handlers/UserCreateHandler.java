@@ -1,15 +1,12 @@
 package handlers;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import model.User;
 import model.Validatable;
-import model.Passphrase;
 import store.InkstepStore;
 
 public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.Payload> {
@@ -21,24 +18,13 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
     this.store = store;
   }
 
-  @Override
-  protected Answer processImpl(Payload value, Map<String, String> queryParams) {
-
-    Passphrase passphrase;
-    try {
-      passphrase = Passphrase.generate();
-    } catch (IOException e1) {
-      e1.printStackTrace();
-      return Answer.empty(BAD_REQUEST);
-    }
-
-    User user = new User(value.username, value.email, passphrase.toString(), value.token);
+  @Override protected Answer processImpl(Payload value, Map<String, String> queryParams) {
+    User user = new User(value.username, value.email, value.token);
 
     int userId = store.putUser(user);
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("user_id", String.valueOf(userId));
-      put("user_passphrase", passphrase.toString());
     }};
 
     return Answer.ok(dataToJson(responseMap));
@@ -50,21 +36,15 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
     public String username;
     public String token;
 
-    @JsonCreator
-    Payload(
-      @JsonProperty("user_name") String username,
-      @JsonProperty("user_email") String userEmail,
-      @JsonProperty("token") String token
-    ) {
+    @JsonCreator Payload(@JsonProperty("user_name") String username,
+      @JsonProperty("user_email") String userEmail, @JsonProperty("token") String token) {
       this.username = username;
       this.email = userEmail;
       this.token = token;
     }
 
-    @Override
-    public boolean isValid() {
+    @Override public boolean isValid() {
       return true;
     }
-
   }
 }

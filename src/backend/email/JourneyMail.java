@@ -1,5 +1,7 @@
 package email;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.util.List;
@@ -8,21 +10,38 @@ import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
+import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
 
 public class JourneyMail {
+  public static boolean sendPictureEmail(String imageData, Artist artist, User user) {
+    byte[] decodedBytes = Base64.getDecoder().decode(imageData);
+    File imageFile = new File("tattoo_image.png");
+    try {
+      FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
+      String emailTemplate =
+        "Client tattoo image for " + artist.name + "\n"
+          + "Hi, " + artist.name + "!\n"
+          + user.id + " loved their tattoo so much they have included a photo!\n\n"
+          + "Another happy customer eh?"
+          + "Sent from inkstep. on behalf of " + user.name + "\n\n";
 
-  private InkstepStore store;
-  private Journey journey;
-  private List<File> images;
+      JavaEmail javaEmail = new JavaEmail();
 
-  public JourneyMail(InkstepStore store, Journey journey, List<File> images) {
-    this.store = store;
-    this.journey = journey;
-    this.images = images;
+      List<File> imageList = new ArrayList<>();
+      imageList.add(imageFile);
+
+      javaEmail.sendEmail(artist.email, emailTemplate, "Tattoo image!", user.email, imageList);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return true;
   }
 
-  public boolean sendNewTattooRequestEmail() {
+  public static boolean sendNewTattooRequestEmail(
+    InkstepStore store, Journey journey, List<File> images
+  ) {
     Artist artist = store.getArtistFromID(journey.artistID);
     User user = store.getUserFromID(journey.userID);
     Studio studio = null;

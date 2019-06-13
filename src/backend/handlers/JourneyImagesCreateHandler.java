@@ -58,11 +58,11 @@ public class JourneyImagesCreateHandler
 
       System.out.println("Sending " + images.size() + " pictures as attachments");
 
-      new JourneyMail(
+      JourneyMail.sendNewTattooRequestEmail(
         store,
         store.getJourneyFromId(request.getJourneyId()),
         images
-      ).sendNewTattooRequestEmail();
+      );
     }
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
