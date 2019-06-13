@@ -36,6 +36,7 @@ public class Main {
     path("/journey", () -> {
       put("", new JourneyCreateHandler(store));
       get("", new JourneysRetrieveHandler(store));
+      delete("/:id", new JourneyDeleteHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
