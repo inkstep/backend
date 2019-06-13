@@ -1,19 +1,15 @@
+import static spark.Spark.*;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static spark.Spark.*;
-
 
 public class Main {
 
