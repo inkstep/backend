@@ -1,6 +1,7 @@
 package handlers;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import model.Journey;
 import model.JourneyStage;
@@ -20,7 +21,7 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
     if (journey.stage == JourneyStage.AppointmentBooked) {
       DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
       LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
-      LocalDateTime localDateTime = LocalDateTime.now();
+      LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
 
       if (localDateTime.isAfter(date)) {
         journey.stage = JourneyStage.Aftercare;
@@ -29,7 +30,7 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
     } else if (journey.stage == JourneyStage.Aftercare) {
       DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
       LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
-      LocalDateTime localDateTime = LocalDateTime.now();
+      LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
       LocalDateTime doneDate = date.plusDays(31);
 
       if (localDateTime.isAfter(doneDate)) {

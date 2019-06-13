@@ -21,6 +21,7 @@ public class JourneyImagesCreateHandler
     super(Payload.class, store);
   }
 
+  synchronized
   @Override
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     System.out.println("Received img for journey " + request.getJourneyId());

@@ -53,8 +53,11 @@ public class Main {
       get("/:id", new StudioRetrieveHandler(store));
     });
 
+    path("/time", () -> {
+      get("", new TimeRetrieveHandler(store));
+    });
+
     Thread emailThread = new Thread(new EmailChecker());
     emailThread.run();
   }
 }
-
