@@ -67,38 +67,4 @@ public class JourneyMail {
 
     return true;
   }
-
-//  public boolean sendQuoteAcceptedEmail() {
-//    Artist artist = store.getArtistFromID(journey.artistID);
-//    User user = store.getUserFromID(journey.userID);
-//    Studio studio = null;
-//    if (artist != null) {
-//      studio = store.getStudioFromID(artist.studioID);
-//    }
-//    if (artist == null || user == null || studio == null) {
-//      return false;
-//    }
-//
-//    String emailContent =
-//      "Hey " + artist.name + ",\n\n" + user.name + " has agreed to your quote of "
-//              + journey.quoteLower + "-" + journey.quoteUpper + ".\n\n"
-//              + "As a reminder, they are available on " + journey.humanAvailability() + "\n"
-//              + "To get them booked in, please reply to this email with an appointment time in the "
-//              + "format: YY-MM-DD HR:MN"
-//              + "\n(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
-//              + "Sent from inkstep. on behalf of " + user.name + "\n\n";
-//
-//    System.out.println(emailContent);
-//
-//    JavaEmail javaEmail = new JavaEmail();
-//
-//    try {
-//      javaEmail.sendEmail(artist.email, emailContent, "Quote Accepted - " + journey.journeyID,
-//        "inksteptattoo@gmail.com", images);
-//    } catch (MessagingException e) {
-//      e.printStackTrace();
-//      return false;
-//    }
-//    return true;
-//  }
 }
