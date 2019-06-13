@@ -14,21 +14,27 @@ public class EmailHandler implements Runnable {
 
   @Override
   public void run() {
+    int count = 0;
     while (true) {
+      System.out.println("Checking emails for the " + count + " time ...");
+      count++;
+
       JavaMessage[] messages = javaEmail.receiveEmail();
 
       for (JavaMessage message : messages) {
         try {
           System.out.println("Message : " + message.getContent());
-          String[] subject = message.getSubject().split(" |\n");
+          String[] subject = message.getSubject().split("[ \n\r]");
           int journeyId = Integer.parseInt(subject[subject.length - 1]);
           int stage = store.getJourneyStage(journeyId).toCode();
 
           switch (stage) {
             case 0:
-              String quote = message.getContent().split(" |\n")[0];
-              String dateTime = message.getContent().split(" |\n")[1] + " "
-                      + message.getContent().split(" |\n")[2];
+              String quote = message.getContent().split("[ \n\r]")[0];
+              String dateTime = message.getContent().split("[ \n\r]")[1] + " "
+                      + message.getContent().split("[ \n\r]")[2];
+              System.out.println(quote);
+              System.out.println(dateTime);
               store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
               store.offerAppointment(journeyId, dateTime);
               store.updateStage(journeyId, JourneyStage.QuoteReceived);
@@ -44,7 +50,7 @@ public class EmailHandler implements Runnable {
 
       /* Sleep for one minute */
       try {
-        Thread.sleep(1000 * 60);
+        Thread.sleep(1000 * 10);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
 import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
@@ -496,12 +498,11 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_BOOKING_DATE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      appointmentString += ":00";
+      System.out.println("Appointment String was: " + appointmentString);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, appointmentString, condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, JNY_BOOKING_DATE, appointmentString, condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -519,16 +520,16 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_STAGE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, stage.toCode(), condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, JNY_STAGE, stage.toCode(), condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
       preparedStatement.execute();
 
       close();
+
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
