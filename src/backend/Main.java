@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import email.EmailChecker;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -36,6 +37,7 @@ public class Main {
     path("/journey", () -> {
       put("", new JourneyCreateHandler(store));
       get("", new JourneysRetrieveHandler(store));
+      delete("/:id", new JourneyDeleteHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
@@ -45,7 +47,6 @@ public class Main {
     path("/user", () -> {
       put("", new UserCreateHandler(store));
       get("/:id", new UserRetrieveHandler(store));
-      get("/:passphrase/:email", new UserLogonHandler(store));
     });
 
     path("/studio", () -> {
@@ -57,8 +58,7 @@ public class Main {
       get("", new TimeRetrieveHandler(store));
     });
 
-    Thread emailThread = new Thread(new EmailHandler());
+    Thread emailThread = new Thread(new EmailChecker());
     emailThread.run();
   }
 }
-

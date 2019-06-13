@@ -11,6 +11,7 @@ import model.Journey;
 import model.JourneyStage;
 import model.User;
 import model.Validatable;
+import notification.UserNotifier;
 import store.InkstepStore;
 
 import java.util.*;
@@ -32,22 +33,8 @@ public class JourneyUpdateHandler
     Journey j = store.getJourneyFromId(journeyId);
     User u = store.getUserFromID(j.userID);
 
-    // See documentation on defining a message payload.
-    Message message = Message.builder()
-      .putData("score", "850")
-      .putData("time", "2:45")
-      .setToken(u.token)
-      .build();
-
-    // Send a message to the device corresponding to the provided
-    // registration token.
-    String response = null;
-    try {
-      response = FirebaseMessaging.getInstance().send(message);
-    } catch (FirebaseMessagingException e) {
-      e.printStackTrace();
-    }
-    System.out.println("Sent notification due to update stage: " + response);
+    UserNotifier un = new UserNotifier(u);
+    un.notifyStage(j, j.stage);
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("JourneyID", String.valueOf(journeyId));

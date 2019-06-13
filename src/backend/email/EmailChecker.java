@@ -1,13 +1,16 @@
-package handlers;
+package email;
 
 
 import email.JavaEmail;
 import email.JavaMessage;
+import model.Journey;
 import model.JourneyStage;
+import model.User;
+import notification.UserNotifier;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
 
-public class EmailHandler implements Runnable {
+public class EmailChecker implements Runnable {
 
   private JavaEmail javaEmail = new JavaEmail();
   private InkstepStore store = new InkstepDatabaseStore();
@@ -35,9 +38,17 @@ public class EmailHandler implements Runnable {
                       + message.getContent().split("[ \n\r]")[2];
               System.out.println(quote);
               System.out.println(dateTime);
+
               store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
               store.offerAppointment(journeyId, dateTime);
               store.updateStage(journeyId, JourneyStage.QuoteReceived);
+
+              // Notify the user's device
+              Journey j = store.getJourneyFromId(journeyId);
+              User u = store.getUserFromID(j.userID);
+              UserNotifier un = new UserNotifier(u);
+              un.notifyStage(j, JourneyStage.QuoteReceived);
+
               break;
             default:
               System.out.println("Stage not implemented");

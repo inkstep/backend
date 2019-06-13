@@ -33,6 +33,7 @@ public interface InkstepStore {
 
   void updateStage(int journeyId, JourneyStage stage);
 
+
   // Studios
   Studio getStudioFromID(int studioID);
 
@@ -45,6 +46,4 @@ public interface InkstepStore {
   void addArtist(Artist artist);
 
   List<Studio> getStudios();
-
-  User getUserFromPassphraseEmail(String passphrase, String email);
 }
