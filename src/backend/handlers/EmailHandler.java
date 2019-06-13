@@ -27,12 +27,11 @@ public class EmailHandler implements Runnable {
           switch (stage) {
             case 0:
               String quote = message.getContent().split(" |\n")[0];
+              String dateTime = message.getContent().split(" |\n")[1] + " "
+                      + message.getContent().split(" |\n")[2];
               store.updateQuote(journeyId, quote.split("-")[0], quote.split("-")[1]);
+              store.offerAppointment(journeyId, dateTime);
               store.updateStage(journeyId, JourneyStage.QuoteReceived);
-              break;
-            case 2:
-              store.offerAppointment(journeyId, message.getContent().split(" ")[0]);
-              store.updateStage(journeyId, JourneyStage.AppointmentOfferReceived);
               break;
             default:
               System.out.println("Stage not implemented");
