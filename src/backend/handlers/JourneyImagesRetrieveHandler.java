@@ -42,7 +42,7 @@ public class JourneyImagesRetrieveHandler extends AbstractRequestHandler<EmptyPa
     List<String> resizedData = new ArrayList<>();
 
     for (BufferedImage image : images) {
-      BufferedImage after = ImageResizer.resize(image, 100, 100);
+      BufferedImage after = ImageResizer.resize(image, 200, 200);
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       try {
         ImageIO.write(after, "png", bos);
