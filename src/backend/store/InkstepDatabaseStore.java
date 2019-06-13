@@ -6,8 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
 import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
@@ -52,7 +50,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       .toString();
   }
 
-  private List<List<String>> query(DbColumn[] columns, Condition whereClause) {
+  private List<List<String>> selectQuery(DbColumn[] columns, Condition whereClause) {
     if (!connected) {
       return new ArrayList<>();
     }
@@ -82,6 +80,19 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
+  }
+
+  private void deleteQuery(DbTable table, Condition whereClause) {
+    if (connected) {
+      try {
+        String query = new DeleteQuery(table).addCondition(whereClause).validate().toString();
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        pstmt.execute();
+
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   /* Artist */
@@ -120,7 +131,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
@@ -171,7 +182,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       DbColumn[] columns = new DbColumn[] {STUDIO_NAME};
       Condition condition = BinaryCondition.equalTo(STUDIO_ID, studioID);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
 
 
@@ -199,12 +210,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
-      DbColumn[] insertInto = {
-        USER_NAME,
-        USER_EMAIL,
-        USER_PHONE,
-        USER_DEVICE_TOKEN
-      };
+      DbColumn[] insertInto = {USER_NAME, USER_EMAIL, USER_PHONE, USER_DEVICE_TOKEN};
       String query = getPreparedInsertQuery(USERS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -239,6 +245,19 @@ public class InkstepDatabaseStore implements InkstepStore {
     return -1;
   }
 
+  @Override public void removeUser(int userID) {
+    try {
+      open();
+
+      Condition condition = BinaryCondition.equalTo(USER_ID, userID);
+      deleteQuery(USERS, condition);
+
+      close();
+    } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override public User getUserFromID(int userID) {
     User user = null;
     try {
@@ -246,7 +265,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_DEVICE_TOKEN};
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       if (results.size() != 0) {
         List<String> row1 = results.get(0);
@@ -351,7 +370,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       DbColumn[] columns = new DbColumn[] {JNY_NO_REF_IMAGES};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       if (results.isEmpty()) {
         close();
@@ -363,7 +382,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       columns = new DbColumn[] {JNY_IMAGE_ID};
       condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
-      results = query(columns, condition);
+      results = selectQuery(columns, condition);
 
       close();
 
@@ -384,9 +403,9 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns = new DbColumn[] {JNY_IMAGE_DATA};
       Condition condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID, journeyId);
 
-      System.out.println("About to query ImageJourneys");
+      System.out.println("About to selectQuery ImageJourneys");
 
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       close();
 
@@ -406,16 +425,14 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  @Override
-  public JourneyStage getJourneyStage(int journeyId) {
+  @Override public JourneyStage getJourneyStage(int journeyId) {
     try {
       open();
 
       // Build prepared statement
-      DbColumn[] columns =
-          new DbColumn[]{JNY_STAGE};
+      DbColumn[] columns = new DbColumn[] {JNY_STAGE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       close();
 
@@ -467,12 +484,8 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       System.out.println("Appointment String was: " + appointmentString);
 
-      String query = getPreparedUpdateQuery(
-        JOURNEYS,
-        JNY_BOOKING_DATE,
-        appointmentString,
-        condition
-      );
+      String query =
+        getPreparedUpdateQuery(JOURNEYS, JNY_BOOKING_DATE, appointmentString, condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -485,8 +498,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  @Override
-  public void updateStage(int journeyId, JourneyStage stage) {
+  @Override public void updateStage(int journeyId, JourneyStage stage) {
     try {
       open();
 
@@ -506,6 +518,20 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
+  @Override public void removeJourney(int journeyId) {
+    try {
+      open();
+
+      // Build prepared statement to delete journey from table
+      Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
+      deleteQuery(JOURNEYS, condition);
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override public Journey getJourneyFromId(int id) {
     try {
       open();
@@ -513,10 +539,10 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
-            JNY_STAGE, JNY_BOOKING_DATE};
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
+          JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       close();
 
@@ -546,19 +572,19 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER,
-            JNY_STAGE, JNY_BOOKING_DATE};
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
+          JNY_BOOKING_DATE};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
-      List<List<String>> results = query(columns, condition);
+      List<List<String>> results = selectQuery(columns, condition);
 
       close();
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)),row.get(3), row.get(4), row.get(5),
-          row.get(6), getIntFromResult(row.get(7)), getIntFromResult(row.get(8)),
-          getIntFromResult(row.get(9)), getIntFromResult(row.get(10)), row.get(11)));
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
+          getIntFromResult(row.get(10)), row.get(11)));
       }
 
       return journeys;
