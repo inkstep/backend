@@ -6,6 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
 import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
@@ -197,7 +199,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {USER_ID, USER_NAME};
+      DbColumn[] columns = new DbColumn[] {USER_ID, USER_NAME, USER_DEVICE_TOKEN};
       Condition condition = ComboCondition.and(BinaryCondition.equalTo(USER_PASSPHRASE, passphrase),
         BinaryCondition.equalTo(USER_EMAIL, email));
       List<List<String>> results = query(columns, condition);
@@ -206,8 +208,9 @@ public class InkstepDatabaseStore implements InkstepStore {
         List<String> row1 = results.get(0);
         int id = Integer.parseInt(row1.get(0));
         String name = row1.get(1);
+        String token = row1.get(2);
 
-        user = new User(name, email, passphrase, id);
+        user = new User(name, email, passphrase, id, token);
       }
 
       close();
@@ -223,7 +226,13 @@ public class InkstepDatabaseStore implements InkstepStore {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
-      DbColumn[] insertInto = {USER_NAME, USER_EMAIL, USER_PHONE, USER_PASSPHRASE};
+      DbColumn[] insertInto = {
+        USER_NAME,
+        USER_EMAIL,
+        USER_PHONE,
+        USER_PASSPHRASE,
+        USER_DEVICE_TOKEN
+      };
       String query = getPreparedInsertQuery(USERS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -232,6 +241,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement.setString(2, user.email);
       preparedStatement.setString(3, ""); // TODO(mm5917): get phone number
       preparedStatement.setString(4, user.passphrase);
+      preparedStatement.setString(5, user.token);
 
       // Execute the insert statement
       preparedStatement.execute();
@@ -263,7 +273,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_PASSPHRASE};
+      DbColumn[] columns = new DbColumn[] {
+        USER_NAME,
+        USER_EMAIL,
+        USER_PASSPHRASE,
+        USER_DEVICE_TOKEN
+      };
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
@@ -272,8 +287,9 @@ public class InkstepDatabaseStore implements InkstepStore {
         String name = row1.get(0);
         String email = row1.get(1);
         String passphrase = row1.get(2);
+        String token = row1.get(3);
 
-        user = new User(name, email, passphrase, userID);
+        user = new User(name, email, passphrase, userID, token);
       }
 
       close();
@@ -482,12 +498,16 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_BOOKING_DATE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      appointmentString += ":00";
+      System.out.println("Appointment String was: " + appointmentString);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, appointmentString, condition);
+      String query = getPreparedUpdateQuery(
+        JOURNEYS,
+        JNY_BOOKING_DATE,
+        appointmentString,
+        condition
+      );
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -505,16 +525,16 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn column = JNY_STAGE;
       Condition condition = BinaryCondition.equalTo(JNY_ID, journeyId);
 
-      String query = getPreparedUpdateQuery(JOURNEYS, column, stage.toCode(), condition);
+      String query = getPreparedUpdateQuery(JOURNEYS, JNY_STAGE, stage.toCode(), condition);
 
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
       preparedStatement.execute();
 
       close();
+
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();

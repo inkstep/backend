@@ -16,7 +16,7 @@ public class DatabaseConnectionTest {
     String username = "name-lol";
     String passphrase = "real-passphrase";
 
-    User user = new User(username, payload, passphrase);
+    User user = new User(username, payload, passphrase, "fake_token");
     int id = store.putUser(user);
     user = store.getUserFromID(id);
 

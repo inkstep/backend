@@ -32,7 +32,7 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
       return Answer.empty(BAD_REQUEST);
     }
 
-    User user = new User(value.username, value.email, passphrase.toString());
+    User user = new User(value.username, value.email, passphrase.toString(), value.token);
 
     int userId = store.putUser(user);
 
@@ -48,14 +48,17 @@ public class UserCreateHandler extends AbstractRequestHandler<UserCreateHandler.
 
     public String email;
     public String username;
+    public String token;
 
     @JsonCreator
     Payload(
       @JsonProperty("user_name") String username,
-      @JsonProperty("user_email") String userEmail
+      @JsonProperty("user_email") String userEmail,
+      @JsonProperty("token") String token
     ) {
       this.username = username;
       this.email = userEmail;
+      this.token = token;
     }
 
     @Override
