@@ -27,7 +27,8 @@ public class JourneyUpdateHandler
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
-    if (journeyId > JourneyStage.values().length || journeyId < 0) {
+    if (request.getStage() > JourneyStage.values().length
+      || request.getStage() < 0) {
       return Answer.empty(400);
     }
 
