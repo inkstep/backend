@@ -30,6 +30,7 @@ public class Main {
     path("/artist", () -> {
       get("", new ArtistsRetrieveHandler(store));
       get("/:id", new ArtistRetrieveHandler(store));
+      put("/image", new ArtistImageCreateHandler(store));
     });
 
     path("/journey", () -> {
