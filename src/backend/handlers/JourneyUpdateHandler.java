@@ -26,6 +26,11 @@ public class JourneyUpdateHandler
   @Override
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
+
+    if (journeyId > JourneyStage.values().length || journeyId < 0) {
+      return Answer.empty(400);
+    }
+
     JourneyStage newStage = JourneyStage.values()[request.getStage()];
 
     store.updateStage(journeyId, newStage);
