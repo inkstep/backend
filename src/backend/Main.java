@@ -4,6 +4,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import email.EmailChecker;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -52,7 +53,7 @@ public class Main {
       get("/:id", new StudioRetrieveHandler(store));
     });
 
-    Thread emailThread = new Thread(new EmailHandler());
+    Thread emailThread = new Thread(new EmailChecker());
     emailThread.run();
   }
 }
