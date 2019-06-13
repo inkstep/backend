@@ -194,33 +194,6 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* User */
 
-  @Override public User getUserFromPassphraseEmail(String passphrase, String email) {
-    User user = null;
-    try {
-      open();
-
-      DbColumn[] columns = new DbColumn[] {USER_ID, USER_NAME, USER_DEVICE_TOKEN};
-      Condition condition = ComboCondition.and(BinaryCondition.equalTo(USER_PASSPHRASE, passphrase),
-        BinaryCondition.equalTo(USER_EMAIL, email));
-      List<List<String>> results = query(columns, condition);
-
-      if (results.size() != 0) {
-        List<String> row1 = results.get(0);
-        int id = Integer.parseInt(row1.get(0));
-        String name = row1.get(1);
-        String token = row1.get(2);
-
-        user = new User(name, email, passphrase, id, token);
-      }
-
-      close();
-    } catch (ClassNotFoundException | SQLException e) {
-      close();
-      e.printStackTrace();
-    }
-    return user;
-  }
-
   @Override public int putUser(User user) {
     try {
       open();
@@ -273,12 +246,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {
-        USER_NAME,
-        USER_EMAIL,
-        USER_PASSPHRASE,
-        USER_DEVICE_TOKEN
-      };
+      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_DEVICE_TOKEN};
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
@@ -286,10 +254,9 @@ public class InkstepDatabaseStore implements InkstepStore {
         List<String> row1 = results.get(0);
         String name = row1.get(0);
         String email = row1.get(1);
-        String passphrase = row1.get(2);
-        String token = row1.get(3);
+        String token = row1.get(2);
 
-        user = new User(name, email, passphrase, userID, token);
+        user = new User(name, email, userID, token);
       }
 
       close();

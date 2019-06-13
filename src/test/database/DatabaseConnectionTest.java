@@ -14,9 +14,8 @@ public class DatabaseConnectionTest {
   @Test public void cannotInjectIntoInsertQuery() {
     String payload = "','passphrase-lol',(select version())) -- ";
     String username = "name-lol";
-    String passphrase = "real-passphrase";
 
-    User user = new User(username, payload, passphrase, "fake_token");
+    User user = new User(username, payload, "fake_token");
     int id = store.putUser(user);
     user = store.getUserFromID(id);
 

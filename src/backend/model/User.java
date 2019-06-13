@@ -11,20 +11,18 @@ public class User implements Validatable {
   public String token;
 
   @JsonCreator
-  public User(@JsonProperty("name") String name,
-                           @JsonProperty("email") String email) {
+  public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
     this.name = name;
     this.email = email;
   }
 
-  public User(String userName, String userEmail, String passphrase, String token) {
+  public User(String userName, String userEmail, String token) {
     this(userName, userEmail);
-    this.passphrase = passphrase;
     this.token = token;
   }
 
-  public User(String userName, String userEmail, String passphrase, int id, String token) {
-    this(userName, userEmail, passphrase, token);
+  public User(String userName, String userEmail, int id, String token) {
+    this(userName, userEmail, token);
     this.id = id;
   }
 
