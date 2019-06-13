@@ -203,7 +203,6 @@ public class InkstepDatabaseStore implements InkstepStore {
         USER_NAME,
         USER_EMAIL,
         USER_PHONE,
-        USER_PASSPHRASE,
         USER_DEVICE_TOKEN
       };
       String query = getPreparedInsertQuery(USERS, insertInto);
@@ -213,8 +212,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement.setString(1, user.name);
       preparedStatement.setString(2, user.email);
       preparedStatement.setString(3, ""); // TODO(mm5917): get phone number
-      preparedStatement.setString(4, user.passphrase);
-      preparedStatement.setString(5, user.token);
+      preparedStatement.setString(4, user.token);
 
       // Execute the insert statement
       preparedStatement.execute();
