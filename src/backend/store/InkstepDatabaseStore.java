@@ -95,6 +95,14 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
+  private int getIntFromResult(String result) {
+    if (result == null) {
+      return -1;
+    }
+
+    return Integer.parseInt(result);
+  }
+
   /* Artist */
   @Override public void addArtist(Artist artist) {
   }
@@ -594,13 +602,5 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
-  }
-
-  public int getIntFromResult(String result) {
-    if (result == null) {
-      return -1;
-    }
-
-    return Integer.parseInt(result);
   }
 }
