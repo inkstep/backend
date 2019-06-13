@@ -14,7 +14,7 @@ public class DatabaseStoreTest {
   private final InkstepStore store = new InkstepDatabaseStore();
 
   @Test public void cannotInjectIntoInsertQuery() {
-    String payload = "','passphrase-lol',(select version())) -- ";
+    String payload = "',(select version())) -- ";
     String username = "name-lol";
 
     User user = new User(username, payload, "fake_token");
