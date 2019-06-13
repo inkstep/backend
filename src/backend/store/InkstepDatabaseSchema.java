@@ -17,7 +17,7 @@ public class InkstepDatabaseSchema {
   public static final DbColumn USER_EMAIL = USERS.addColumn("Email", "varchar", 45);
   public static final DbColumn USER_PHONE = USERS.addColumn("Phone", "varchar", 45);
   public static final DbColumn USER_PASSPHRASE = USERS.addColumn("Passphrase", "varchar", 45);
-  public static final DbColumn USER_DEVICE_TOKEN = USERS.addColumn("Token", "varchar", 45);
+  public static final DbColumn USER_DEVICE_TOKEN = USERS.addColumn("Token", "varchar", 255);
 
   // Artists
   public static final DbTable ARTISTS = SCHEMA.addTable("artists");
