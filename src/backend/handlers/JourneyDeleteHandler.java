@@ -14,10 +14,7 @@ public class JourneyDeleteHandler extends AbstractRequestHandler<EmptyPayload> {
   @Override protected Answer processImpl(EmptyPayload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
-    // store.delete
-
-    //boolean fail = false;
-    //if (fail) return Answer.empty(512);
+    store.removeJourney(journeyId);
 
     return Answer.ok(dataToJson(new HashMap<>()));
   }

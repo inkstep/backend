@@ -21,8 +21,6 @@ public class UserNotifier {
     Message message = Message.builder()
       .putData("journey", String.valueOf(journey.journeyID))
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-      .putData("id", "0")
-      .putData("status", "done")
       .setNotification(
         new Notification(
           "Your journey is moving on!",
