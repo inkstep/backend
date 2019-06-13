@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class ImageResizer {
 
-  private static BufferedImage resize(BufferedImage inputImage, int scaledWidth, int scaledHeight) {
+  public static BufferedImage resize(BufferedImage inputImage, int scaledWidth, int scaledHeight) {
 
     // creates output image
     BufferedImage outputImage = new BufferedImage(scaledWidth,
