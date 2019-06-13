@@ -17,6 +17,7 @@ public class InkstepDatabaseSchema {
   public static final DbColumn USER_EMAIL = USERS.addColumn("Email", "varchar", 45);
   public static final DbColumn USER_PHONE = USERS.addColumn("Phone", "varchar", 45);
   public static final DbColumn USER_PASSPHRASE = USERS.addColumn("Passphrase", "varchar", 45);
+  public static final DbColumn USER_DEVICE_TOKEN = USERS.addColumn("Token", "varchar", 45);
 
   // Artists
   public static final DbTable ARTISTS = SCHEMA.addTable("artists");
@@ -45,8 +46,6 @@ public class InkstepDatabaseSchema {
   public static final DbColumn JNY_BOOKING_DATE = JOURNEYS.addColumn("BookingDate", "datetime", 17);
   public static final DbColumn JNY_QUOTE_LOWER = JOURNEYS.addColumn("QuoteLower", "int", 11);
   public static final DbColumn JNY_QUOTE_UPPER = JOURNEYS.addColumn("QuoteUpper", "int", 11);
-  public static final DbColumn JNY_OFFERED_APPOINTMENT =
-    JOURNEYS.addColumn("OfferedAppointment", "datetime", 17);
 
   // Journey Images
   public static final DbTable JOURNEY_IMAGES = SCHEMA.addTable("journey_images");
