@@ -224,7 +224,13 @@ public class InkstepDatabaseStore implements InkstepStore {
       open();
 
       // Build prepared statement TODO(mm5917): remove ID column
-      DbColumn[] insertInto = {USER_NAME, USER_EMAIL, USER_PHONE, USER_PASSPHRASE, USER_DEVICE_TOKEN};
+      DbColumn[] insertInto = {
+        USER_NAME,
+        USER_EMAIL,
+        USER_PHONE,
+        USER_PASSPHRASE,
+        USER_DEVICE_TOKEN
+      };
       String query = getPreparedInsertQuery(USERS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -265,7 +271,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {USER_NAME, USER_EMAIL, USER_PASSPHRASE, USER_DEVICE_TOKEN};
+      DbColumn[] columns = new DbColumn[] {
+        USER_NAME,
+        USER_EMAIL,
+        USER_PASSPHRASE,
+        USER_DEVICE_TOKEN
+      };
       Condition condition = BinaryCondition.equalTo(USER_ID, userID);
       List<List<String>> results = query(columns, condition);
 
