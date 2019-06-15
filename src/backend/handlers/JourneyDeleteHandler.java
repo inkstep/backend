@@ -17,7 +17,7 @@ public class JourneyDeleteHandler extends AbstractRequestHandler<EmptyPayload> {
     // store.delete
 
     //boolean fail = false;
-    //if (fail) return Answer.empty(512);
+    //if (fail) return Answer.code(512);
 
     return Answer.ok(dataToJson(new HashMap<>()));
   }

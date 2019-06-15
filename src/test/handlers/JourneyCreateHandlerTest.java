@@ -29,7 +29,7 @@ public class JourneyCreateHandlerTest {
           0 // Number of Reference Images
     );
     JourneyCreateHandler handler = new JourneyCreateHandler(store);
-    assertEquals(Answer.empty(AbstractRequestHandler.BAD_REQUEST), handler.process(newJourney, Collections.emptyMap()));
+    assertEquals(Answer.code(AbstractRequestHandler.BAD_REQUEST), handler.process(newJourney, Collections.emptyMap()));
   }
 
   @Test
