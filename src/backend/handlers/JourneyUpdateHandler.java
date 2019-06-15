@@ -27,9 +27,10 @@ public class JourneyUpdateHandler
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
+    // TODO(DJRHails): Should go in valid check of payload
     if (request.getStage() > JourneyStage.values().length
       || request.getStage() < 0) {
-      return Answer.empty(400);
+      return Answer.code(400);
     }
 
     JourneyStage newStage = JourneyStage.values()[request.getStage()];
