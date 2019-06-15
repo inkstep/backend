@@ -49,7 +49,7 @@ public class JavaEmail {
   }
 
   private void createEmailMessage(String to, String message, String subject, String toReply,
-    List<File> files) throws MessagingException {
+    List<File> files, boolean html) throws MessagingException {
     String[] toEmails = {to};
 
     mailSession = Session.getDefaultInstance(emailSmtpProp, null);
@@ -65,7 +65,12 @@ public class JavaEmail {
 
     // Set the body
     BodyPart messageBodyPart = new MimeBodyPart();
-    messageBodyPart.setText(message);
+    if (html) {
+      messageBodyPart.setContent(message, "text/html");
+    } else {
+      messageBodyPart.setText(message);
+    }
+
     Multipart multipart = new MimeMultipart();
     multipart.addBodyPart(messageBodyPart);
 
@@ -85,9 +90,9 @@ public class JavaEmail {
   }
 
   public void sendEmail(String to, String message, String subject, String toReply,
-    List<File> files) throws MessagingException {
+    List<File> files, boolean html) throws MessagingException {
     setMailServerProperties();
-    createEmailMessage(to, message, subject, toReply, files);
+    createEmailMessage(to, message, subject, toReply, files, html);
 
     Transport transport = mailSession.getTransport("smtp");
 
