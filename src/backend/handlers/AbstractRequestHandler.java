@@ -68,10 +68,9 @@ public abstract class AbstractRequestHandler<V extends Validatable>
 
     System.out.println(parameters);
     Answer answer = process(value, parameters);
-    response.status(answer.getCode());
-    response.type("application/json");
-    response.body(answer.getBody());
-    return answer.getBody();
+
+    answer.update(response);
+    return response.body();
   }
 
 }

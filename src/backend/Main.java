@@ -3,20 +3,22 @@ import static spark.Spark.*;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessagingException;
 import email.EmailChecker;
+import email.JourneyMail;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class Main {
 
   private static final String INKSTEP_FIREBASE_API = System.getenv("INKSTEP_FIREBASE_API");
 
-  public static void main(final String[] args) throws IOException, FirebaseMessagingException {
+  public static void main(final String[] args) throws IOException {
 
     InputStream inputStream = new ByteArrayInputStream(INKSTEP_FIREBASE_API.getBytes());
     FirebaseOptions options = new FirebaseOptions.Builder()
@@ -41,6 +43,7 @@ public class Main {
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
+      get("/:jid/thumb/:iid", new ThumbnailRetrieveHandler(store));
       patch("/:id", new JourneyUpdateHandler(store));
     });
 

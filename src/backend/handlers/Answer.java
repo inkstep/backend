@@ -1,48 +1,25 @@
 package handlers;
 
+import spark.Response;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
-public class Answer {
-  private int code;
-  private String body;
+public abstract class Answer {
 
-  private Answer(int code, String body) {
-    this.code = code;
-    this.body = body;
-  }
-
-  public static Answer empty(int code) {
-    return new Answer(code, "");
+  public static Answer code(int code) {
+    return new StringAnswer(code, "");
   }
 
   public static Answer ok(String body) {
-    return new Answer(200, body);
+    return new StringAnswer(200, body);
   }
 
-  public String getBody() {
-    return this.body;
+  public static Answer png(BufferedImage img) {
+    return new ImageAnswer("image/png", img);
   }
 
-  public int getCode() {
-    return this.code;
-  }
-
-  @Override public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (!(o instanceof Answer)) {
-      return false;
-    }
-    Answer answer = (Answer) o;
-    return code == answer.code && Objects.equals(body, answer.body);
-  }
-
-  @Override public int hashCode() {
-    return Objects.hash(code, body);
-  }
-
-  @Override public String toString() {
-    return "{" + " code='" + getCode() + "'" + ", body='" + getBody() + "'" + "}";
-  }
+  public abstract void update(Response response);
 }
+
