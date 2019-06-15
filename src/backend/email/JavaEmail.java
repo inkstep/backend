@@ -71,12 +71,13 @@ public class JavaEmail {
 
     int imgCount = 0;
     for (File file : files) {
-      // Add attachtment
+      // Add attachment
       messageBodyPart = new MimeBodyPart();
       DataSource source = new FileDataSource(file);
       messageBodyPart.setDataHandler(new DataHandler(source));
       messageBodyPart.setFileName("refImg" + imgCount + ".png");
       multipart.addBodyPart(messageBodyPart);
+      imgCount++;
     }
 
     // Send the complete message parts
