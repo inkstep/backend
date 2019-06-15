@@ -1,6 +1,12 @@
 package email;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import javax.mail.MessagingException;
 import java.io.File;
@@ -30,7 +36,14 @@ public class JourneyMail {
       List<File> imageList = new ArrayList<>();
       imageList.add(imageFile);
 
-      javaEmail.sendEmail(artist.email, emailTemplate, "Tattoo image!", user.email, imageList);
+      javaEmail.sendEmail(
+        artist.email,
+        emailTemplate,
+        "Tattoo image!",
+        user.email,
+        imageList,
+        false
+      );
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -69,6 +82,13 @@ public class JourneyMail {
         + "(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
         + "Sent from inkstep. on behalf of {{CLIENT NAME}}\n\n";
     boolean html = false;
+    try {
+      email = new String(Files.readAllBytes(Paths.get("email/ClientRequestTemplate.html")));
+      html = true;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
     email = email.replace("{{ARTIST NAME}}", artist.name);
     email = email.replace("{{CLIENT NAME}}", user.name);
     email = email.replace("{{CLIENT CONCEPT}}", journey.tattooDesc);
@@ -92,8 +112,8 @@ public class JourneyMail {
     JavaEmail javaEmail = new JavaEmail();
 
     try {
-      javaEmail.sendEmail(artist.email, emailTemplate, "Client Request - " + journey.journeyID,
-        "inksteptattoo@gmail.com", images);
+      javaEmail.sendEmail(artist.email, email, "Client Request - " + journey.journeyID,
+        "inksteptattoo@gmail.com", images, html);
     } catch (MessagingException e) {
       e.printStackTrace();
       return false;
