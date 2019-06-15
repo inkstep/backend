@@ -53,25 +53,41 @@ public class JourneyMail {
       return false;
     }
 
-    String emailTemplate =
-        "Client request for " + artist.name + " from " + studio.name + "\n"
-            + "Hi, " + artist.name
-            + "!\n" + "You have received a new client request from " + user.name
-            + "!\n\n" + user.name
-            + " would love to get a " + journey.tattooDesc + " on their "
-            + journey.position + " about "
-            + journey.size + " large.\n" + user.name + " is available on "
-            + journey.humanAvailability()
-            + " and is willing to leave a deposit\n\n"
-            + "If you would like to get in touch with " + user.name
-            + " their " + "email " + "is " + user.email + "\n\n"
-            + "If you want to accept this request, please reply to this email with the "
-            + "range of the quote in £ (e.g. for a quote range of £100 - £150 send 100-150)\n"
-            + "Please put after this an appointment time in the format: YY-MM-DD HR:MN\n"
-            + "(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
-            + "Sent from inkstep. on behalf of " + user.name + "\n\n";
+    String email =
+      "Client request for {{ARTIST NAME}} from {{STUDIO NAME}}\n"
+        + "Hi, {{ARTIST NAME}}!\n"
+        + "You have received a new client request from {{CLIENT NAME}}!\n\n"
+        + "{{CLIENT NAME}} would love to get a {{CLIENT CONCEPT}} on their "
+        + "{{CLIENT LOCATION}} about {{CLIENT SIZE}} large.\n"
+        + "{{CLIENT NAME}} is available on {{CLIENT AVAILABILITY}}"
+        + " and is willing to leave a deposit\n\n"
+        + "If you would like to get in touch with {{CLIENT NAME}} "
+        + "their email is {{CLIENT EMAIL}}\n\n"
+        + "If you want to accept this request, please reply to this email with the "
+        + "range of the quote in £ (e.g. for a quote range of £100 - £150 send 100-150)\n"
+        + "Please put after this an appointment time in the format: YY-MM-DD HR:MN\n"
+        + "(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
+        + "Sent from inkstep. on behalf of {{CLIENT NAME}}\n\n";
+    boolean html = false;
+    email = email.replace("{{ARTIST NAME}}", artist.name);
+    email = email.replace("{{CLIENT NAME}}", user.name);
+    email = email.replace("{{CLIENT CONCEPT}}", journey.tattooDesc);
+    email = email.replace("{{CLIENT LOCATION}}", journey.position);
+    email = email.replace("{{CLIENT SIZE}}", journey.size);
+    email = email.replace("{{CLIENT AVAILABILITY}}", journey.humanAvailability());
+    email = email.replace("{{CLIENT EMAIL}}", user.email);
+    email = email.replace("{{INSPIRATION DESC 1}}", "1.");
+    email = email.replace("{{INSPIRATION DESC 2}}", "2.");
+    email = email.replace("{{INSPIRATION DESC 3}}", "3.");
+    email = email.replace("{{INSPIRATION DESC 4}}", "4.");
+    String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
+    email = email.replace("{{INSPIRATION IMGURL 1}}", thumbBase + "0");
+    email = email.replace("{{INSPIRATION IMGURL 2}}", thumbBase + "1");
+    email = email.replace("{{INSPIRATION IMGURL 3}}", thumbBase + "2");
+    email = email.replace("{{INSPIRATION IMGURL 4}}", thumbBase + "3");
+    email = email.replace("{{STUDIO NAME}}", studio.name);
 
-    System.out.println(emailTemplate);
+    System.out.println(email);
 
     JavaEmail javaEmail = new JavaEmail();
 
