@@ -11,6 +11,8 @@ public interface InkstepStore {
 
   int putUser(User user);
 
+  void removeUser(int userID);
+
 
   // Journeys
   List<Journey> getJourneysForUserID(int userId);
@@ -32,6 +34,8 @@ public interface InkstepStore {
   void offerAppointment(int journeyId, String appointmentString);
 
   void updateStage(int journeyId, JourneyStage stage);
+
+  void removeJourney(int journeyId);
 
 
   // Studios

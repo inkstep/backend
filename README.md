@@ -62,11 +62,6 @@ Puts the given base64encode image in to the database
 | `image_data` | The base64Encoded image |
 
 
-## /user
-### `PUT /user`
-
-Creates a new user in the database. Returns a json {"user_id":"1", "passphrase":"XXX"}
-
 #### JSON params
 
 | Param | Description |
