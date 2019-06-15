@@ -23,7 +23,6 @@ public class JourneyMail {
         "Client tattoo image for " + artist.name + "\n"
           + "Hi, " + artist.name + "!\n"
           + user.id + " loved their tattoo so much they have included a photo!\n\n"
-          + "Another happy customer eh?"
           + "Sent from inkstep. on behalf of " + user.name + "\n\n";
 
       JavaEmail javaEmail = new JavaEmail();
