@@ -1,5 +1,7 @@
 package handlers;
 
+import static handlers.AbstractRequestHandler.dataToJson;
+
 import model.Journey;
 import model.JourneyStage;
 import model.User;
@@ -13,8 +15,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-
-import static handlers.AbstractRequestHandler.dataToJson;
 
 public class JourneyAcceptHandler implements Route {
 
