@@ -26,7 +26,6 @@ public class ThumbnailRetrieveHandler extends AbstractRequestHandler<EmptyPayloa
 
     String imageData = store.getImagesFromJourneyId(journeyId).get(imageId);
 
-
     BufferedImage image;
 
     byte[] decodedBytes = Base64.getDecoder().decode(imageData);

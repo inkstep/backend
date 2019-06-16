@@ -13,9 +13,10 @@ import java.util.Map;
 import model.Validatable;
 import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
+import handlers.JourneyImagesCreateHandler.Payload;
 
 public class JourneyImagesCreateHandler
-  extends AbstractRequestHandler<JourneyImagesCreateHandler.Payload> {
+  extends AbstractRequestHandler<Payload> {
 
   public JourneyImagesCreateHandler(InkstepStore store) {
     super(Payload.class, store);

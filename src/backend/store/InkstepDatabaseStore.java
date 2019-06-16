@@ -11,6 +11,8 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.*;
 
+import javax.xml.transform.Result;
+
 public class InkstepDatabaseStore implements InkstepStore {
 
   private static final String DB_URL =
@@ -355,15 +357,15 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Execute the insert statement
       preparedStatement.execute();
 
-      // Get the ID of the last inserted row to return
-      preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
-      ResultSet rs = preparedStatement.executeQuery();
 
-      if (rs.next()) {
-        returnId = rs.getInt(1);
-      }
+      DbColumn[] columns = new DbColumn[] {JNY_IMAGE_ID};
+      Condition condition = BinaryCondition.equalTo(JNY_IMAGE_JNY_ID,
+        journeyId);
+      List<List<String>> results = selectQuery(columns, condition);
 
       close();
+
+      return results.size() - 1;
     } catch (ClassNotFoundException | SQLException e) {
       close();
       e.printStackTrace();
@@ -460,7 +462,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  @Override public void updateQuote(int journeyId, String quoteLower, String quoteUpper) {
+  @Override public void updateQuote(int journeyId, int quoteLower,
+                                    int quoteUpper) {
     try {
       open();
 
