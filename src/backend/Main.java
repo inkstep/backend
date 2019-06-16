@@ -37,7 +37,7 @@ public class Main {
       get("", new JourneysRetrieveHandler(store));
       delete("/:id", new JourneyDeleteHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
-      post("/:id", new JourneyAcceptHandler(store));
+      put("/:id", new JourneyAcceptHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       put("/image/tattoo", new JourneyTattooImageCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));

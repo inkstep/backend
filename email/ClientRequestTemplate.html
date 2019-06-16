@@ -11,41 +11,6 @@
     <title></title>
     <!--[if !mso]><!-->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script type="text/javascript">
-		function ConvertFormToJSON(form){
-			var array = jQuery(form).serializeArray();
-
-			var json = {};
-
-			jQuery.each(array, function() {
-				json[this.name] = this.value || '';
-			});
-
-			return json;
-		}
-
-		jQuery(document).on('ready', function() {
-			jQuery('form#accept').bind('submit', function(event){
-				event.preventDefault();
-
-				var form = this;
-
-                var j = ConvertFormToJSON(form);
-
-                var json = JSON.stringify(j);
-
-				$.ajax({
-					type: "POST",
-					url: "http://localhost:4567/journey/{{JOURNEY ID}}",
-					data: json,
-					dataType: "json"
-				});
-
-				return true;
-			});
-		});
-	</script>
     <!--<![endif]-->
     <style type="text/css">
         body {
@@ -678,7 +643,8 @@
                                     <div style="color:#555555;font-family:'Roboto', Tahoma, Verdana, Segoe, sans-serif;line-height:120%;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
                                         <div style="font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; line-height: 14px; color: #555555;">
                                             <p style="font-size: 14px; line-height: 16px; margin: 0;"><span style="color: #202431; font-size: 14px; line-height: 16px;">If you want to accept this request, please fill in the form below!</span></p><br>
-                                            <form id="accept">
+                                            <form id="accept"
+                                                  action="http://inkstep.hails.info/journey/{{JOURNEY ID}}" method="put">
                                                 <div style="background-color:#f6f6f4;">
                                                     <div class="block-grid two-up" style="Margin: 0 auto; min-width: 320px; max-width: 745px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #FFFFFF;;">
                                                         <div style="border-collapse: collapse;display: table;width: 100%;background-color:#FFFFFF;">

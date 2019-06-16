@@ -1,13 +1,8 @@
 package handlers;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import handlers.JourneyAcceptHandler.Payload;
 import model.Journey;
 import model.JourneyStage;
 import model.User;
-import model.Validatable;
 import notification.UserNotifier;
 import store.InkstepStore;
 
@@ -15,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-public class JourneyAcceptHandler extends AbstractRequestHandler<Payload> {
+public class JourneyAcceptHandler extends AbstractRequestHandler<EmptyPayload> {
 
   private InkstepStore store;
 
@@ -26,21 +21,27 @@ public class JourneyAcceptHandler extends AbstractRequestHandler<Payload> {
     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
   public JourneyAcceptHandler(InkstepStore store) {
-    super(Payload.class, store);
+    super(EmptyPayload.class, store);
     this.store = store;
   }
 
   @Override
-  protected Answer processImpl(Payload payload, Map<String, String> urlParams) {
+  protected Answer processImpl(EmptyPayload payload,
+                               Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
+    int quoteLower = Integer.valueOf(urlParams.get("quote_lower"));
+    int quoteUpper = Integer.valueOf(urlParams.get("quote_upper"));
+    String bookingDate = urlParams.get("booking_date");
+    String bookingTime = urlParams.get("booking_time");
+
     int stage = store.getJourneyStage(journeyId).toCode();
 
     if (stage == 0) {
       LocalDateTime date =
         LocalDateTime.parse(
-          payload.bookingDate + " " + payload.bookingTime, PARAM_DATE_TIME_FORMATTER);
+          bookingDate + " " + bookingTime, PARAM_DATE_TIME_FORMATTER);
 
-      store.updateQuote(journeyId, payload.quoteLower, payload.quoteUpper);
+      store.updateQuote(journeyId, quoteLower, quoteUpper);
       store.offerAppointment(journeyId, date.format(STORE_DATE_TIME_FORMATTER));
       store.updateStage(journeyId, JourneyStage.QuoteReceived);
 
@@ -55,40 +56,5 @@ public class JourneyAcceptHandler extends AbstractRequestHandler<Payload> {
     }
 
     return Answer.ok(dataToJson(true));
-  }
-
-  static class Payload implements Validatable {
-    final int quoteLower;
-    final int quoteUpper;
-    final String bookingDate;
-    final String bookingTime;
-
-    @JsonCreator
-    public Payload(
-      @JsonProperty("quote_lower") int quoteLower,
-      @JsonProperty("quote_upper") int quoteUpper,
-      @JsonProperty("booking_date") String bookingDate,
-      @JsonProperty("booking_time") String bookingTime) {
-      this.quoteLower = quoteLower;
-      this.quoteUpper = quoteUpper;
-      this.bookingDate = bookingDate;
-      this.bookingTime = bookingTime;
-    }
-
-    // TODO(DJRHails): Add proper validation for Journey Payload
-    @Override
-    public boolean isValid() {
-      return true;
-    }
-
-    @Override
-    public String toString() {
-      return "Accept {" +
-        ", quoteLower='" + quoteLower + "'" +
-        ", quoteUpper='" + quoteUpper + "'" +
-        ", bookingDate='" + bookingDate + "'" +
-        ", bookingTime='" + bookingTime + "'" +
-        "}";
-    }
   }
 }
