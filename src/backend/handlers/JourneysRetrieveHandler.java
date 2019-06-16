@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
-  public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+  public static final DateTimeFormatter DATE_FORMATTER =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
   public static final ZoneId TIME_ZONE = ZoneId.of("Europe/London");
 
   public JourneysRetrieveHandler(InkstepStore store) {
