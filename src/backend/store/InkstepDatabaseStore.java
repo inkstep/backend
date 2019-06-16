@@ -138,7 +138,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL, ARTIST_PROFILE};
+      DbColumn[] columns =
+        new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL, ARTIST_PROFILE};
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
       List<List<String>> results = selectQuery(columns, condition);
 
