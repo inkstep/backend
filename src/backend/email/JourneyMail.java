@@ -76,6 +76,7 @@ public class JourneyMail {
       );
     } catch (MessagingException e) {
       e.printStackTrace();
+      return false;
     }
 
     return true;

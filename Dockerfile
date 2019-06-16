@@ -7,6 +7,7 @@ COPY src/ src/
 COPY run run
 COPY checkstyle.xml checkstyle.xml
 COPY pom.xml pom.xml
+COPY email/ email/
 
 RUN mvn compile assembly:single
 
