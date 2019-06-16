@@ -144,8 +144,10 @@ public class JourneyMail {
     JavaEmail javaEmail = new JavaEmail();
 
     try {
-      javaEmail.sendEmail(artist.email, email, "New Client '" + user.name + "' #" + journey.journeyID,
-        "inksteptattoo@gmail.com", images, html);
+      javaEmail.sendEmail(
+        artist.email, email, "New Client '" + user.name + "' #" + journey.journeyID,
+        "inksteptattoo@gmail.com", images, html
+      );
     } catch (MessagingException e) {
       e.printStackTrace();
       return false;
