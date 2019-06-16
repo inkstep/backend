@@ -11,8 +11,6 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.*;
 
-import javax.xml.transform.Result;
-
 public class InkstepDatabaseStore implements InkstepStore {
 
   private static final String DB_URL =
@@ -122,7 +120,8 @@ public class InkstepDatabaseStore implements InkstepStore {
         int studioID = rs.getInt(2);
         String name = rs.getString(3);
         String email = rs.getString(4);
-        artists.add(new Artist(name, email, studioID, artistID));
+        String profileImg = rs.getString(5);
+        artists.add(new Artist(name, email, profileImg, studioID, artistID));
       }
 
       close();
@@ -139,7 +138,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     try {
       open();
 
-      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL};
+      DbColumn[] columns = new DbColumn[] {ARTIST_STUDIO_ID, ARTIST_NAME, ARTIST_EMAIL, ARTIST_PROFILE};
       Condition condition = BinaryCondition.equalTo(ARTIST_ID, artistId);
       List<List<String>> results = selectQuery(columns, condition);
 
@@ -148,8 +147,9 @@ public class InkstepDatabaseStore implements InkstepStore {
         int studioId = Integer.parseInt(row1.get(0));
         String name = row1.get(1);
         String email = row1.get(2);
+        String profileImg = row1.get(3);
 
-        artist = new Artist(name, email, studioId, artistId);
+        artist = new Artist(name, email, profileImg, studioId, artistId);
       }
 
       close();

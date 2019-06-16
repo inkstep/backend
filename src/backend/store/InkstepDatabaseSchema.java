@@ -24,6 +24,7 @@ public class InkstepDatabaseSchema {
   public static final DbColumn ARTIST_STUDIO_ID = ARTISTS.addColumn("StudioID", "int", 11);
   public static final DbColumn ARTIST_NAME = ARTISTS.addColumn("Name", "varchar", 127);
   public static final DbColumn ARTIST_EMAIL = ARTISTS.addColumn("Email", "varchar", 45);
+  public static final DbColumn ARTIST_PROFILE = ARTISTS.addColumn("ImagePath", "varchar", 255);
 
   // Studios
   public static final DbTable STUDIOS = SCHEMA.addTable("studios");
