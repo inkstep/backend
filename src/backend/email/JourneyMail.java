@@ -37,7 +37,7 @@ public class JourneyMail {
 
     String email =
       "Client tattoo image for {{ARTIST NAME}}!\n"
-        + "Hi, {{ARTIST_NAME}}!\n"
+        + "Hi, {{ARTIST NAME}}!\n"
         + "{{CLIENT NAME}} loved their tattoo so much they have included a " +
         "photo!\n\n"
         + "If you think this tattoo doesn't look right, contact {{CLIENT " +
@@ -47,8 +47,7 @@ public class JourneyMail {
 
     boolean html = false;
     try {
-      email = new String(Files.readAllBytes(Paths.get("email" +
-        "/ClientPhotoTemplate.html")));
+      email = new String(Files.readAllBytes(Paths.get("email/ClientPhotoTemplate.html")));
       html = true;
     } catch (IOException e) {
       e.printStackTrace();
@@ -58,7 +57,7 @@ public class JourneyMail {
     email = email.replace("{{CLIENT NAME}}", user.name);
     email = email.replace("{{CLIENT EMAIL}}", user.email);
     String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
-    email = email.replace("{{TATTOO IMGURL}}", thumbBase + "5");
+    email = email.replace("{{TATTOO IMGURL}}", thumbBase + imageId);
     email = email.replace("{{STUDIO NAME}}", studio.name);
 
     JavaEmail javaEmail = new JavaEmail();
