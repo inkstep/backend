@@ -59,7 +59,6 @@ public class JourneyMail {
     String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
     email = email.replace("{{TATTOO IMGURL}}", thumbBase + imageId);
     email = email.replace("{{STUDIO NAME}}", studio.name);
-    email = email.replace("{{JOURNEY ID}}", String.valueOf(journey.journeyID));
 
     JavaEmail javaEmail = new JavaEmail();
 
@@ -138,6 +137,7 @@ public class JourneyMail {
     email = email.replace("{{INSPIRATION IMGURL 3}}", thumbBase + "2");
     email = email.replace("{{INSPIRATION IMGURL 4}}", thumbBase + "3");
     email = email.replace("{{STUDIO NAME}}", studio.name);
+    email = email.replace("{{JOURNEY ID}}", String.valueOf(journey.journeyID));
 
     System.out.println(email);
 
