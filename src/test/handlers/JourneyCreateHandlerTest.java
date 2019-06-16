@@ -35,10 +35,13 @@ public class JourneyCreateHandlerTest {
   @Test
   public void aNewJourneyIsCorrectlyCreated() {
     Payload payload = new Payload(
-      0, // ArtistID
-        0, // StudioID
-        "tattoo.description", "tattoo.size", "tattoo.position", "0001010", // Avaliability Bitmap
-          0 // Number of Reference Images
+    0, // ArtistID
+    0, // StudioID
+    "tattoo.description",
+    "tattoo.size",
+    "tattoo.position",
+    "0001010", // Avaliability Bitmap
+    0 // Number of Reference Images
     );
 
     String expectedJson = "{\n" +
@@ -61,7 +64,8 @@ public class JourneyCreateHandlerTest {
     );
 
     when(store.createJourney(journey)).thenReturn(0);
-    when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name", "artist.email", 0, 1));
+    when(store.getArtistFromID(0)).thenReturn(new Artist("artist.name",
+      "artist.email", "artist.profileurl", 0, 1));
     when(store.getStudioFromID(0)).thenReturn(new Studio("studio.name", 1));
     when(store.getUserFromID(0)).thenReturn(new User("username", "user.emai", "user.token"));
 
