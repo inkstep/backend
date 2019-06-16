@@ -20,33 +20,62 @@ import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
 
 public class JourneyMail {
-  public static boolean sendPictureEmail(String imageData, Artist artist, User user) {
-    byte[] decodedBytes = Base64.getDecoder().decode(imageData);
-    File imageFile = new File("tattoo_image.png");
+  public static boolean sendPictureEmail(InkstepStore store,
+                                         Journey journey, int imageId,
+                                         File image) {
+    Artist artist = store.getArtistFromID(journey.artistID);
+    User user = store.getUserFromID(journey.userID);
+    Studio studio = null;
+
+    if (artist != null) {
+      studio = store.getStudioFromID(artist.studioID);
+    }
+
+    if (artist == null || user == null || studio == null) {
+      return false;
+    }
+
+    String email =
+      "Client tattoo image for {{ARTIST NAME}}!\n"
+        + "Hi, {{ARTIST_NAME}}!\n"
+        + "{{CLIENT NAME}} loved their tattoo so much they have included a " +
+        "photo!\n\n"
+        + "If you think this tattoo doesn't look right, contact {{CLIENT " +
+        "NAME}}"
+        + " at {{CLIENT EMAIL}} to organise a touch up!\n\n"
+        + "Sent from inkstep. on behalf of {{CLIENT EMAIL}}\n\n";
+
+    boolean html = false;
     try {
-      FileUtils.writeByteArrayToFile(imageFile, decodedBytes);
-      String emailTemplate =
-        "Client tattoo image for " + artist.name + "\n"
-          + "Hi, " + artist.name + "!\n"
-          + user.name + " loved their tattoo so much they have included a photo!\n\n"
-          + "If you think this tattoo doesn't look right, contact " + user.name
-          + " at " + user.email + " to organise a touch up!\n\n"
-          + "Sent from inkstep. on behalf of " + user.name + "\n\n";
+      email = new String(Files.readAllBytes(Paths.get("email" +
+        "/ClientPhotoTemplate.html")));
+      html = true;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
-      JavaEmail javaEmail = new JavaEmail();
+    email = email.replace("{{ARTIST NAME}}", artist.name);
+    email = email.replace("{{CLIENT NAME}}", user.name);
+    email = email.replace("{{CLIENT EMAIL}}", user.email);
+    String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
+    email = email.replace("{{TATTOO IMGURL}}", thumbBase + "5");
+    email = email.replace("{{STUDIO NAME}}", studio.name);
 
-      List<File> imageList = new ArrayList<>();
-      imageList.add(imageFile);
+    JavaEmail javaEmail = new JavaEmail();
 
+    List<File> images = new ArrayList<>();
+    images.add(image);
+
+    try {
       javaEmail.sendEmail(
         artist.email,
-        emailTemplate,
+        email,
         "Tattoo image!",
         user.email,
-        imageList,
-        false
+        images,
+        html
       );
-    } catch (Exception e) {
+    } catch (MessagingException e) {
       e.printStackTrace();
     }
 

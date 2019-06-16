@@ -4,7 +4,6 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import email.EmailChecker;
-import email.JourneyMail;
 import handlers.*;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -12,7 +11,6 @@ import store.InkstepStore;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -33,7 +31,6 @@ public class Main {
     path("/artist", () -> {
       get("", new ArtistsRetrieveHandler(store));
       get("/:id", new ArtistRetrieveHandler(store));
-      put("/image", new ArtistImageCreateHandler(store));
     });
 
     path("/journey", () -> {
@@ -42,6 +39,7 @@ public class Main {
       delete("/:id", new JourneyDeleteHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
+      put("/image/tattoo", new JourneyTattooImageCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
       get("/:jid/thumb/:iid", new ThumbnailRetrieveHandler(store));
       patch("/:id", new JourneyUpdateHandler(store));
