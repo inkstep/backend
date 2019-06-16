@@ -37,12 +37,12 @@ public class Main {
       get("", new JourneysRetrieveHandler(store));
       delete("/:id", new JourneyDeleteHandler(store));
       get("/:id", new JourneyRetrieveHandler(store));
-      put("/:id", new JourneyAcceptHandler(store));
       put("/image", new JourneyImagesCreateHandler(store));
       put("/image/tattoo", new JourneyTattooImageCreateHandler(store));
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
       get("/:jid/thumb/:iid", new ThumbnailRetrieveHandler(store));
       patch("/:id", new JourneyUpdateHandler(store));
+      put("/:id", new JourneyAcceptHandler(store));
     });
 
     path("/user", () -> {
