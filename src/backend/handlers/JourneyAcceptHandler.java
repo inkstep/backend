@@ -34,11 +34,13 @@ public class JourneyAcceptHandler implements Route {
   public Object handle(Request request, Response response) throws Exception {
     Map<String, String> urlParams = bodyParams(request.body());
 
-    int journeyId = Integer.valueOf(urlParams.get(":id"));
+    int journeyId = Integer.valueOf(request.params(":id"));
     int quoteLower = Integer.valueOf(urlParams.get("quote_lower"));
     int quoteUpper = Integer.valueOf(urlParams.get("quote_upper"));
     String bookingDate = urlParams.get("booking_date");
     String bookingTime = urlParams.get("booking_time");
+    String[] time = bookingTime.split("%3A");
+    bookingTime = time[0] + ":" + time[1];
 
     int stage = store.getJourneyStage(journeyId).toCode();
 
