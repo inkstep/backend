@@ -13,6 +13,9 @@ public class UserRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
   @Override protected Answer processImpl(EmptyPayload empty, Map<String, String> urlParams) {
     User user = store.getUserFromID(Integer.valueOf(urlParams.get(":id")));
+    if (user == null) {
+      return Answer.code(404);
+    }
     return Answer.ok(dataToJson(user));
   }
 }
