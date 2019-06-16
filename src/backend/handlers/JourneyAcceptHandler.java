@@ -4,13 +4,19 @@ import model.Journey;
 import model.JourneyStage;
 import model.User;
 import notification.UserNotifier;
+import spark.Request;
+import spark.Response;
+import spark.Route;
 import store.InkstepStore;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 
-public class JourneyAcceptHandler extends AbstractRequestHandler<EmptyPayload> {
+import static handlers.AbstractRequestHandler.dataToJson;
+
+public class JourneyAcceptHandler implements Route {
 
   private InkstepStore store;
 
@@ -21,13 +27,13 @@ public class JourneyAcceptHandler extends AbstractRequestHandler<EmptyPayload> {
     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
   public JourneyAcceptHandler(InkstepStore store) {
-    super(EmptyPayload.class, store);
     this.store = store;
   }
 
   @Override
-  protected Answer processImpl(EmptyPayload payload,
-                               Map<String, String> urlParams) {
+  public Object handle(Request request, Response response) throws Exception {
+    Map<String, String> urlParams = bodyParams(request.body());
+
     int journeyId = Integer.valueOf(urlParams.get(":id"));
     int quoteLower = Integer.valueOf(urlParams.get("quote_lower"));
     int quoteUpper = Integer.valueOf(urlParams.get("quote_upper"));
@@ -56,5 +62,19 @@ public class JourneyAcceptHandler extends AbstractRequestHandler<EmptyPayload> {
     }
 
     return Answer.ok(dataToJson(true));
+  }
+
+  Map<String, String> bodyParams(String body) {
+    Map<String, String> params = new HashMap<>();
+
+    String[] mappings = body.split("&");
+
+    for (String mapping : mappings) {
+      String[] valueKey = mapping.split("=");
+
+      params.put(valueKey[0], valueKey[1]);
+    }
+
+    return params;
   }
 }

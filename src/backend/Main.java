@@ -42,7 +42,7 @@ public class Main {
       get("/:id/images", new JourneyImagesRetrieveHandler(store));
       get("/:jid/thumb/:iid", new ThumbnailRetrieveHandler(store));
       patch("/:id", new JourneyUpdateHandler(store));
-      put("/:id", new JourneyAcceptHandler(store));
+      post("/:id", new JourneyAcceptHandler(store));
     });
 
     path("/user", () -> {
