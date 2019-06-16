@@ -29,7 +29,7 @@ public interface InkstepStore {
 
   JourneyStage getJourneyStage(int journeyId);
 
-  void updateQuote(int journeyId, String quoteLower, String quoteUpper);
+  void updateQuote(int journeyId, int quoteLower, int quoteUpper);
 
   void offerAppointment(int journeyId, String appointmentString);
 

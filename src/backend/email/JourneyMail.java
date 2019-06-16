@@ -59,6 +59,7 @@ public class JourneyMail {
     String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
     email = email.replace("{{TATTOO IMGURL}}", thumbBase + imageId);
     email = email.replace("{{STUDIO NAME}}", studio.name);
+    email = email.replace("{{JOURNEY ID}}", String.valueOf(journey.journeyID));
 
     JavaEmail javaEmail = new JavaEmail();
 

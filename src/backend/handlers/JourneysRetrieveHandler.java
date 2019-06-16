@@ -12,6 +12,9 @@ import java.util.Map;
 
 public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
+  public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+  public static final ZoneId TIME_ZONE = ZoneId.of("Europe/London");
+
   public JourneysRetrieveHandler(InkstepStore store) {
     super(EmptyPayload.class, store);
   }
@@ -20,21 +23,18 @@ public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload
     System.out.println("Retrieving journeys");
 
     List<Journey> journeys = store.getJourneysForUserID(Integer.valueOf(urlParams.get("user")));
+    LocalDateTime localDateTime = LocalDateTime.now(TIME_ZONE);
 
     for (Journey journey : journeys) {
       if (journey.stage == JourneyStage.AppointmentBooked) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
+        LocalDateTime date = LocalDateTime.parse(journey.bookingDate, DATE_FORMATTER);
 
         if (localDateTime.isAfter(date)) {
           journey.stage = JourneyStage.Aftercare;
           store.updateStage(journey.journeyID, JourneyStage.Aftercare);
         }
       } else if (journey.stage == JourneyStage.Aftercare) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
+        LocalDateTime date = LocalDateTime.parse(journey.bookingDate, DATE_FORMATTER);
         LocalDateTime doneDate = date.plusDays(31);
 
         if (localDateTime.isAfter(doneDate)) {

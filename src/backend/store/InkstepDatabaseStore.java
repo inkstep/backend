@@ -462,7 +462,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  @Override public void updateQuote(int journeyId, String quoteLower, String quoteUpper) {
+  @Override public void updateQuote(int journeyId, int quoteLower,
+                                    int quoteUpper) {
     try {
       open();
 
