@@ -1,13 +1,11 @@
 package email;
 
+import email.templates.ClientPhotoTemplate;
+import email.templates.ClientRequestTemplate;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import javax.mail.MessagingException;
 import java.io.File;
 import java.util.List;
@@ -16,7 +14,6 @@ import model.Artist;
 import model.Journey;
 import model.Studio;
 import model.User;
-import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
 
 public class JourneyMail {
@@ -35,24 +32,7 @@ public class JourneyMail {
       return false;
     }
 
-    String email =
-      "Client tattoo image for {{ARTIST NAME}}!\n"
-        + "Hi, {{ARTIST NAME}}!\n"
-        + "{{CLIENT NAME}} loved their tattoo so much they have included a " +
-        "photo!\n\n"
-        + "If you think this tattoo doesn't look right, contact {{CLIENT " +
-        "NAME}}"
-        + " at {{CLIENT EMAIL}} to organise a touch up!\n\n"
-        + "Sent from inkstep. on behalf of {{CLIENT EMAIL}}\n\n";
-
-    boolean html = false;
-    try {
-      email = new String(Files.readAllBytes(Paths.get("email/ClientPhotoTemplate.html")));
-      html = true;
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
+    String email = new ClientPhotoTemplate().getTemplate();
     email = email.replace("{{ARTIST NAME}}", artist.name);
     email = email.replace("{{CLIENT NAME}}", user.name);
     email = email.replace("{{CLIENT EMAIL}}", user.email);
@@ -72,7 +52,7 @@ public class JourneyMail {
         "Tattoo image!",
         user.email,
         images,
-        html
+        true
       );
     } catch (MessagingException e) {
       e.printStackTrace();
@@ -97,28 +77,7 @@ public class JourneyMail {
       return false;
     }
 
-    String email =
-      "Client request for {{ARTIST NAME}} from {{STUDIO NAME}}\n"
-        + "Hi, {{ARTIST NAME}}!\n"
-        + "You have received a new client request from {{CLIENT NAME}}!\n\n"
-        + "{{CLIENT NAME}} would love to get a {{CLIENT CONCEPT}} on their "
-        + "{{CLIENT LOCATION}} about {{CLIENT SIZE}} large.\n"
-        + "{{CLIENT NAME}} is available on {{CLIENT AVAILABILITY}}"
-        + " and is willing to leave a deposit\n\n"
-        + "If you would like to get in touch with {{CLIENT NAME}} "
-        + "their email is {{CLIENT EMAIL}}\n\n"
-        + "If you want to accept this request, please reply to this email with the "
-        + "range of the quote in £ (e.g. for a quote range of £100 - £150 send 100-150)\n"
-        + "Please put after this an appointment time in the format: YY-MM-DD HR:MN\n"
-        + "(e.g. 19-07-03 14:30 for an appointment at 2:30pm on the 3rd of July 2019)\n\n"
-        + "Sent from inkstep. on behalf of {{CLIENT NAME}}\n\n";
-    boolean html = false;
-    try {
-      email = new String(Files.readAllBytes(Paths.get("email/ClientRequestTemplate.html")));
-      html = true;
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    String email = new ClientRequestTemplate().getTemplate();
 
     email = email.replace("{{ARTIST NAME}}", artist.name);
     email = email.replace("{{CLIENT NAME}}", user.name);
@@ -146,7 +105,7 @@ public class JourneyMail {
     try {
       javaEmail.sendEmail(
         artist.email, email, "New Client '" + user.name + "' #" + journey.journeyID,
-        "inksteptattoo@gmail.com", images, html
+        "inksteptattoo@gmail.com", images, true
       );
     } catch (MessagingException e) {
       e.printStackTrace();
