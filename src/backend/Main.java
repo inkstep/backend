@@ -61,9 +61,5 @@ public class Main {
     path("/time", () -> {
       get("", new TimeRetrieveHandler(store));
     });
-
-    Journey journey = store.getJourneyFromId(210);
-
-    JourneyMail.sendNewTattooRequestEmail(store, journey, new ArrayList<>());
   }
 }
