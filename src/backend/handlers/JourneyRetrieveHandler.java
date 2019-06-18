@@ -18,6 +18,10 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
     Journey journey = store.getJourneyFromId(Integer.valueOf(urlParams.get(":id")));
 
+    if (journey == null) {
+      return Answer.userError("Journey with that id was not found");
+    }
+
     if (journey.stage == JourneyStage.AppointmentBooked) {
       DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
       LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);

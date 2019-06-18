@@ -11,7 +11,7 @@ Backend server for inkstep
 
 url for HTTP requests
 
-<http://inkstep-backend.eu-west-2.elasticbeanstalk.com/>
+<http://inkstep.hails.info/>
 
 # Scripts
 Run ./install to install necessary programs

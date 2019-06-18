@@ -36,8 +36,11 @@ public interface InkstepStore {
 
   void updateStage(int journeyId, JourneyStage stage);
 
-  void removeJourney(int journeyId);
+  Journey removeJourney(int journeyId);
 
+  List<Journey> getWaitingListJourneysFromArtistId(int artistID);
+
+  List<Journey> getJourneysWithOfferedSlot(int artistID, String bookingDate);
 
   // Studios
   Studio getStudioFromID(int studioID);

@@ -49,14 +49,19 @@ public class InkstepDatabaseStore implements InkstepStore {
       .toString();
   }
 
-  private List<List<String>> selectQuery(DbColumn[] columns, Condition whereClause) {
+  private List<List<String>> selectQuery(DbColumn[] columns, Condition[] whereClauses) {
     if (!connected) {
       return new ArrayList<>();
     }
     try {
-      String query =
-        new SelectQuery().addColumns(columns).addCondition(whereClause).validate().toString();
-      PreparedStatement pstmt = connection.prepareStatement(query);
+      SelectQuery selectQuery =
+        new SelectQuery().addColumns(columns);
+
+      for (Condition whereClause: whereClauses) {
+        selectQuery.addCondition(whereClause);
+      }
+
+      PreparedStatement pstmt = connection.prepareStatement(selectQuery.validate().toString());
 
       System.out.println(pstmt.toString());
       ResultSet rs = pstmt.executeQuery();
@@ -79,6 +84,12 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
 
     return new ArrayList<>();
+  }
+
+  private List<List<String>> selectQuery(DbColumn[] columns, Condition whereClause) {
+    Condition[] clauses =
+      new Condition[] {whereClause};
+    return selectQuery(columns, clauses);
   }
 
   private void deleteQuery(DbTable table, Condition whereClause) {
@@ -569,8 +580,9 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  @Override public void removeJourney(int journeyId) {
+  @Override public Journey removeJourney(int journeyId) {
     try {
+      final Journey journey = getJourneyFromId(journeyId);
       open();
 
       // Build prepared statement to delete journey from table
@@ -578,9 +590,79 @@ public class InkstepDatabaseStore implements InkstepStore {
       deleteQuery(JOURNEYS, condition);
 
       close();
+      return journey;
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
+    return null;
+  }
+
+  @Override public List<Journey> getWaitingListJourneysFromArtistId(int artistId) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+        new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
+          JNY_BOOKING_DATE};
+      Condition[] clauses =
+        new Condition[] {BinaryCondition.equalTo(JNY_ARTIST_ID, artistId),
+          BinaryCondition.equalTo(JNY_STAGE, JourneyStage.WaitingList.toCode())};
+      List<List<String>> results = selectQuery(columns, clauses);
+
+      close();
+
+      List<Journey> journeys = new ArrayList<>();
+      for (List<String> row : results) {
+        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
+          getIntFromResult(row.get(10)), row.get(11)));
+      }
+
+      return journeys;
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+
+    return new ArrayList<>();
+  }
+
+  public List<Journey> getJourneysWithOfferedSlot(int artistID, String bookingDate) {
+    try {
+      open();
+
+      // Build prepared statement
+      DbColumn[] columns =
+        new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
+          JNY_BOOKING_DATE};
+      Condition[] clauses =
+        new Condition[] {BinaryCondition.equalTo(JNY_ARTIST_ID, artistID),
+          BinaryCondition.equalTo(JNY_BOOKING_DATE, bookingDate),
+          BinaryCondition.equalTo(JNY_STAGE, JourneyStage.AppointmentOfferReceived.toCode())
+        };
+      List<List<String>> results = selectQuery(columns, clauses);
+
+      close();
+
+      List<Journey> journeys = new ArrayList<>();
+      for (List<String> row : results) {
+        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
+          getIntFromResult(row.get(10)), row.get(11)));
+      }
+
+      return journeys;
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+
+    return new ArrayList<>();
   }
 
   @Override public Journey getJourneyFromId(int id) {
