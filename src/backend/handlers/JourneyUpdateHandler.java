@@ -27,9 +27,6 @@ public class JourneyUpdateHandler
     if (j == null) {
       return Answer.code(Answer.BAD_USER);
     }
-    User u = store.getUserFromID(j.userID);
-    Artist a = store.getArtistFromID(j.artistID);
-
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("journey_identifier", String.valueOf(journeyId));
@@ -39,6 +36,9 @@ public class JourneyUpdateHandler
       WaiterNotifier waiterNotifier = new WaiterNotifier(store).newSlotUsing(j);
       responseMap.put("notified", String.valueOf(waiterNotifier.notified.toString()));
     }
+
+    User u = store.getUserFromID(j.userID);
+
     if (newStage.toCode() == JourneyStage.AppointmentBooked.toCode()
       && j.stage.toCode() == JourneyStage.WaitingList.toCode()) {
       WaiterNotifier waiterNotifier = new WaiterNotifier(store).slotFilledBy(u, j);
@@ -47,6 +47,7 @@ public class JourneyUpdateHandler
 
     store.updateStage(journeyId, newStage);
     UserNotifier un = new UserNotifier(u);
+    Artist a = store.getArtistFromID(j.artistID);
     boolean successfulNotification = un.notifyStage(a, j, j.stage);
     responseMap.put("original_journey_notified", String.valueOf(successfulNotification));
 

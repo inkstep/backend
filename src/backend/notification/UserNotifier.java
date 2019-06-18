@@ -98,7 +98,7 @@ public class UserNotifier {
       Aps.builder().setBadge(1).setAlert(
         ApsAlert.builder()
           .setTitle(successfulUser.name + " got the slot!")
-          .setBody("The slot released by " + artist.name +" has been filled. " +
+          .setBody("The slot released by " + artist.name + " has been filled. " +
             "Don't worry there will be a next time.")
           .build()
       ).build())
@@ -111,7 +111,7 @@ public class UserNotifier {
       .setNotification(
         new Notification(
           successfulUser.name + " got the slot!",
-          "The slot released by " + artist.name +" has been filled. " +
+          "The slot released by " + artist.name + " has been filled. " +
             "Don't worry there will be a next time.")
       )
       .setToken(user.token)

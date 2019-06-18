@@ -582,7 +582,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   @Override public Journey removeJourney(int journeyId) {
     try {
-      Journey journey = getJourneyFromId(journeyId);
+      final Journey journey = getJourneyFromId(journeyId);
       open();
 
       // Build prepared statement to delete journey from table

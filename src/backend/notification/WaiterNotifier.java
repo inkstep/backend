@@ -45,7 +45,10 @@ public class WaiterNotifier {
   }
 
   public WaiterNotifier slotFilledBy(User successfulUser, Journey journeyFiller) {
-    waitingList = store.getJourneysWithOfferedSlot(journeyFiller.artistID, journeyFiller.bookingDate);
+    waitingList = store.getJourneysWithOfferedSlot(
+      journeyFiller.artistID,
+      journeyFiller.bookingDate
+    );
     for (Journey j : waitingList) {
       User u = store.getUserFromID(j.userID);
       Artist a = store.getArtistFromID(j.artistID);
