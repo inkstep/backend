@@ -61,7 +61,7 @@ public class UserNotifier {
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(1).setAlert(
         ApsAlert.builder()
-          .setTitle(artist.name + "has a cancellation and can see you!")
+          .setTitle(artist.name + " has a cancellation and can see you!")
           .setBody("Are you free on" + cancelledJourney.bookingDate)
           .build()
       ).build())
