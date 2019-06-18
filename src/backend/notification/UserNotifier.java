@@ -15,19 +15,19 @@ public class UserNotifier {
 
   public boolean notifyStage(InkstepStore store, Journey journey, JourneyStage stage) {
 
-    String artistName = store.getArtistFromID(journey.artistID).name;
-    String newInfo;
+    String title = store.getArtistFromID(journey.artistID).name + "has sent an update!";
+    String body = "A";
     if (stage == JourneyStage.QuoteReceived) {
-      newInfo = " quote ";
+      body += " quote ";
     } else {
-      newInfo = "n appointment date ";
+      body += "n appointment date ";
     }
+    body += "has been sent for your " + journey.tattooDesc + " tattoo.";
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
             Aps.builder().setBadge(1).setAlert(
-                    ApsAlert.builder().setTitle(artistName + "has sent an update!")
-                      .setBody("A" + newInfo + "has been sent for your "
-                               + journey.tattooDesc + " tattoo.")
+                    ApsAlert.builder().setTitle(title)
+                      .setBody(body)
                       .build()
             ).build())
     .putCustomData("journey", String.valueOf(journey.journeyID))
@@ -38,8 +38,8 @@ public class UserNotifier {
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
       .setNotification(
         new Notification(
-          artistName + "has sent an update!",
-                "A" + newInfo + "has been sent for your " + journey.tattooDesc + " tattoo.")
+          title,
+                body)
       )
       .setToken(user.token)
       .setApnsConfig(appleConfig)
