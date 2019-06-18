@@ -13,6 +13,7 @@ public interface InkstepStore {
 
   void removeUser(int userID);
 
+  void updateEmail(int userID, String email);
 
   // Journeys
   List<Journey> getJourneysForUserID(int userId);

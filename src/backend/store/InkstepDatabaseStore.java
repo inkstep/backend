@@ -12,7 +12,6 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import model.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
-
   private static final String DB_URL =
     "jdbc:mysql://inkstepdb.cqjzj0pfmjrn.eu-west-2.rds.amazonaws.com:3306/inkstep?useSSL=false";
   private static final String DB_USERNAME = "docg1827107group";
@@ -265,6 +264,25 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       close();
     } catch (SQLException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void updateEmail(int userID, String email) {
+    try {
+      open();
+
+      DbColumn column = USER_EMAIL;
+      Condition condition = BinaryCondition.equalTo(USER_ID, userID);
+
+      String query = getPreparedUpdateQuery(USERS, column, email, condition);
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+      preparedStatement.execute();
+
+      close();
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
       e.printStackTrace();
     }
   }
