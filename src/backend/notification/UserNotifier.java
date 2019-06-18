@@ -18,9 +18,9 @@ public class UserNotifier {
     String artistName = store.getArtistFromID(journey.artistID).name;
     String newInfo;
     if (stage == JourneyStage.QuoteReceived) {
-      newInfo = " quote";
+      newInfo = " quote ";
     } else {
-      newInfo = "n appointment date";
+      newInfo = "n appointment date ";
     }
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
