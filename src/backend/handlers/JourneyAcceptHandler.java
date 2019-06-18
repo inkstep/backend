@@ -2,6 +2,8 @@ package handlers;
 
 import static handlers.AbstractRequestHandler.dataToJson;
 
+import email.templates.ArtistResponseTemplate;
+import model.Artist;
 import model.Journey;
 import model.JourneyStage;
 import model.User;
@@ -44,6 +46,9 @@ public class JourneyAcceptHandler implements Route {
 
     int stage = store.getJourneyStage(journeyId).toCode();
 
+    Journey j = null;
+    User u = null;
+
     if (stage == 0) {
       LocalDateTime date =
         LocalDateTime.parse(
@@ -54,16 +59,23 @@ public class JourneyAcceptHandler implements Route {
       store.updateStage(journeyId, JourneyStage.QuoteReceived);
 
       // Notify the user's device
-      Journey j = store.getJourneyFromId(journeyId);
-      User u = store.getUserFromID(j.userID);
+      j = store.getJourneyFromId(journeyId);
+      u = store.getUserFromID(j.userID);
       UserNotifier un = new UserNotifier(u);
-      un.notifyStage(j, JourneyStage.QuoteReceived);
+      un.notifyStage(store, j, JourneyStage.QuoteReceived);
     } else {
       System.out.println("Stage not implemented");
-      Answer.ok(dataToJson(false));
+      return Answer.ok(dataToJson(false));
     }
 
-    return Answer.ok(dataToJson(true));
+    Artist a = store.getArtistFromID(j.artistID);
+
+    String html = new ArtistResponseTemplate().getTemplate();
+
+    html = html.replace("{{ARTIST NAME}}", a.name);
+    html = html.replace("{{USER NAME}}", u.name);
+
+    return html;
   }
 
   Map<String, String> bodyParams(String body) {
