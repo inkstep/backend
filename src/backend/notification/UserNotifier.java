@@ -16,15 +16,23 @@ public class UserNotifier {
     this.user = user;
   }
 
-  public boolean notifyStage(Journey journey, JourneyStage stage) {
+  public boolean notifyStage(InkstepStore store, Journey journey, JourneyStage stage) {
+
+    String artistName = store.getArtistFromID(journey.artistID).name;
+    String newInfo;
+    if (stage == JourneyStage.QuoteReceived) {
+      newInfo = " quote";
+    } else {
+      newInfo = "n appointment date";
+    }
 
     Message message = Message.builder()
       .putData("journey", String.valueOf(journey.journeyID))
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
       .setNotification(
         new Notification(
-          "Your journey is moving on!",
-          stage.name() + " is updated!")
+          artistName + "has sent an update!",
+                "A" + newInfo + "has been sent for your " + journey.tattooDesc + " tattoo.")
       )
       .setToken(user.token)
       .build();

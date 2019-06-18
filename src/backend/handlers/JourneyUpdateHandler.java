@@ -41,7 +41,7 @@ public class JourneyUpdateHandler
     User u = store.getUserFromID(j.userID);
 
     UserNotifier un = new UserNotifier(u);
-    un.notifyStage(j, j.stage);
+    un.notifyStage(store, j, j.stage);
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
       put("JourneyID", String.valueOf(journeyId));
