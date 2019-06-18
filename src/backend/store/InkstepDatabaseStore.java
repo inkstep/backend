@@ -197,6 +197,27 @@ public class InkstepDatabaseStore implements InkstepStore {
     return studios;
   }
 
+  @Override
+  public void updateToken(int userId, String newToken) {
+    try {
+      open();
+
+      Condition condition = BinaryCondition.equalTo(USER_ID, userId);
+
+      String query = getPreparedUpdateQuery(USERS, USER_DEVICE_TOKEN, newToken, condition);
+
+      PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+      preparedStatement.execute();
+
+      close();
+
+    } catch (ClassNotFoundException | SQLException e) {
+      close();
+      e.printStackTrace();
+    }
+  }
+
   @Override public Studio getStudioFromID(int studioID) {
     try {
       open();
