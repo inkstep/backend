@@ -13,6 +13,7 @@ public interface InkstepStore {
 
   void removeUser(int userID);
 
+  void updateEmail(int userID, String email);
 
   // Journeys
   List<Journey> getJourneysForUserID(int userId);
@@ -35,8 +36,11 @@ public interface InkstepStore {
 
   void updateStage(int journeyId, JourneyStage stage);
 
-  void removeJourney(int journeyId);
+  Journey removeJourney(int journeyId);
 
+  List<Journey> getWaitingListJourneysFromArtistId(int artistID);
+
+  List<Journey> getJourneysWithOfferedSlot(int artistID, String bookingDate);
 
   // Studios
   Studio getStudioFromID(int studioID);
@@ -50,4 +54,6 @@ public interface InkstepStore {
   void addArtist(Artist artist);
 
   List<Studio> getStudios();
+
+    void updateToken(int userId, String newToken);
 }

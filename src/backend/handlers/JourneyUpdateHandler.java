@@ -3,15 +3,9 @@ package handlers;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import email.JourneyMail;
-import model.Journey;
-import model.JourneyStage;
-import model.User;
-import model.Validatable;
+import model.*;
 import notification.UserNotifier;
+import notification.WaiterNotifier;
 import store.InkstepStore;
 
 import java.util.*;
@@ -27,25 +21,40 @@ public class JourneyUpdateHandler
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
+    JourneyStage newStage = JourneyStage.values()[request.getStage()]; // TODO(mm5917): null pointer exception
     // TODO(DJRHails): Should go in valid check of payload
     if (request.getStage() > JourneyStage.values().length
       || request.getStage() < 0) {
       return Answer.code(400);
     }
 
-    JourneyStage newStage = JourneyStage.values()[request.getStage()]; // TODO(mm5917): null pointer exception
-
-    store.updateStage(journeyId, newStage);
-
     Journey j = store.getJourneyFromId(journeyId);
-    User u = store.getUserFromID(j.userID);
-
-    UserNotifier un = new UserNotifier(u);
-    un.notifyStage(j, j.stage);
+    if (j == null) {
+      return Answer.code(Answer.BAD_USER);
+    }
 
     Map<String, String> responseMap = new HashMap<String, String>() {{
-      put("JourneyID", String.valueOf(journeyId));
+      put("journey_identifier", String.valueOf(journeyId));
     }};
+
+    if (newStage.toCode() == JourneyStage.WaitingList.toCode()) {
+      WaiterNotifier waiterNotifier = new WaiterNotifier(store).newSlotUsing(j);
+      responseMap.put("notified", String.valueOf(waiterNotifier.notified.toString()));
+    }
+
+    User u = store.getUserFromID(j.userID);
+
+    if (newStage.toCode() == JourneyStage.AppointmentBooked.toCode()
+      && j.stage.toCode() == JourneyStage.WaitingList.toCode()) {
+      WaiterNotifier waiterNotifier = new WaiterNotifier(store).slotFilledBy(u, j);
+      responseMap.put("revoked", String.valueOf(waiterNotifier.notified.toString()));
+    }
+
+    store.updateStage(journeyId, newStage);
+    UserNotifier un = new UserNotifier(u);
+    Artist a = store.getArtistFromID(j.artistID);
+    boolean successfulNotification = un.notifyStage(a, j, j.stage);
+    responseMap.put("original_journey_notified", String.valueOf(successfulNotification));
 
     return Answer.ok(dataToJson(responseMap));
   }
@@ -67,7 +76,8 @@ public class JourneyUpdateHandler
 
     @Override
     public boolean isValid() {
-      return true;
+      return stage < JourneyStage.values().length
+        && stage >= 0;
     }
   }
 }
