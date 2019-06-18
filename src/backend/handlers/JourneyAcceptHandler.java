@@ -62,7 +62,7 @@ public class JourneyAcceptHandler implements Route {
       j = store.getJourneyFromId(journeyId);
       u = store.getUserFromID(j.userID);
       UserNotifier un = new UserNotifier(u);
-      un.notifyStage(j, JourneyStage.QuoteReceived);
+      un.notifyStage(store, j, JourneyStage.QuoteReceived);
     } else {
       System.out.println("Stage not implemented");
       return Answer.ok(dataToJson(false));
