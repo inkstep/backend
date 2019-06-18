@@ -1,9 +1,6 @@
 package notification;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import model.Journey;
 import model.JourneyStage;
 import model.User;
@@ -26,6 +23,15 @@ public class UserNotifier {
       newInfo = "n appointment date";
     }
 
+    ApnsConfig appleConfig = ApnsConfig.builder().setAps(
+            Aps.builder().setBadge(1).setAlert(
+                    ApsAlert.builder().setTitle(artistName + "has sent an update!")
+                      .setBody("A" + newInfo + "has been sent for your " + journey.tattooDesc + " tattoo.")
+                      .build()
+            ).build())
+    .putCustomData("journey", String.valueOf(journey.journeyID))
+    .build();
+
     Message message = Message.builder()
       .putData("journey", String.valueOf(journey.journeyID))
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
@@ -35,6 +41,7 @@ public class UserNotifier {
                 "A" + newInfo + "has been sent for your " + journey.tattooDesc + " tattoo.")
       )
       .setToken(user.token)
+      .setApnsConfig(appleConfig)
       .build();
 
     // Send a message to the device corresponding to the provided
