@@ -46,9 +46,6 @@ public class JourneyAcceptHandler implements Route {
 
     int stage = store.getJourneyStage(journeyId).toCode();
 
-    Journey j = null;
-    User u = null;
-
     if (stage == 0) {
       LocalDateTime date =
         LocalDateTime.parse(
@@ -59,23 +56,19 @@ public class JourneyAcceptHandler implements Route {
       store.updateStage(journeyId, JourneyStage.QuoteReceived);
 
       // Notify the user's device
-      j = store.getJourneyFromId(journeyId);
-      u = store.getUserFromID(j.userID);
+      Journey j = store.getJourneyFromId(journeyId);
+      User u = store.getUserFromID(j.userID);
+      Artist a = store.getArtistFromID(j.artistID);
       UserNotifier un = new UserNotifier(u);
-      un.notifyStage(store, j, JourneyStage.QuoteReceived);
+      un.notifyStage(a, j, JourneyStage.QuoteReceived);
+
+      return new ArtistResponseTemplate().getTemplate()
+        .replace("{{ARTIST NAME}}", a.name)
+        .replace("{{USER NAME}}", u.name);
     } else {
       System.out.println("Stage not implemented");
-      return Answer.ok(dataToJson(false));
+      return Answer.userError("Stage not implemented");
     }
-
-    Artist a = store.getArtistFromID(j.artistID);
-
-    String html = new ArtistResponseTemplate().getTemplate();
-
-    html = html.replace("{{ARTIST NAME}}", a.name);
-    html = html.replace("{{USER NAME}}", u.name);
-
-    return html;
   }
 
   Map<String, String> bodyParams(String body) {
