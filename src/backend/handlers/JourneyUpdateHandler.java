@@ -33,7 +33,7 @@ public class JourneyUpdateHandler
       return Answer.code(400);
     }
 
-    JourneyStage newStage = JourneyStage.values()[request.getStage()];
+    JourneyStage newStage = JourneyStage.values()[request.getStage()]; // TODO(mm5917): null pointer exception
 
     store.updateStage(journeyId, newStage);
 

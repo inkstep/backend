@@ -24,7 +24,7 @@ public class ThumbnailRetrieveHandler extends AbstractRequestHandler<EmptyPayloa
     final int journeyId = Integer.valueOf(urlParams.get(":jid"));
     final int imageId = Integer.valueOf(urlParams.get(":iid"));
 
-    String imageData = store.getImagesFromJourneyId(journeyId).get(imageId);
+    String imageData = store.getImagesFromJourneyId(journeyId).get(imageId); // TODO(mm5917): null pointer exception
 
     BufferedImage image;
 
