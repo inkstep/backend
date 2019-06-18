@@ -26,7 +26,8 @@ public class UserNotifier {
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
             Aps.builder().setBadge(1).setAlert(
                     ApsAlert.builder().setTitle(artistName + "has sent an update!")
-                      .setBody("A" + newInfo + "has been sent for your " + journey.tattooDesc + " tattoo.")
+                      .setBody("A" + newInfo + "has been sent for your "
+                               + journey.tattooDesc + " tattoo.")
                       .build()
             ).build())
     .putCustomData("journey", String.valueOf(journey.journeyID))
