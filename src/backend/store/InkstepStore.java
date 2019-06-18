@@ -51,4 +51,6 @@ public interface InkstepStore {
   void addArtist(Artist artist);
 
   List<Studio> getStudios();
+
+    void updateToken(int userId, String newToken);
 }
