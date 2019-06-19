@@ -43,7 +43,7 @@ public class JourneyUpdateHandler extends AbstractRequestHandler<JourneyUpdateHa
     User u = store.getUserFromID(j.userID);
 
     if (newStage.toCode() == JourneyStage.AppointmentBooked.toCode()
-      && j.stage.toCode() == JourneyStage.WaitingList.toCode()) {
+      && j.stage.toCode() == JourneyStage.AppointmentOfferReceived.toCode()) {
       WaiterNotifier waiterNotifier = new WaiterNotifier(store).slotFilledBy(u, j);
       responseMap.put("revoked", String.valueOf(waiterNotifier.notified.toString()));
     }

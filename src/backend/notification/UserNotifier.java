@@ -105,7 +105,7 @@ public class UserNotifier {
             "Don't worry there will be a next time.";
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
-      Aps.builder().setBadge(1).setAlert(
+      Aps.builder().setBadge(0).setAlert(
         ApsAlert.builder()
           .setTitle(title)
           .setBody(body)
