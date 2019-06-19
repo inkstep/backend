@@ -23,6 +23,10 @@ public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
     System.out.println("Retrieving journeys");
 
+    if (urlParams.get("user") == null) {
+      return Answer.userError("Didn't provide user flag");
+    }
+
     List<Journey> journeys = store.getJourneysForUserID(Integer.valueOf(urlParams.get("user")));
     LocalDateTime localDateTime = LocalDateTime.now(TIME_ZONE);
 
