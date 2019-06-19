@@ -17,13 +17,13 @@ public class Main {
 
   public static void main(final String[] args) throws IOException {
 
-//    InputStream inputStream = new ByteArrayInputStream(INKSTEP_FIREBASE_API.getBytes());
-//    FirebaseOptions options = new FirebaseOptions.Builder()
-//        .setCredentials(GoogleCredentials.fromStream(inputStream))
-//        .setDatabaseUrl("https://inkstep-d738d.firebaseio.com")
-//        .build();
-//
-//    FirebaseApp.initializeApp(options);
+    InputStream inputStream = new ByteArrayInputStream(INKSTEP_FIREBASE_API.getBytes());
+    FirebaseOptions options = new FirebaseOptions.Builder()
+        .setCredentials(GoogleCredentials.fromStream(inputStream))
+        .setDatabaseUrl("https://inkstep-d738d.firebaseio.com")
+        .build();
+
+    FirebaseApp.initializeApp(options);
 
     InkstepStore store = new InkstepDatabaseStore();
 
