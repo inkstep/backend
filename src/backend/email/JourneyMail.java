@@ -4,6 +4,7 @@ import javax.mail.MessagingException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import email.templates.ClientPhotoTemplate;
 import email.templates.ClientRequestTemplate;
@@ -98,6 +99,12 @@ public class JourneyMail {
     System.out.println(email);
 
     JavaEmail javaEmail = new JavaEmail();
+
+    try {
+      TimeUnit.SECONDS.sleep(5);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     try {
       javaEmail.sendEmail(
