@@ -115,10 +115,12 @@ public class InkstepDatabaseStore implements InkstepStore {
   }
 
   /* Artist */
-  synchronized @Override public void addArtist(Artist artist) {
+
+  @Override public synchronized void addArtist(Artist artist) {
   }
 
-  synchronized @Override public List<Artist> getArtists() {
+
+  @Override public synchronized List<Artist> getArtists() {
     List<Artist> artists = new ArrayList<>();
     try {
       open();
@@ -144,7 +146,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return artists;
   }
 
-  synchronized @Override public Artist getArtistFromID(int artistId) {
+
+  @Override public synchronized Artist getArtistFromID(int artistId) {
     Artist artist = null;
     try {
       open();
@@ -175,7 +178,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* Studio */
 
-  synchronized @Override public List<Studio> getStudios() {
+  @Override public synchronized List<Studio> getStudios() {
     List<Studio> studios = new ArrayList<>();
     try {
       open();
@@ -198,7 +201,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return studios;
   }
 
-  synchronized @Override public void updateToken(int userId, String newToken) {
+
+  @Override public synchronized void updateToken(int userId, String newToken) {
     try {
       open();
 
@@ -218,7 +222,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public Studio getStudioFromID(int studioID) {
+  @Override public synchronized Studio getStudioFromID(int studioID) {
     try {
       open();
 
@@ -247,7 +251,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* User */
 
-  synchronized @Override public int putUser(User user) {
+  @Override public synchronized int putUser(User user) {
     try {
       open();
 
@@ -287,7 +291,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return -1;
   }
 
-  synchronized @Override public void removeUser(int userID) {
+  @Override public synchronized void removeUser(int userID) {
     try {
       open();
 
@@ -300,7 +304,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public void updateEmail(int userID, String email) {
+  @Override public synchronized void updateEmail(int userID, String email) {
     try {
       open();
 
@@ -318,7 +322,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public User getUserFromID(int userID) {
+  @Override public synchronized User getUserFromID(int userID) {
     User user = null;
     try {
       open();
@@ -347,7 +351,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
   /* Journey */
 
-  synchronized @Override public int createJourney(Journey journey) {
+  @Override public synchronized int createJourney(Journey journey) {
     int returnId = -1;
     try {
       open();
@@ -390,7 +394,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  synchronized @Override public int putJourneyImage(int journeyId, String image) {
+  synchronized
+  @Override public int putJourneyImage(int journeyId, String image) {
     int returnId = -1;
     try {
       open();
@@ -425,7 +430,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  synchronized @Override public boolean hasGotAllImages(int journeyId) {
+  synchronized
+  @Override public boolean hasGotAllImages(int journeyId) {
     try {
       open();
 
@@ -457,7 +463,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return false;
   }
 
-  synchronized @Override public List<String> getImagesFromJourneyId(int journeyId) {
+  synchronized
+  @Override public List<String> getImagesFromJourneyId(int journeyId) {
     try {
       open();
 
@@ -486,7 +493,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  synchronized @Override public JourneyStage getJourneyStage(int journeyId) {
+  synchronized
+  @Override public JourneyStage getJourneyStage(int journeyId) {
     try {
       open();
 
@@ -513,7 +521,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  synchronized @Override public void updateQuote(int journeyId, int quoteLower,
+  @Override public synchronized void updateQuote(int journeyId, int quoteLower,
                                     int quoteUpper) {
     try {
       open();
@@ -538,7 +546,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public void offerAppointment(int journeyId, String appointmentString) {
+  @Override public synchronized void offerAppointment(int journeyId, String appointmentString) {
     try {
       open();
 
@@ -560,7 +568,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public void updateStage(int journeyId, JourneyStage stage) {
+  @Override public synchronized void updateStage(int journeyId, JourneyStage stage) {
     try {
       open();
 
@@ -580,7 +588,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     }
   }
 
-  synchronized @Override public Journey removeJourney(int journeyId) {
+  synchronized
+  @Override public Journey removeJourney(int journeyId) {
     try {
       final Journey journey = getJourneyFromId(journeyId);
       open();
@@ -597,7 +606,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  synchronized @Override public List<Journey> getWaitingListJourneysFromArtistId(int artistId) {
+  synchronized
+  @Override public List<Journey> getWaitingListJourneysFromArtistId(int artistId) {
     try {
       open();
 
@@ -687,7 +697,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return new ArrayList<>();
   }
 
-  synchronized @Override public Journey getJourneyFromId(int id) {
+  synchronized
+  @Override public Journey getJourneyFromId(int id) {
     try {
       open();
 
@@ -731,7 +742,8 @@ public class InkstepDatabaseStore implements InkstepStore {
     return null;
   }
 
-  synchronized @Override public List<Journey> getJourneysForUserID(int userId) {
+  synchronized
+  @Override public List<Journey> getJourneysForUserID(int userId) {
     try {
       open();
 
