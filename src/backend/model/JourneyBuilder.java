@@ -57,7 +57,11 @@ public class JourneyBuilder {
   }
 
   public JourneyBuilder withAvailability(String availability) {
-    this.availability = availability;
+    if (availability == null) {
+      this.availability = "0000000";
+    } else {
+      this.availability = availability;
+    }
     return this;
   }
 
