@@ -61,7 +61,7 @@ public class UserNotifier {
   public boolean cancellation(Artist artist, Journey waitingJourney, Journey cancelledJourney) {
 
     String title = artist.name + " has a cancellation and can see you!";
-    String body = "Are you free on" + cancelledJourney.bookingDate;
+    String body = "Are you free on " + cancelledJourney.bookingDate;
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(1).setAlert(
