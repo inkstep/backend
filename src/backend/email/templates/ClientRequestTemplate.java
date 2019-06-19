@@ -529,9 +529,9 @@ public class ClientRequestTemplate implements EmailTemplate {
     stringBuffer.append(
       "                                        <div style=\"line-height: 21px; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; font-size: 12px; color: #202431;\">\n");
     stringBuffer.append(
-      "                                            <p style=\"font-size: 14px; line-height: 28px; text-align: left; margin: 0;\"><span style=\"font-size: 16px;\">{{CLIENT CONCEPT}}</span></p>\n");
+      "                                            <p style=\"font-size: 14px; line-height: 28px; text-align: left; margin: 0;\"><span style=\"font-size: 16px;\">{{CLIENT CONCEPT}} on their {{CLIENT LOCATION}}</span></p>\n");
     stringBuffer.append(
-      "                                            <p style=\"line-height: 28px; text-align: left; font-size: 12px; margin: 0;\"><span style=\"font-size: 16px;\">On their {{CLIENT LOCATION}}</span></p>\n");
+      "                                            <p style=\"line-height: 28px; text-align: left; font-size: 12px; margin: 0;\"><span style=\"font-size: 16px;\"></span>They feel like a '{{CLIENT STYLE}}' style would best fit their tattoo.</p>\n");
     stringBuffer.append("                                        </div>\n");
     stringBuffer.append("                                    </div>\n");
     stringBuffer
@@ -555,7 +555,7 @@ public class ClientRequestTemplate implements EmailTemplate {
     stringBuffer.append(
       "                                        <div style=\"font-size: 12px; line-height: 21px; font-family: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; color: #202431;\">\n");
     stringBuffer.append(
-      "                                            <p style=\"font-size: 14px; line-height: 28px; text-align: left; margin: 0;\"><span style=\"font-size: 16px;\">About {{CLIENT SIZE}}</span></p>\n");
+      "                                            <p style=\"font-size: 14px; line-height: 28px; text-align: left; margin: 0;\"><span style=\"font-size: 16px;\">They specified {{CLIENT SIZE}}</span></p>\n");
     stringBuffer.append("                                        </div>\n");
     stringBuffer.append("                                    </div>\n");
     stringBuffer
@@ -946,7 +946,7 @@ public class ClientRequestTemplate implements EmailTemplate {
     stringBuffer.append(
       "                                                                                <center>\n");
     stringBuffer.append(
-      "                                                                                    <p style=\"font-size: 14px; line-height: 21px; margin: 0;\"><span style=\"font-size: 18px; color: #202431;\"><strong>Booking Date (e.g. 19/09/2019)</strong></span></p>\n");
+      "                                                                                    <p style=\"font-size: 14px; line-height: 21px; margin: 0;\"><span style=\"font-size: 18px; color: #202431;\"><strong>Booking Date (e.g. 20/06/2019)</strong></span></p>\n");
     stringBuffer.append(
       "                                                                                    <input type=\"date\" name=\"booking_date\"><br>\n");
     stringBuffer.append(
@@ -990,7 +990,7 @@ public class ClientRequestTemplate implements EmailTemplate {
     stringBuffer.append(
       "                                                                                <center>\n");
     stringBuffer.append(
-      "                                                                                    <p style=\"font-size: 14px; line-height: 21px; margin: 0;\"><span style=\"font-size: 18px; color: #202431;\"><strong>Booking Time (e.g. 13:00)</strong></span></p>\n");
+      "                                                                                    <p style=\"font-size: 14px; line-height: 21px; margin: 0;\"><span style=\"font-size: 18px; color: #202431;\"><strong>Booking Time (e.g. 10:00)</strong></span></p>\n");
     stringBuffer.append(
       "                                                                                    <input type=\"time\" name=\"booking_time\"><br>\n");
     stringBuffer.append(
