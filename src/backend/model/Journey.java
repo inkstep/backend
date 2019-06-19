@@ -20,20 +20,12 @@ public class Journey implements Validatable {
   public JourneyStage stage;
   public final String bookingDate;
 
-  @JsonCreator
-  public Journey(
-    @JsonProperty("id") int journeyID,
-    @JsonProperty("user_id") int userID,
-    @JsonProperty("artist_id") int artistID,
-    @JsonProperty("tattoo_desc") String tattooDesc,
-    @JsonProperty("size") String size,
-    @JsonProperty("position") String position,
-    @JsonProperty("style") String style,
-    @JsonProperty("availability") String availability,
-    @JsonProperty("ref_images") int noRefImages,
-    @JsonProperty("quote_lower") int quoteLower,
-    @JsonProperty("quote_upper") int quoteUpper,
-    @JsonProperty("stage") int stage,
+  @JsonCreator Journey(@JsonProperty("id") int journeyID, @JsonProperty("user_id") int userID,
+    @JsonProperty("artist_id") int artistID, @JsonProperty("tattoo_desc") String tattooDesc,
+    @JsonProperty("size") String size, @JsonProperty("position") String position,
+    @JsonProperty("style") String style, @JsonProperty("availability") String availability,
+    @JsonProperty("ref_images") int noRefImages, @JsonProperty("quote_lower") int quoteLower,
+    @JsonProperty("quote_upper") int quoteUpper, @JsonProperty("stage") int stage,
     @JsonProperty("booking_date") String bookingDate) {
     this.journeyID = journeyID;
     this.userID = userID;

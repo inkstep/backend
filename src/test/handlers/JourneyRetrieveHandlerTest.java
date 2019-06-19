@@ -1,5 +1,6 @@
 package handlers;
 
+import static model.JourneyBuilder.aJourney;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.Journey;
+import model.JourneyBuilder;
 import org.junit.Test;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -35,8 +37,22 @@ public class JourneyRetrieveHandlerTest {
     int stage = 0;
 
     Journey journey =
-      new Journey(journeyID, artistID, studioID, description, size, position, style, availability,
-        noRefImages, quoteLower, quoteUpper, stage, null);
+      aJourney()
+      .withID(journeyID)
+      .withUserID(artistID)
+      .withArtistID(studioID)
+      .withTattooDesc(description)
+      .withSize(size)
+      .withPosition(position)
+      .withStyle(style)
+      .withAvailability(availability)
+      .withNoRefImages(noRefImages)
+      .withQuoteLower(quoteLower)
+      .withQuoteUpper(quoteUpper)
+      .withStage(stage)
+      .withBookingDate(null)
+      .build();
+
     List<Journey> journeys = new ArrayList<>();
     journeys.add(journey);
 

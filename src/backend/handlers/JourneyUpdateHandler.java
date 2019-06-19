@@ -1,5 +1,8 @@
 package handlers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,24 +11,21 @@ import notification.UserNotifier;
 import notification.WaiterNotifier;
 import store.InkstepStore;
 
-import java.util.*;
-
-public class JourneyUpdateHandler
-  extends AbstractRequestHandler<JourneyUpdateHandler.Payload> {
+public class JourneyUpdateHandler extends AbstractRequestHandler<JourneyUpdateHandler.Payload> {
 
   public JourneyUpdateHandler(InkstepStore store) {
     super(Payload.class, store);
   }
 
-  @Override
-  protected Answer processImpl(Payload request, Map<String, String> urlParams) {
+  @Override protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
     // TODO(mm5917): null pointer exception
+    System.out.println("Stage was: " + request.getStage());
     JourneyStage newStage = JourneyStage.values()[request.getStage()];
+
     // TODO(DJRHails): Should go in valid check of payload
-    if (request.getStage() > JourneyStage.values().length
-      || request.getStage() < 0) {
+    if (request.getStage() > JourneyStage.values().length || request.getStage() < 0) {
       return Answer.code(400);
     }
 
@@ -65,8 +65,7 @@ public class JourneyUpdateHandler
     private int stage;
 
     @JsonCreator
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    Payload(
+    @JsonIgnoreProperties(ignoreUnknown = true) Payload(
       @JsonProperty("Stage") int newStage) {
       this.stage = newStage;
     }
@@ -75,10 +74,8 @@ public class JourneyUpdateHandler
       return stage;
     }
 
-    @Override
-    public boolean isValid() {
-      return stage < JourneyStage.values().length
-        && stage >= 0;
+    @Override public boolean isValid() {
+      return stage < JourneyStage.values().length && stage >= 0;
     }
   }
 }

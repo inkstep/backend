@@ -1,5 +1,6 @@
 package handlers;
 
+import static model.JourneyBuilder.aJourney;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -7,10 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 
 import handlers.JourneyCreateHandler.Payload;
-import model.Artist;
-import model.Journey;
-import model.Studio;
-import model.User;
+import model.*;
 import org.junit.Test;
 import store.InkstepDatabaseStore;
 import store.InkstepStore;
@@ -45,9 +43,21 @@ public class JourneyCreateHandlerTest {
     String expectedJson = "{\n" + "  \"journey_id\" : \"0\"\n" + "}";
 
     Journey journey =
-      new Journey(-1, payload.userID, payload.artistID, payload.tattooDesc, payload.size,
-        payload.position, payload.style, payload.availability, payload.noRefImages, -1, -1, 0,
-        null);
+      aJourney()
+      .withID(-1)
+      .withUserID(payload.userID)
+      .withArtistID(payload.artistID)
+      .withTattooDesc(payload.tattooDesc)
+      .withSize(payload.size)
+      .withPosition(payload.position)
+      .withStyle(payload.style)
+      .withAvailability(payload.availability)
+      .withNoRefImages(payload.noRefImages)
+      .withQuoteLower(-1)
+      .withQuoteUpper(-1)
+      .withStage(0)
+      .withBookingDate(null)
+      .build();
 
     when(store.createJourney(journey)).thenReturn(0);
     when(store.getArtistFromID(0))

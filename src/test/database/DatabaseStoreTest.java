@@ -2,8 +2,10 @@ package database;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
+import static model.JourneyBuilder.aJourney;
 
 import model.Journey;
+import model.JourneyBuilder;
 import model.User;
 import org.junit.Test;
 import store.InkstepDatabaseStore;
@@ -29,7 +31,23 @@ public class DatabaseStoreTest {
   }
 
   @Test public void canAddAndRemoveJourney() {
-    Journey journey = new Journey(-1, 0, 0, null, null, null, null, null, 0, 0, 0, 0, null);
+    Journey journey =
+      aJourney()
+      .withID(-1)
+      .withUserID(0)
+      .withArtistID(0)
+      .withTattooDesc(null)
+      .withSize(null)
+      .withPosition(null)
+      .withStyle(null)
+      .withAvailability(null)
+      .withNoRefImages(0)
+      .withQuoteLower(0)
+      .withQuoteUpper(0)
+      .withStage(0)
+      .withBookingDate(null)
+      .build();
+
     int journeyId = store.createJourney(journey);
 
     // Make sure journey was added
