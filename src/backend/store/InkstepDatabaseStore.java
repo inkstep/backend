@@ -449,7 +449,7 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       final int noUploadedImgs = results.size();
 
-      return noUploadedImgs == noRefImgs;
+      return noUploadedImgs >= noRefImgs;
     } catch (ClassNotFoundException | SQLException e) {
       close();
     }

@@ -1,5 +1,6 @@
 package handlers;
 
+import java.util.List;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -22,6 +23,12 @@ public class ThumbnailRetrieveHandler extends AbstractRequestHandler<EmptyPayloa
 
     final int journeyId = Integer.valueOf(urlParams.get(":jid"));
     final int imageId = Integer.valueOf(urlParams.get(":iid"));
+
+    List<String> images = store.getImagesFromJourneyId(journeyId);
+
+    if (imageId >= images.size() || imageId < 0) {
+      return Answer.code(Answer.NOT_FOUND);
+    }
 
     // TODO(mm5917): null pointer exception
     String imageData = store.getImagesFromJourneyId(journeyId).get(imageId);
