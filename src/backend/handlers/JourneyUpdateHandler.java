@@ -20,14 +20,11 @@ public class JourneyUpdateHandler extends AbstractRequestHandler<JourneyUpdateHa
   @Override protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
-    // TODO(mm5917): null pointer exception
-    System.out.println("Stage was: " + request.getStage());
-    JourneyStage newStage = JourneyStage.values()[request.getStage()];
-
     // TODO(DJRHails): Should go in valid check of payload
     if (request.getStage() > JourneyStage.values().length || request.getStage() < 0) {
       return Answer.code(400);
     }
+    JourneyStage newStage = JourneyStage.values()[request.getStage()];
 
     Journey j = store.getJourneyFromId(journeyId);
     if (j == null) {
