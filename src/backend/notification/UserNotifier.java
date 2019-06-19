@@ -29,7 +29,7 @@ public class UserNotifier {
                     ApsAlert.builder().setTitle(title)
                       .setBody(body)
                       .build()
-            ).setSound("default").build())
+            ).setSound("note").build())
     .putCustomData("journey", String.valueOf(journey.journeyID))
     .build();
 
@@ -69,7 +69,7 @@ public class UserNotifier {
           .setTitle(title)
           .setBody(body)
           .build()
-      ).build())
+      ).setSound("note").build())
       .putCustomData("journey", String.valueOf(waitingJourney.journeyID))
       .build();
 
@@ -110,7 +110,7 @@ public class UserNotifier {
           .setTitle(title)
           .setBody(body)
           .build()
-      ).build())
+      ).setSound("alert").build())
       .putCustomData("journey", String.valueOf(journey.journeyID))
       .build();
 
