@@ -14,7 +14,7 @@ public class UserNotifier {
   }
 
   public boolean notifyStage(Artist artist, Journey journey, JourneyStage stage) {
-    String title = artist.name + " has sent an update!";
+    String title = artist.name + " has sent an update ⚡️";
     String body = "A";
     if (stage == JourneyStage.QuoteReceived) {
       body += " quote ";
@@ -59,8 +59,8 @@ public class UserNotifier {
   }
 
   public boolean cancellation(Artist artist, Journey waitingJourney, Journey cancelledJourney) {
-    String title = artist.name + " has a cancellation and can see you!";
-    String body = "Are you free on " + cancelledJourney.bookingDate;
+    String title = artist.name + " has a cancellation and can see you! 🥳";
+    String body = "Are you free on " + cancelledJourney.bookingDate + "?";
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(1).setAlert(
@@ -99,9 +99,9 @@ public class UserNotifier {
 
   public boolean filled(User successfulUser, Artist artist, Journey journey) {
 
-    String title = successfulUser.name + " got the slot!";
+    String title = successfulUser.name + " got the slot! 😔";
     String body = "The slot released by " + artist.name + " has been filled. " +
-            "Don't worry there will be a next time.";
+                  "Don't worry there will be a next time.";
 
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(0).setAlert(
