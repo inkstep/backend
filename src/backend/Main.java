@@ -27,6 +27,8 @@ public class Main {
 
     InkstepStore store = new InkstepDatabaseStore();
 
+    port(6789);
+
     path("/artist", () -> {
       get("", new ArtistsRetrieveHandler(store));
       get("/:id", new ArtistRetrieveHandler(store));
