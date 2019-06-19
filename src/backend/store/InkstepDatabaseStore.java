@@ -357,7 +357,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_STAGE};
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_STAGE, JNY_STYLE};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -370,6 +370,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement.setString(6, journey.availability);
       preparedStatement.setString(7, journey.noRefImages);
       preparedStatement.setInt(8, journey.stage.toCode());
+      preparedStatement.setString(9, journey.style);
 
       // Execute the insert statement
       preparedStatement.execute();
