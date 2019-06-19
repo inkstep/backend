@@ -3,12 +3,12 @@ package handlers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
 import model.Journey;
 import model.JourneyStage;
 import store.InkstepStore;
-
-import java.util.List;
-import java.util.Map;
 
 public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
@@ -22,6 +22,10 @@ public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload
 
   @Override protected Answer processImpl(EmptyPayload userToBe, Map<String, String> urlParams) {
     System.out.println("Retrieving journeys");
+
+    if (urlParams.get("user") == null) {
+      return Answer.userError("Didn't provide user flag");
+    }
 
     List<Journey> journeys = store.getJourneysForUserID(Integer.valueOf(urlParams.get("user")));
     LocalDateTime localDateTime = LocalDateTime.now(TIME_ZONE);

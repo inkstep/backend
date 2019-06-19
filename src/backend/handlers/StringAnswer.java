@@ -1,8 +1,8 @@
 package handlers;
 
-import spark.Response;
-
 import java.util.Objects;
+
+import spark.Response;
 
 public class StringAnswer extends Answer {
   private int code;

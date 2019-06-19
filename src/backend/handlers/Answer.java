@@ -1,13 +1,12 @@
 package handlers;
 
-import spark.Response;
-
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.Objects;
+
+import spark.Response;
 
 public abstract class Answer {
 
+  public static final int NOT_FOUND = 404;
   public static final int BAD_USER = 400;
   public static final int SUCCESS = 200;
 

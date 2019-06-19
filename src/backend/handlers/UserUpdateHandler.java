@@ -1,20 +1,13 @@
 package handlers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import email.JourneyMail;
-import model.Journey;
-import model.JourneyStage;
-import model.User;
 import model.Validatable;
-import notification.UserNotifier;
 import store.InkstepStore;
-
-import java.util.*;
 
 public class UserUpdateHandler extends AbstractRequestHandler<UserUpdateHandler.Payload> {
 

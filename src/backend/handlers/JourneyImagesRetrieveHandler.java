@@ -1,5 +1,6 @@
 package handlers;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import javax.imageio.ImageIO;
+
 import store.InkstepStore;
 import utils.ImageResizer;
 

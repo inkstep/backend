@@ -2,12 +2,6 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Journey implements Validatable {
 
@@ -19,25 +13,19 @@ public class Journey implements Validatable {
   public final String tattooDesc;
   public final String size;
   public final String position;
+  public final String style;
   public final String availability;
   public final int quoteLower;
   public final int quoteUpper;
   public JourneyStage stage;
   public final String bookingDate;
 
-  @JsonCreator
-  public Journey(
-    @JsonProperty("id") int journeyID,
-    @JsonProperty("user_id") int userID,
-    @JsonProperty("artist_id") int artistID,
-    @JsonProperty("tattoo_desc") String tattooDesc,
-    @JsonProperty("size") String size,
-    @JsonProperty("position") String position,
-    @JsonProperty("availability") String availability,
-    @JsonProperty("ref_images") int noRefImages,
-    @JsonProperty("quote_lower") int quoteLower,
-    @JsonProperty("quote_upper") int quoteUpper,
-    @JsonProperty("stage") int stage,
+  @JsonCreator Journey(@JsonProperty("id") int journeyID, @JsonProperty("user_id") int userID,
+    @JsonProperty("artist_id") int artistID, @JsonProperty("tattoo_desc") String tattooDesc,
+    @JsonProperty("size") String size, @JsonProperty("position") String position,
+    @JsonProperty("style") String style, @JsonProperty("availability") String availability,
+    @JsonProperty("ref_images") int noRefImages, @JsonProperty("quote_lower") int quoteLower,
+    @JsonProperty("quote_upper") int quoteUpper, @JsonProperty("stage") int stage,
     @JsonProperty("booking_date") String bookingDate) {
     this.journeyID = journeyID;
     this.userID = userID;
@@ -45,6 +33,7 @@ public class Journey implements Validatable {
     this.tattooDesc = tattooDesc;
     this.size = size;
     this.position = position;
+    this.style = style;
     this.availability = availability;
     this.noRefImages = String.valueOf(noRefImages);
     this.quoteLower = quoteLower;
@@ -85,6 +74,7 @@ public class Journey implements Validatable {
       ", tattooDesc='" + tattooDesc + "'" +
       ", size='" + size + "'" +
       ", position='" + position + "'" +
+      ", style='" + style + "'" +
       ", availability='" + availability + "'" +
       ", quoteLower='" + quoteLower + "'" +
       ", quoteUpper='" + quoteUpper + "'" +

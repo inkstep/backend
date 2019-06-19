@@ -1,15 +1,14 @@
 package handlers;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import email.JourneyMail;
-import handlers.JourneyTattooImageCreateHandler.Payload;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import email.JourneyMail;
+import handlers.JourneyTattooImageCreateHandler.Payload;
 import model.Journey;
 import model.Validatable;
 import org.apache.commons.io.FileUtils;

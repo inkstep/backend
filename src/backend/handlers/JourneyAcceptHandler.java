@@ -1,6 +1,9 @@
 package handlers;
 
-import static handlers.AbstractRequestHandler.dataToJson;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import email.templates.ArtistResponseTemplate;
 import model.Artist;
@@ -12,11 +15,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import store.InkstepStore;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JourneyAcceptHandler implements Route {
 

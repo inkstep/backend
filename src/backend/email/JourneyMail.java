@@ -1,15 +1,12 @@
 package email;
 
-import email.templates.ClientPhotoTemplate;
-import email.templates.ClientRequestTemplate;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import javax.mail.MessagingException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import email.templates.ClientPhotoTemplate;
+import email.templates.ClientRequestTemplate;
 import model.Artist;
 import model.Journey;
 import model.Studio;
