@@ -427,7 +427,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return returnId;
   }
 
-  @Override public boolean hasGotAllImages(int journeyId) {
+  synchronized @Override public boolean hasGotAllImages(int journeyId) {
     try {
       open();
 
@@ -459,7 +459,7 @@ public class InkstepDatabaseStore implements InkstepStore {
     return false;
   }
 
-  @Override public List<String> getImagesFromJourneyId(int journeyId) {
+  synchronized @Override public List<String> getImagesFromJourneyId(int journeyId) {
     try {
       open();
 
