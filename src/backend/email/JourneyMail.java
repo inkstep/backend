@@ -82,6 +82,7 @@ public class JourneyMail {
     email = email.replace("{{CLIENT CONCEPT}}", journey.tattooDesc);
     email = email.replace("{{CLIENT LOCATION}}", journey.position);
     email = email.replace("{{CLIENT SIZE}}", journey.size);
+    email = email.replace("{{CLIENT STYLE}}", journey.style);
     email = email.replace("{{CLIENT AVAILABILITY}}", journey.humanAvailability());
     email = email.replace("{{CLIENT EMAIL}}", user.email);
     email = email.replace("{{INSPIRATION DESC 1}}", "1.");
