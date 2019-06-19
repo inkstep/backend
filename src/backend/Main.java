@@ -1,18 +1,15 @@
 import static spark.Spark.*;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import email.JourneyMail;
-import handlers.*;
-import java.util.ArrayList;
-import model.Journey;
-import store.InkstepDatabaseStore;
-import store.InkstepStore;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import handlers.*;
+import store.InkstepDatabaseStore;
+import store.InkstepStore;
 
 public class Main {
 

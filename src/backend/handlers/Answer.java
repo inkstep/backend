@@ -1,10 +1,8 @@
 package handlers;
 
-import spark.Response;
-
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.Objects;
+
+import spark.Response;
 
 public abstract class Answer {
 

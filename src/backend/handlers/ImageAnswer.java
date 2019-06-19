@@ -1,11 +1,10 @@
 package handlers;
 
-import spark.Response;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import spark.Response;
 
 public class ImageAnswer extends Answer {
 

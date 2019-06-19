@@ -1,13 +1,13 @@
 package notification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Artist;
 import model.Journey;
 import model.JourneyStage;
 import model.User;
 import store.InkstepStore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WaiterNotifier {
   private InkstepStore store;

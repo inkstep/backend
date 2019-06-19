@@ -605,7 +605,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
-          JNY_BOOKING_DATE};
+          JNY_BOOKING_DATE, JNY_STYLE};
       Condition[] clauses =
         new Condition[] {BinaryCondition.equalTo(JNY_ARTIST_ID, artistId),
           BinaryCondition.equalTo(JNY_STAGE, JourneyStage.WaitingList.toCode())};
@@ -616,7 +616,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(12),
           getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
           getIntFromResult(row.get(10)), row.get(11)));
       }
@@ -638,7 +638,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
-          JNY_BOOKING_DATE};
+          JNY_BOOKING_DATE, JNY_STYLE};
       Condition[] clauses =
         new Condition[] {BinaryCondition.equalTo(JNY_ARTIST_ID, artistID),
           BinaryCondition.equalTo(JNY_BOOKING_DATE, bookingDate),
@@ -651,7 +651,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(12),
           getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
           getIntFromResult(row.get(10)), row.get(11)));
       }
@@ -673,7 +673,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
-          JNY_BOOKING_DATE};
+          JNY_BOOKING_DATE, JNY_STYLE};
       Condition condition = BinaryCondition.equalTo(JNY_ID, id);
       List<List<String>> results = selectQuery(columns, condition);
 
@@ -686,7 +686,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<String> row = results.get(0);
 
       return new Journey(id, getIntFromResult(row.get(0)), getIntFromResult(row.get(1)), row.get(2),
-        row.get(3), row.get(4), row.get(5), getIntFromResult(row.get(6)),
+        row.get(3), row.get(4), row.get(5), row.get(11), getIntFromResult(row.get(6)),
         getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
         row.get(10));
 
@@ -706,7 +706,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       DbColumn[] columns =
         new DbColumn[] {JNY_ID, JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
           JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_QUOTE_LOWER, JNY_QUOTE_UPPER, JNY_STAGE,
-          JNY_BOOKING_DATE};
+          JNY_BOOKING_DATE, JNY_STYLE};
       Condition condition = BinaryCondition.equalTo(JNY_USER_ID, userId);
       List<List<String>> results = selectQuery(columns, condition);
 
@@ -715,7 +715,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
         journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6),
+          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(12), row.get(6),
           getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
           getIntFromResult(row.get(10)), row.get(11)));
       }

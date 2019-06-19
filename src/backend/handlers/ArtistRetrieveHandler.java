@@ -1,11 +1,9 @@
 package handlers;
 
-import model.Artist;
-import spark.Route;
-import store.InkstepStore;
-
-import java.util.List;
 import java.util.Map;
+
+import model.Artist;
+import store.InkstepStore;
 
 public class ArtistRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 

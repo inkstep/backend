@@ -27,6 +27,7 @@ public class JourneyRetrieveHandlerTest {
     String description = "tattoo.description";
     String size = "tattoo.size";
     String position = "tattoo.position";
+    String style = "Blackwork";
     String availability = "0001010";
     int noRefImages = 3;
     int quoteLower = 80;
@@ -34,7 +35,7 @@ public class JourneyRetrieveHandlerTest {
     int stage = 0;
 
     Journey journey =
-      new Journey(journeyID, artistID, studioID, description, size, position, availability,
+      new Journey(journeyID, artistID, studioID, description, size, position, style, availability,
         noRefImages, quoteLower, quoteUpper, stage, null);
     List<Journey> journeys = new ArrayList<>();
     journeys.add(journey);
@@ -45,19 +46,20 @@ public class JourneyRetrieveHandlerTest {
     Map<String, String> params = new HashMap<>();
     params.put("user", String.valueOf(userID));
 
-//    String body = handler.process(new EmptyPayload(), params).().replace("\"", "");
-//    System.out.println(body);
-//    assertThat(body, containsString("size : " + size));
-//    assertThat(body, containsString("position : " + position));
-//    assertThat(body, containsString("availability : " + availability));
-//    assertThat(body, containsString("stage : " + stage));
-//    assertThat(body, containsString("journeyID : " + journeyID));
-//    assertThat(body, containsString("userID : " + userID));
-//    assertThat(body, containsString("artistID : " + artistID));
-//    assertThat(body, containsString("quoteLower : " + quoteLower));
-//    assertThat(body, containsString("quoteUpper : " + quoteUpper));
-//    assertThat(body, containsString("noRefImages : " + noRefImages));
-//    assertThat(body, containsString("tattooDesc : " + description));
-//    assertThat(body, containsString("valid : true"));
+    String body = handler.process(new EmptyPayload(), params).toString().replace("\"", "");
+    System.out.println(body);
+    assertThat(body, containsString("size : " + size));
+    assertThat(body, containsString("position : " + position));
+    assertThat(body, containsString("availability : " + availability));
+    assertThat(body, containsString("stage : " + stage));
+    assertThat(body, containsString("journeyID : " + journeyID));
+    assertThat(body, containsString("userID : " + userID));
+    assertThat(body, containsString("artistID : " + artistID));
+    assertThat(body, containsString("quoteLower : " + quoteLower));
+    assertThat(body, containsString("quoteUpper : " + quoteUpper));
+    assertThat(body, containsString("noRefImages : " + noRefImages));
+    assertThat(body, containsString("tattooDesc : " + description));
+    assertThat(body, containsString("style : " + style));
+    assertThat(body, containsString("valid : true"));
   }
 }

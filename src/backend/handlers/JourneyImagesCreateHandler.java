@@ -1,19 +1,16 @@
 package handlers;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import email.JourneyMail;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import handlers.JourneyImagesCreateHandler.Payload;
 import model.Validatable;
 import org.apache.commons.io.FileUtils;
 import store.InkstepStore;
-import handlers.JourneyImagesCreateHandler.Payload;
 
 public class JourneyImagesCreateHandler
   extends AbstractRequestHandler<Payload> {

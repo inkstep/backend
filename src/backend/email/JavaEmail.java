@@ -1,27 +1,17 @@
 package email;
 
-import com.sun.mail.pop3.POP3Store;
-import java.io.File;
-import java.io.IOException;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.Address;
-import javax.mail.BodyPart;
+import javax.mail.*;
 import javax.mail.Flags.Flag;
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.ContentType;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
-import javax.mail.internet.MimeMultipart;
+
+import com.sun.mail.pop3.POP3Store;
 
 public class JavaEmail {
 

@@ -3,12 +3,12 @@ package handlers;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
 import model.Journey;
 import model.JourneyStage;
 import store.InkstepStore;
-
-import java.util.List;
-import java.util.Map;
 
 public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 

@@ -1,11 +1,11 @@
 package handlers;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import handlers.UserEmailUpdateHandler.Payload;
-import java.util.Map;
-import model.User;
 import model.Validatable;
 import store.InkstepStore;
 

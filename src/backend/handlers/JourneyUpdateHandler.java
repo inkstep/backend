@@ -21,7 +21,8 @@ public class JourneyUpdateHandler
   protected Answer processImpl(Payload request, Map<String, String> urlParams) {
     int journeyId = Integer.valueOf(urlParams.get(":id"));
 
-    JourneyStage newStage = JourneyStage.values()[request.getStage()]; // TODO(mm5917): null pointer exception
+    // TODO(mm5917): null pointer exception
+    JourneyStage newStage = JourneyStage.values()[request.getStage()];
     // TODO(DJRHails): Should go in valid check of payload
     if (request.getStage() > JourneyStage.values().length
       || request.getStage() < 0) {

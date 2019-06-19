@@ -1,11 +1,11 @@
 package handlers;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import handlers.JourneyCreateHandler.Payload;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import handlers.JourneyCreateHandler.Payload;
 import model.Journey;
 import model.JourneyStage;
 import model.Validatable;
@@ -28,6 +28,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       payload.tattooDesc,
       payload.size,
       payload.position,
+      payload.style,
       payload.availability,
       payload.noRefImages,
       -1,
@@ -54,6 +55,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
     public final String size;
     public final String position;
     public final String availability;
+    public final String style;
 
     @JsonCreator
     public Payload(
@@ -62,6 +64,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       @JsonProperty("tattoo_desc") String tattooDesc,
       @JsonProperty("size") String size,
       @JsonProperty("position") String position,
+      @JsonProperty("style") String style,
       @JsonProperty("availability") String availability,
       @JsonProperty("ref_images") int noRefImages) {
       this.userID = userID;
@@ -69,6 +72,7 @@ public class JourneyCreateHandler extends AbstractRequestHandler<Payload> {
       this.tattooDesc = tattooDesc;
       this.size = size;
       this.position = position;
+      this.style = style;
       this.availability = availability;
       this.noRefImages = noRefImages;
     }

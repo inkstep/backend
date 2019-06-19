@@ -29,7 +29,7 @@ public class DatabaseStoreTest {
   }
 
   @Test public void canAddAndRemoveJourney() {
-    Journey journey = new Journey(-1, 0, 0, null, null, null, null, 0, 0, 0, 0, null);
+    Journey journey = new Journey(-1, 0, 0, null, null, null, null, null, 0, 0, 0, 0, null);
     int journeyId = store.createJourney(journey);
 
     // Make sure journey was added
