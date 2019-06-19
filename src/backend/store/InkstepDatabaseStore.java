@@ -1,5 +1,6 @@
 package store;
 
+import static model.JourneyBuilder.aJourney;
 import static store.InkstepDatabaseSchema.*;
 
 import java.sql.*;
@@ -356,7 +357,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       // Build prepared statement TODO(mm5917): remove ID column
       DbColumn[] insertInto =
         new DbColumn[] {JNY_USER_ID, JNY_ARTIST_ID, JNY_DESCRIPTION, JNY_SIZE, JNY_POSITION,
-          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_STAGE};
+          JNY_AVAIL, JNY_NO_REF_IMAGES, JNY_STAGE, JNY_STYLE};
       String query = getPreparedInsertQuery(JOURNEYS, insertInto);
       PreparedStatement preparedStatement = connection.prepareStatement(query);
 
@@ -369,6 +370,7 @@ public class InkstepDatabaseStore implements InkstepStore {
       preparedStatement.setString(6, journey.availability);
       preparedStatement.setString(7, journey.noRefImages);
       preparedStatement.setInt(8, journey.stage.toCode());
+      preparedStatement.setString(9, journey.style);
 
       // Execute the insert statement
       preparedStatement.execute();
@@ -615,10 +617,21 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
-        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(12),
-          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
-          getIntFromResult(row.get(10)), row.get(11)));
+        journeys.add(aJourney()
+          .withID(getIntFromResult(row.get(0)))
+          .withUserID(getIntFromResult(row.get(1)))
+          .withArtistID(getIntFromResult(row.get(2)))
+          .withTattooDesc(row.get(3))
+          .withSize(row.get(4))
+          .withPosition(row.get(5))
+          .withStyle(row.get(12))
+          .withAvailability(row.get(6))
+          .withNoRefImages(getIntFromResult(row.get(7)))
+          .withQuoteLower(getIntFromResult(row.get(8)))
+          .withQuoteUpper(getIntFromResult(row.get(9)))
+          .withStage(getIntFromResult(row.get(10)))
+          .withBookingDate(row.get(11))
+          .build());
       }
 
       return journeys;
@@ -650,10 +663,21 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
-        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(6), row.get(12),
-          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
-          getIntFromResult(row.get(10)), row.get(11)));
+        journeys.add(aJourney()
+          .withID(getIntFromResult(row.get(0)))
+          .withUserID(getIntFromResult(row.get(1)))
+          .withArtistID(getIntFromResult(row.get(2)))
+          .withTattooDesc(row.get(3))
+          .withSize(row.get(4))
+          .withPosition(row.get(5))
+          .withStyle(row.get(12))
+          .withAvailability(row.get(6))
+          .withNoRefImages(getIntFromResult(row.get(7)))
+          .withQuoteLower(getIntFromResult(row.get(8)))
+          .withQuoteUpper(getIntFromResult(row.get(9)))
+          .withStage(getIntFromResult(row.get(10)))
+          .withBookingDate(row.get(11))
+          .build());
       }
 
       return journeys;
@@ -685,10 +709,21 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<String> row = results.get(0);
 
-      return new Journey(id, getIntFromResult(row.get(0)), getIntFromResult(row.get(1)), row.get(2),
-        row.get(3), row.get(4), row.get(5), row.get(11), getIntFromResult(row.get(6)),
-        getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
-        row.get(10));
+      return aJourney()
+        .withID(id)
+        .withUserID(getIntFromResult(row.get(0)))
+        .withArtistID(getIntFromResult(row.get(1)))
+        .withTattooDesc(row.get(2))
+        .withSize(row.get(3))
+        .withPosition(row.get(4))
+        .withStyle(row.get(11))
+        .withAvailability(row.get(5))
+        .withNoRefImages(getIntFromResult(row.get(6)))
+        .withQuoteLower(getIntFromResult(row.get(7)))
+        .withQuoteUpper(getIntFromResult(row.get(8)))
+        .withStage(getIntFromResult(row.get(9)))
+        .withBookingDate(row.get(10))
+        .build();
 
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
@@ -714,10 +749,21 @@ public class InkstepDatabaseStore implements InkstepStore {
 
       List<Journey> journeys = new ArrayList<>();
       for (List<String> row : results) {
-        journeys.add(new Journey(getIntFromResult(row.get(0)), getIntFromResult(row.get(1)),
-          getIntFromResult(row.get(2)), row.get(3), row.get(4), row.get(5), row.get(12), row.get(6),
-          getIntFromResult(row.get(7)), getIntFromResult(row.get(8)), getIntFromResult(row.get(9)),
-          getIntFromResult(row.get(10)), row.get(11)));
+        journeys.add(aJourney()
+          .withID(getIntFromResult(row.get(0)))
+          .withUserID(getIntFromResult(row.get(1)))
+          .withArtistID(getIntFromResult(row.get(2)))
+          .withTattooDesc(row.get(3))
+          .withSize(row.get(4))
+          .withPosition(row.get(5))
+          .withStyle(row.get(12))
+          .withAvailability(row.get(6))
+          .withNoRefImages(getIntFromResult(row.get(7)))
+          .withQuoteLower(getIntFromResult(row.get(8)))
+          .withQuoteUpper(getIntFromResult(row.get(9)))
+          .withStage(getIntFromResult(row.get(10)))
+          .withBookingDate(row.get(11))
+          .build());
       }
 
       return journeys;

@@ -15,7 +15,7 @@ public class UserNotifier {
 
   public boolean notifyStage(Artist artist, Journey journey, JourneyStage stage) {
 
-    String title = artist.name + "has sent an update!";
+    String title = artist.name + " has sent an update!";
     String body = "A";
     if (stage == JourneyStage.QuoteReceived) {
       body += " quote ";
@@ -29,7 +29,7 @@ public class UserNotifier {
                     ApsAlert.builder().setTitle(title)
                       .setBody(body)
                       .build()
-            ).setSound("default").build())
+            ).setSound("note").build())
     .putCustomData("journey", String.valueOf(journey.journeyID))
     .build();
 
@@ -59,13 +59,17 @@ public class UserNotifier {
   }
 
   public boolean cancellation(Artist artist, Journey waitingJourney, Journey cancelledJourney) {
+
+    String title = artist.name + " has a cancellation and can see you!";
+    String body = "Are you free on " + cancelledJourney.bookingDate;
+
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(1).setAlert(
         ApsAlert.builder()
-          .setTitle(artist.name + " has a cancellation and can see you!")
-          .setBody("Are you free on" + cancelledJourney.bookingDate)
+          .setTitle(title)
+          .setBody(body)
           .build()
-      ).build())
+      ).setSound("note").build())
       .putCustomData("journey", String.valueOf(waitingJourney.journeyID))
       .build();
 
@@ -74,8 +78,8 @@ public class UserNotifier {
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
       .setNotification(
         new Notification(
-          artist.name + " has a cancellation and can see you!",
-          "Are you free on " + cancelledJourney.bookingDate)
+          title,
+          body)
       )
       .setToken(user.token)
       .setApnsConfig(appleConfig)
@@ -95,14 +99,18 @@ public class UserNotifier {
   }
 
   public boolean filled(User successfulUser, Artist artist, Journey journey) {
+    
+    String title = successfulUser.name + " got the slot!";
+    String body = "The slot released by " + artist.name + " has been filled. " +
+            "Don't worry there will be a next time.";
+
     ApnsConfig appleConfig = ApnsConfig.builder().setAps(
       Aps.builder().setBadge(1).setAlert(
         ApsAlert.builder()
-          .setTitle(successfulUser.name + " got the slot!")
-          .setBody("The slot released by " + artist.name + " has been filled. " +
-            "Don't worry there will be a next time.")
+          .setTitle(title)
+          .setBody(body)
           .build()
-      ).build())
+      ).setSound("alert").build())
       .putCustomData("journey", String.valueOf(journey.journeyID))
       .build();
 
@@ -111,9 +119,8 @@ public class UserNotifier {
       .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
       .setNotification(
         new Notification(
-          successfulUser.name + " got the slot!",
-          "The slot released by " + artist.name + " has been filled. " +
-            "Don't worry there will be a next time.")
+          title,
+          body)
       )
       .setToken(user.token)
       .setApnsConfig(appleConfig)
