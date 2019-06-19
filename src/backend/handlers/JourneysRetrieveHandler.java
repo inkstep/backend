@@ -45,7 +45,6 @@ public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload
       }
     }
 
-    System.out.println(journeys.toString());
     return Answer.ok(dataToJson(journeys));
   }
 }
