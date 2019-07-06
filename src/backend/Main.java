@@ -17,15 +17,23 @@ public class Main {
 
   public static void main(final String[] args) throws IOException {
 
+    // Use HTTPS
+    // String keystoreFilePath = "";
+    // String keystorePassword = "";
+    // secure(keystoreFilePath, keystorePassword, null, null);
+
+    // Set up Firebase
     InputStream inputStream = new ByteArrayInputStream(INKSTEP_FIREBASE_API.getBytes());
     FirebaseOptions options = new FirebaseOptions.Builder()
         .setCredentials(GoogleCredentials.fromStream(inputStream))
         .setDatabaseUrl("https://inkstep-d738d.firebaseio.com")
         .build();
-
     FirebaseApp.initializeApp(options);
 
+    // Initialise database store
     InkstepStore store = new InkstepDatabaseStore();
+
+    path("/", () -> get("", new HomePageRetrieveHandler(store)));
 
     path("/artist", () -> {
       get("", new ArtistsRetrieveHandler(store));

@@ -11,7 +11,6 @@ COPY email/ email/
 
 RUN mvn compile assembly:single
 
-
 # Start Main
 CMD java -jar target/inkstep-1.0.jar
 
