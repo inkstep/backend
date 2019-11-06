@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: null
+    environment: Inkstep-server-2-dev
     group_suffix: null
 global:
   application_name: Inkstep-server-2
