@@ -17,11 +17,6 @@ public class Main {
 
   public static void main(final String[] args) throws IOException {
 
-    // Use HTTPS
-    // String keystoreFilePath = "";
-    // String keystorePassword = "";
-    // secure(keystoreFilePath, keystorePassword, null, null);
-
     // Set up Firebase
     InputStream inputStream = new ByteArrayInputStream(INKSTEP_FIREBASE_API.getBytes());
     FirebaseOptions options = new FirebaseOptions.Builder()
