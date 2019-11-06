@@ -3,7 +3,7 @@ branch-defaults:
     environment: null
     group_suffix: null
 global:
-  application_name: backend2
+  application_name: Inkstep-server-2
   branch: null
   default_ec2_keyname: null
   default_platform: Docker 18.06.1-ce
