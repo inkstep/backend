@@ -9,3 +9,8 @@ target/
 password.txt
 inkstep.iml
 .vscode/launch.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
