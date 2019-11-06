@@ -1,11 +1,14 @@
 branch-defaults:
   circle-ci:
-    environment: Inkstep-env-2
+    environment: InkstepServer2-env
 environment-defaults:
   Inkstep-env:
     branch: null
     repository: null
   Inkstep-env-2:
+    branch: null
+    repository: null
+  InkstepServer2-env:
     branch: null
     repository: null
 global:

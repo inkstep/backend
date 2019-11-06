@@ -13,8 +13,6 @@ import store.InkstepStore;
 
 public class Main {
 
-  // For empty commit
-
   private static final String INKSTEP_FIREBASE_API = System.getenv("INKSTEP_FIREBASE_API");
 
   public static void main(final String[] args) throws IOException {
