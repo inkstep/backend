@@ -1,3 +1,6 @@
 mvn clean
 mvn compile assembly:single
+set -a
+source .env
+set +a
 java -jar target/inkstep-1.0.jar

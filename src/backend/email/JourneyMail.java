@@ -15,6 +15,8 @@ import model.User;
 import store.InkstepStore;
 
 public class JourneyMail {
+  private static final String INKSTEP_API_URL = System.getenv("INKSTEP_API_URL");
+
   public static boolean sendPictureEmail(InkstepStore store,
                                          Journey journey, int imageId,
                                          File image) {
@@ -34,9 +36,10 @@ public class JourneyMail {
     email = email.replace("{{ARTIST NAME}}", artist.name);
     email = email.replace("{{CLIENT NAME}}", user.name);
     email = email.replace("{{CLIENT EMAIL}}", user.email);
-    String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
+    String thumbBase = "http://{{API URL}}/journey/" + journey.journeyID + "/thumb/";
     email = email.replace("{{TATTOO IMGURL}}", thumbBase + imageId);
     email = email.replace("{{STUDIO NAME}}", studio.name);
+    email = email.replace("{{API URL}}", INKSTEP_API_URL);
 
     JavaEmail javaEmail = new JavaEmail();
 
@@ -89,13 +92,14 @@ public class JourneyMail {
     email = email.replace("{{INSPIRATION DESC 2}}", "2.");
     email = email.replace("{{INSPIRATION DESC 3}}", "3.");
     email = email.replace("{{INSPIRATION DESC 4}}", "4.");
-    String thumbBase = "http://inkstep.hails.info/journey/" + journey.journeyID + "/thumb/";
+    String thumbBase = "http://{{API URL}}/journey/" + journey.journeyID + "/thumb/";
     email = email.replace("{{INSPIRATION IMGURL 1}}", thumbBase + "0");
     email = email.replace("{{INSPIRATION IMGURL 2}}", thumbBase + "1");
     email = email.replace("{{INSPIRATION IMGURL 3}}", thumbBase + "2");
     email = email.replace("{{INSPIRATION IMGURL 4}}", thumbBase + "3");
     email = email.replace("{{STUDIO NAME}}", studio.name);
     email = email.replace("{{JOURNEY ID}}", String.valueOf(journey.journeyID));
+    email = email.replace("{{API URL}}", System.getenv("INKSTEP_API_URL"));
 
     System.out.println(email);
 

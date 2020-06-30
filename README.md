@@ -20,6 +20,14 @@ Run ./clean to clean the directory
 
 Run ./run to run the server
 
+## Local Install
+```sh
+sudo apt install mysql-server
+sudo mysql_secure_installation utility
+sudo systemctl start mysql
+# Be warned Ubuntu uses `auth_socket` by default
+```
+
 # API Endpoints
 
 -

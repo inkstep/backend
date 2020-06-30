@@ -21,9 +21,10 @@ public class JavaEmail {
   private Properties emailPopProp;
   private Session mailSession;
   private MimeMessage emailMessage;
-  private String emailStmpHost = "smtp.gmail.com";
-  private String emailAccount = "inksteptattoo";
-  private String emailPassword = System.getenv("email_password");
+  private String emailStmpHost = System.getenv("INKSTEP_EMAIL_HOST");
+  private String emailAccount = System.getenv("INKSTEP_EMAIL_ACCOUNT");
+  private String emailPassword = System.getenv("INKSTEP_EMAIL_PASSWORD");
+  private String emailAddress = System.getenv("INKSTEP_EMAIL_ADDRESS");
 
   private void setMailServerProperties() {
     emailSmtpProp = System.getProperties();
@@ -85,7 +86,7 @@ public class JavaEmail {
     createEmailMessage(to, message, subject, toReply, files, html);
 
     Transport transport = mailSession.getTransport("smtp");
-
+    System.out.println(String.format("Connecting on transport smtp: %s %s %s", emailStmpHost, emailAccount, emailPassword.length()));
     transport.connect(emailStmpHost, emailAccount, emailPassword);
     transport.sendMessage(emailMessage, emailMessage.getAllRecipients());
     transport.close();
@@ -97,7 +98,7 @@ public class JavaEmail {
       setMailServerProperties();
       Session emailSession = Session.getDefaultInstance(emailPopProp);
       POP3Store emailStore = (POP3Store) emailSession.getStore("pop3s");
-      emailStore.connect("inksteptattoo@gmail.com", emailPassword);
+      emailStore.connect(emailAddress, emailPassword);
 
       Folder emailFolder = emailStore.getFolder("INBOX");
       emailFolder.open(Folder.READ_WRITE);

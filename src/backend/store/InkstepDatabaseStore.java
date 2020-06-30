@@ -14,17 +14,18 @@ import model.*;
 
 public class InkstepDatabaseStore implements InkstepStore {
   private static final String DB_URL =
-    "jdbc:mysql://inkstepdb.cqjzj0pfmjrn.eu-west-2.rds.amazonaws.com:3306/inkstep?useSSL=false";
-  private static final String DB_USERNAME = "docg1827107group";
-  private static final String DB_PASSWORD = System.getenv("INKSTEP_AWS_DB_PW");
+    System.getenv("INKSTEP_DB_URL");
+  private static final String DB_USERNAME = System.getenv("INKSTEP_DB_USERNAME");
+  private static final String DB_PASSWORD = System.getenv("INKSTEP_DB_PASSWORD");
 
   private Connection connection;
   private boolean connected = false;
 
   private void open() throws ClassNotFoundException, SQLException {
     if (!connected) {
+      System.out.println(String.format("Connecting to: %s", DB_URL));
       Class.forName("com.mysql.jdbc.Driver");
-      connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+      connection = DriverManager.getConnection(DB_URL, DB_USERNAME == "" ? null : DB_USERNAME, DB_PASSWORD == "" ? null : DB_PASSWORD);
       connected = true;
     }
   }
