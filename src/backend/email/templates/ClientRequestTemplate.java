@@ -822,7 +822,7 @@ public class ClientRequestTemplate implements EmailTemplate {
     stringBuffer.append(
       "                                            <p style=\"font-size: 14px; line-height: 16px; margin: 0;\"><span style=\"color: #202431; font-size: 14px; line-height: 16px;\">If you want to accept this request, please fill in the form below!</span></p><br>\n");
     stringBuffer.append(
-      "                                            <form action=\"http://inkstep.hails.info/journey/{{JOURNEY ID}}\"\n");
+      "                                            <form action=\"http://{{API URL}}/journey/{{JOURNEY ID}}\"\n");
     stringBuffer.append("                                                  method=\"POST\">\n");
     stringBuffer.append(
       "                                                <div style=\"background-color:#f6f6f4;\">\n");
