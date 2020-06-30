@@ -21,7 +21,7 @@ public class JourneyAcceptHandler implements Route {
   private InkstepStore store;
 
   public static final DateTimeFormatter STORE_DATE_TIME_FORMATTER =
-    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
   public static final DateTimeFormatter PARAM_DATE_TIME_FORMATTER =
     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

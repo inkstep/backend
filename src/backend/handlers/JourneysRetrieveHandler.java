@@ -13,7 +13,7 @@ import store.InkstepStore;
 public class JourneysRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
 
   public static final DateTimeFormatter DATE_FORMATTER =
-    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   public static final ZoneId TIME_ZONE = ZoneId.of("Europe/London");
 
   public JourneysRetrieveHandler(InkstepStore store) {

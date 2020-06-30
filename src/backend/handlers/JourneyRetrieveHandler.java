@@ -23,7 +23,7 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
     }
 
     if (journey.stage == JourneyStage.AppointmentBooked) {
-      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
       LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
 
@@ -32,7 +32,7 @@ public class JourneyRetrieveHandler extends AbstractRequestHandler<EmptyPayload>
         store.updateStage(journey.journeyID, JourneyStage.Aftercare);
       }
     } else if (journey.stage == JourneyStage.Aftercare) {
-      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       LocalDateTime date = LocalDateTime.parse(journey.bookingDate, dateFormatter);
       LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"));
       LocalDateTime doneDate = date.plusDays(31);

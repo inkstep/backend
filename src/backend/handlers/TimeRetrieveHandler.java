@@ -17,7 +17,7 @@ public class TimeRetrieveHandler extends AbstractRequestHandler<EmptyPayload> {
   @Override
   protected Answer processImpl(EmptyPayload value, Map<String, String> queryParams) {
     Map<String, String> responseMap = new HashMap<String, String>() {{
-      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+      DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
       put("image_id", LocalDateTime.now(ZoneId.of("Europe/London")).format(dateFormatter));
     }};
 
